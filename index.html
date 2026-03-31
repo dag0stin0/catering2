@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PubKey DC — Private Events & Catering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow+Condensed:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #E85D26;
+  --orange-hot: #FF6B35;
+  --orange-glow: rgba(232,93,38,0.12);
+  --blue: #2B5EA7;
+  --blue-light: #5B8FD4;
+  --blue-dim: #1A3A6A;
+  --surface: #0C0C0C;
+  --surface-1: #111111;
+  --surface-2: #161616;
+  --surface-3: #1C1C1C;
+  --surface-4: #222222;
+  --border: rgba(255,255,255,0.06);
+  --border-mid: rgba(255,255,255,0.1);
+  --border-bright: rgba(255,255,255,0.16);
+  --text: rgba(255,255,255,0.78);
+  --text-hi: rgba(255,255,255,0.94);
+  --text-lo: rgba(255,255,255,0.32);
+  --text-mute: rgba(255,255,255,0.18);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  background: #080808;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Grain */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+/* ── REVEALS ── */
+.r { opacity: 0; transform: translateY(20px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+.r.v { opacity: 1; transform: translateY(0); }
+.r1 { transition-delay: .05s } .r2 { transition-delay: .1s } .r3 { transition-delay: .15s } .r4 { transition-delay: .2s }
+
+/* ══════════════════════════════════════════
+   BROADSHEET
+   ══════════════════════════════════════════ */
+.bs { width: 100%; background: var(--surface); position: relative; }
+
+/* ══════════════════════════════════════════
+   STICKY NAV
+   ══════════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(8,8,8,.92);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 2px solid var(--orange);
+  transform: translateY(-100%);
+  transition: transform .4s cubic-bezier(.22,1,.36,1);
+}
+.nav.v { transform: translateY(0); }
+.nav-in {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(20px, 4vw, 56px); height: 52px;
+}
+.nav-brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: .95rem;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: white; text-decoration: none;
+}
+.nav-brand span { color: var(--orange-hot); }
+.nav-links { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: .64rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.35); text-decoration: none;
+  padding: 18px 10px; white-space: nowrap;
+  transition: color .2s;
+}
+.nav-links a:hover, .nav-links a.act { color: var(--orange-hot); }
+.nav-cta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: .65rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: white; background: var(--orange);
+  padding: 8px 18px; text-decoration: none;
+  transition: background .2s, transform .15s; flex-shrink: 0;
+}
+.nav-cta:hover { background: var(--orange-hot); transform: translateY(-1px); }
+
+/* ══════════════════════════════════════════
+   HERO — FULL BLEED
+   ══════════════════════════════════════════ */
+.hero {
+  min-height: 100vh; min-height: 100dvh;
+  background: #080808;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 60px clamp(20px, 4vw, 56px) 80px;
+  position: relative; overflow: hidden;
+}
+/* Radial glow behind logo */
+.hero::before {
+  content: ''; position: absolute;
+  width: 700px; height: 700px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  background: radial-gradient(circle, rgba(232,93,38,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-logo {
+  width: 520px; max-width: 88vw;
+  margin: 0 auto 32px;
+  opacity: 0;
+  animation: heroIn .8s .2s cubic-bezier(.22,1,.36,1) forwards;
+  filter: drop-shadow(0 0 60px rgba(232,93,38,.15));
+}
+@keyframes heroIn {
+  0% { opacity: 0; transform: scale(.92) translateY(-16px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.hero-logo img { width: 100%; height: auto; display: block; }
+
+.hero-rule {
+  width: 80px; height: 3px;
+  background: var(--orange);
+  margin: 0 auto 24px;
+  opacity: 0;
+  animation: fadeIn .6s .6s ease forwards;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+
+.hero h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: clamp(1rem, 2.8vw, 1.4rem);
+  letter-spacing: .45em; text-transform: uppercase;
+  color: var(--orange-hot);
+  margin-bottom: 10px;
+  opacity: 0; animation: fadeUp .6s .5s cubic-bezier(.22,1,.36,1) forwards;
+}
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.hero-sub {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1.1rem, 2.8vw, 1.45rem);
+  color: rgba(255,255,255,.7);
+  margin-bottom: 6px;
+  opacity: 0; animation: fadeUp .6s .7s cubic-bezier(.22,1,.36,1) forwards;
+}
+.hero-fine {
+  font-family: 'DM Mono', monospace; font-size: .7rem;
+  color: var(--text-lo);
+  opacity: 0; animation: fadeUp .5s .85s ease forwards;
+}
+.hero-contact {
+  margin-top: 32px;
+  display: flex; gap: 28px; flex-wrap: wrap; justify-content: center;
+  opacity: 0; animation: fadeUp .5s 1s ease forwards;
+}
+.hero-contact span, .hero-contact a {
+  font-size: .85rem; color: var(--text-lo); text-decoration: none;
+}
+.hero-contact a { color: var(--orange-hot); border-bottom: 1px dashed rgba(232,93,38,.3); }
+
+/* Mascot floating */
+.hero-mascot {
+  position: absolute; bottom: -6px; right: 4%;
+  width: 220px; max-width: 24vw; z-index: 3;
+  opacity: 0; animation: mascotIn .8s 1.1s cubic-bezier(.22,1,.36,1) forwards;
+  filter: drop-shadow(0 4px 20px rgba(0,0,0,.5));
+  pointer-events: none;
+}
+@keyframes mascotIn {
+  0% { opacity: 0; transform: translateX(30px) rotate(3deg); }
+  100% { opacity: 1; transform: translateX(0) rotate(0); }
+}
+.hero-mascot img { width: 100%; height: auto; }
+
+.hero-scroll {
+  position: absolute; bottom: 20px; left: 50%;
+  transform: translateX(-50%); z-index: 2;
+  opacity: 0; animation: fadeUp .5s 1.4s ease forwards;
+}
+.hero-scroll span {
+  display: block; width: 1px; height: 36px;
+  background: linear-gradient(to bottom, var(--orange), transparent);
+  margin: 0 auto;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: .6 } 50% { opacity: .15 } }
+
+/* ══════════════════════════════════════════
+   SECTION INDEX BAR
+   ══════════════════════════════════════════ */
+.idx {
+  background: var(--surface-1); padding: 0; width: 100%;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.idx-in { display: grid; grid-template-columns: repeat(8, 1fr); max-width: 1080px; margin: 0 auto; }
+.idx-a {
+  text-align: center; padding: 16px 6px;
+  text-decoration: none;
+  border-right: 1px solid var(--border);
+  transition: background .2s;
+}
+.idx-a:last-child { border-right: none; }
+.idx-a:hover { background: var(--orange-glow); }
+.idx-n {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 1.4rem;
+  color: var(--orange); line-height: 1;
+}
+.idx-l {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: .55rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--text-lo); margin-top: 3px;
+}
+
+/* ══════════════════════════════════════════
+   SECTIONS
+   ══════════════════════════════════════════ */
+.sec {
+  max-width: 1080px; margin: 0 auto;
+  padding: 80px clamp(20px, 4vw, 56px);
+  position: relative;
+}
+
+.sec-head { margin-bottom: 36px; position: relative; z-index: 1; }
+.sec-kick {
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--blue-light); margin-bottom: 6px;
+}
+.sec-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: clamp(2.6rem, 6vw, 4rem);
+  text-transform: uppercase; letter-spacing: .03em;
+  color: var(--text-hi); line-height: .88;
+}
+.sec-rule {
+  width: 100%; height: 3px;
+  background: var(--orange); margin-top: 12px;
+  position: relative;
+}
+.sec-rule::after {
+  content: ''; position: absolute;
+  top: 5px; left: 0; width: 100%; height: 1px;
+  background: var(--border);
+}
+
+.body { font-size: .98rem; line-height: 1.88; color: var(--text); margin-bottom: 16px; max-width: 640px; position: relative; z-index: 1; }
+.body strong { color: var(--text-hi); }
+
+/* Pull quote */
+.pq {
+  border-left: 4px solid var(--orange);
+  padding: 20px 0 20px 28px; margin: 36px 0;
+}
+.pq p {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1.3rem; line-height: 1.55; color: var(--text);
+}
+.pq cite {
+  display: block; font-family: 'DM Sans'; font-style: normal;
+  font-weight: 500; font-size: .76rem; color: var(--text-lo); margin-top: 10px;
+}
+
+/* Sub-title */
+.sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 1.25rem;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text-hi); margin-top: 52px; padding-bottom: 8px;
+  border-bottom: 3px solid var(--orange); margin-bottom: 16px;
+}
+
+/* ══════════════════════════════════════════
+   ART BREAKS — CINEMATIC MOMENTS
+   ══════════════════════════════════════════ */
+/* Full-bleed poster */
+.poster {
+  position: relative; overflow: hidden;
+  background: var(--surface-1);
+}
+.poster img {
+  width: 100%; height: auto; display: block;
+  transition: transform 6s cubic-bezier(.22,1,.36,1);
+}
+.poster:hover img { transform: scale(1.02); }
+/* Fade edges into the dark */
+.poster::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, var(--surface) 0%, transparent 12%, transparent 88%, var(--surface) 100%);
+  pointer-events: none;
+}
+
+/* Centered art with glow */
+/* ══════════════════════════════════════════
+   THE TRIPLE SET — three posters side by side
+   ══════════════════════════════════════════ */
+.triple {
+  width: 100%; background: var(--surface-1);
+  border-top: 3px solid var(--orange);
+  border-bottom: 3px solid var(--orange);
+  overflow: hidden;
+}
+.triple-in {
+  max-width: 1080px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+}
+.triple-poster {
+  overflow: hidden; position: relative;
+  border-right: 1px solid rgba(0,0,0,.6);
+}
+.triple-poster:last-child { border-right: none; }
+.triple-poster img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  filter: saturate(.88) brightness(.92);
+  transition: filter .5s, transform 4s cubic-bezier(.22,1,.36,1);
+}
+.triple-poster:hover img {
+  filter: saturate(1) brightness(1);
+  transform: scale(1.04);
+}
+@media (max-width: 600px) {
+  .triple-in { grid-template-columns: 1fr; }
+  .triple-poster { border-right: none; border-bottom: 1px solid rgba(0,0,0,.6); }
+  .triple-poster:last-child { border-bottom: none; }
+}
+
+/* ══════════════════════════════════════════
+   VENUE PHOTOS
+   ══════════════════════════════════════════ */
+/* Full-bleed cinematic photo */
+.venue-hero {
+  width: 100%; overflow: hidden; position: relative;
+}
+.venue-hero img {
+  width: 100%; height: auto; display: block;
+  object-fit: contain;
+  filter: brightness(.85) contrast(1.05);
+  transition: transform 6s cubic-bezier(.22,1,.36,1);
+}
+.venue-hero:hover img { transform: scale(1.03); }
+.venue-hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, var(--surface) 0%, transparent 10%, transparent 85%, var(--surface) 100%);
+  pointer-events: none;
+}
+
+/* Photo gallery grid */
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin: 28px 0 8px;
+}
+.venue-grid.two-col { grid-template-columns: 1fr 1fr; }
+.venue-cell {
+  overflow: hidden; position: relative;
+  aspect-ratio: 16/10;
+}
+.venue-cell.tall { aspect-ratio: 9/14; }
+.venue-cell img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: brightness(.88) contrast(1.05) saturate(.95);
+  transition: filter .5s, transform 5s cubic-bezier(.22,1,.36,1);
+}
+.venue-cell:hover img {
+  filter: brightness(.95) contrast(1.05) saturate(1);
+  transform: scale(1.04);
+}
+.venue-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 24px 16px 12px;
+  background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 100%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: .62rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  pointer-events: none;
+}
+@media (max-width: 600px) {
+  .venue-grid { grid-template-columns: 1fr; }
+  .venue-grid.two-col { grid-template-columns: 1fr; }
+  .venue-cell { aspect-ratio: 16/10; }
+  .venue-cell.tall { aspect-ratio: 16/10; }
+  .venue-hero img { width: 100%; }
+}
+
+/* Art center: when used inside a full-width bg wrapper, center the content */
+.art-wrap { width: 100%; }
+.art-center {
+  text-align: center; padding: 48px clamp(20px, 4vw, 56px);
+  position: relative;
+  max-width: 1080px; margin: 0 auto;
+}
+.art-center img {
+  max-height: 240px; width: auto; max-width: 80%;
+  display: inline-block;
+  filter: drop-shadow(0 0 40px rgba(232,93,38,.08));
+  transition: filter .4s, transform .4s;
+}
+.art-center:hover img {
+  filter: drop-shadow(0 0 60px rgba(232,93,38,.15));
+  transform: scale(1.02);
+}
+/* Floating line art — ghost behind sections */
+.art-ghost {
+  position: absolute; pointer-events: none;
+  opacity: .03; z-index: 0;
+}
+
+/* Fake ad as full-width interstitial */
+.ad-break {
+  position: relative; overflow: hidden;
+  border-top: 3px solid var(--orange);
+  border-bottom: 3px solid var(--orange);
+  background: var(--surface-1);
+  display: flex; justify-content: center;
+}
+.ad-break img {
+  width: 100%; max-width: 1080px; height: auto; display: block;
+  object-fit: contain;
+  filter: saturate(.9) brightness(.95);
+  transition: filter .4s;
+}
+.ad-break:hover img { filter: saturate(1) brightness(1); }
+
+/* Divider */
+.div { max-width: 1080px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
+.div-line { height: 1px; background: var(--border-mid); }
+.div-orange .div-line { height: 3px; background: var(--orange); }
+
+/* ══════════════════════════════════════════
+   TABLES
+   ══════════════════════════════════════════ */
+.tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 20px 0 14px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 540px; }
+.tbl thead th {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: .58rem;
+  text-transform: uppercase; letter-spacing: .22em;
+  color: var(--text-lo); text-align: left;
+  padding: 12px 10px;
+  border-bottom: 3px solid var(--orange);
+}
+.tbl tbody td { padding: 15px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.tbl tbody tr { transition: background .2s; }
+.tbl tbody tr:hover { background: var(--orange-glow); }
+.tier-n {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 1.5rem; color: var(--orange); line-height: 1;
+}
+.space-n { font-weight: 700; color: var(--text-hi); font-size: .93rem; }
+.tbl-note {
+  font-size: .8rem; font-style: italic; color: var(--text-lo);
+  line-height: 1.7; margin-top: 12px; max-width: 640px;
+}
+.tbl-fine {
+  font-family: 'DM Mono', monospace; font-size: .7rem;
+  color: var(--text-lo); margin-top: 10px; line-height: 1.6;
+}
+.av-n { font-weight: 600; color: var(--text-hi); }
+.av-p { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: var(--orange); }
+.av-note { font-size: .8rem; color: var(--text-lo); font-style: italic; }
+.pkg-n {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 1.1rem; color: var(--orange);
+}
+
+/* ══════════════════════════════════════════
+   PRODUCTION GRID
+   ══════════════════════════════════════════ */
+.pg { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; margin: 20px 0 36px; }
+.pg-item {
+  padding: 16px 0; font-weight: 600; font-size: .9rem; color: var(--text-hi);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  transition: transform .15s, color .15s;
+}
+.pg-item:hover { transform: translateX(4px); color: var(--orange-hot); }
+.pg-item::before {
+  content: ''; width: 7px; height: 7px;
+  background: var(--orange); flex-shrink: 0; transform: rotate(45deg);
+}
+
+/* ══════════════════════════════════════════
+   CARDS
+   ══════════════════════════════════════════ */
+.card {
+  background: var(--surface-3); border-left: 4px solid var(--orange);
+  padding: 26px 28px; margin: 14px 0;
+  transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, border-color .25s;
+  position: relative; z-index: 1;
+}
+.card:hover {
+  transform: translateX(5px);
+  box-shadow: -6px 6px 30px rgba(0,0,0,.4);
+  border-left-color: var(--orange-hot);
+}
+.card-badge {
+  font-family: 'DM Mono', monospace; font-size: .58rem;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--text-lo); margin-bottom: 5px;
+}
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 1.2rem;
+  text-transform: uppercase; letter-spacing: .04em;
+  color: var(--text-hi); margin-bottom: 2px;
+}
+.card-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; color: var(--orange); font-size: .88rem;
+  letter-spacing: .02em; margin-bottom: 8px;
+}
+.card p { font-size: .88rem; line-height: 1.7; color: var(--text); margin-bottom: 3px; }
+.card .lb { font-weight: 600; color: var(--text-hi); }
+
+/* ══════════════════════════════════════════
+   MENU GRID
+   ══════════════════════════════════════════ */
+.mg { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; margin: 16px 0; }
+.mi {
+  padding: 13px 0; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+}
+.mi-t { flex: 1; }
+.mi-n { font-weight: 600; font-size: .9rem; color: var(--text-hi); }
+.mi-d { font-size: .78rem; color: var(--text-lo); margin-top: 1px; }
+.mi-s {
+  font-family: 'Barlow Condensed', sans-serif;
+  color: var(--orange); font-weight: 700; font-size: .8rem; white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════
+   PLATED
+   ══════════════════════════════════════════ */
+.price-xl {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 3rem; color: var(--orange);
+  margin: 28px 0 4px; line-height: 1;
+}
+.price-xl span { font-size: 1.1rem; font-weight: 600; }
+.price-sub {
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  color: var(--text-lo); margin-bottom: 16px;
+}
+.pl-item { padding: 13px 0; border-bottom: 1px solid var(--border); font-size: .9rem; }
+.pl-n { font-weight: 600; color: var(--text-hi); }
+.pl-d { color: var(--text-lo); }
+.pl-s { color: var(--orange); font-weight: 600; font-size: .82rem; }
+
+/* ══════════════════════════════════════════
+   ADD-ON STAMPS
+   ══════════════════════════════════════════ */
+.addon {
+  background: var(--surface-3);
+  border: 2px dashed var(--orange);
+  padding: 22px 24px; margin: 14px 0;
+  position: relative; z-index: 1;
+  transition: border-color .2s;
+}
+.addon:hover { border-color: var(--orange-hot); }
+.addon-t {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: .98rem;
+  text-transform: uppercase; letter-spacing: .04em;
+  color: var(--text-hi); margin-bottom: 3px;
+}
+.addon-p {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; color: var(--orange); font-size: .86rem; margin-bottom: 4px;
+}
+.addon p { font-size: .85rem; color: var(--text-lo); line-height: 1.6; }
+
+.custom-note {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1.05rem; color: var(--text-lo);
+  margin-top: 32px; line-height: 1.7; text-align: center;
+  padding: 24px 0;
+  border-top: 1px solid var(--border-mid);
+  border-bottom: 1px solid var(--border-mid);
+}
+
+/* Suggested menus */
+.sg-card {
+  background: var(--surface-3); padding: 24px 26px; margin: 14px 0;
+  border-left: 4px solid var(--blue);
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.sg-card:hover {
+  transform: translateX(3px);
+  box-shadow: -3px 3px 20px rgba(0,0,0,.3);
+  border-left-color: var(--blue-light);
+}
+.sg-n {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 1.1rem;
+  text-transform: uppercase; letter-spacing: .04em; color: var(--text-hi);
+}
+.sg-p {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; color: var(--orange); font-size: .86rem; margin-bottom: 6px;
+}
+.sg-card p { font-size: .86rem; line-height: 1.65; color: var(--text); }
+.sg-card .lb { font-weight: 600; color: var(--text-hi); }
+
+/* ══════════════════════════════════════════
+   BLUE BAND
+   ══════════════════════════════════════════ */
+.band {
+  background: linear-gradient(180deg, #0C1420 0%, #0A1018 100%);
+  position: relative; overflow: hidden;
+  width: 100%;
+}
+.band::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(43,94,167,.04) 1px, transparent 1px);
+  background-size: 6px 6px; pointer-events: none;
+}
+/* Subtle blue edge glow */
+.band::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+}
+.band .sec { position: relative; z-index: 1; }
+.band .sec-kick { color: var(--orange-hot); }
+.band .sec-title { color: white; }
+.band .sec-rule { background: var(--orange); }
+.band .sec-rule::after { background: rgba(43,94,167,.15); }
+.band .body { color: rgba(255,255,255,.75); }
+.band .sub { color: white; border-bottom-color: var(--orange-hot); }
+.band .card { background: rgba(255,255,255,.04); border-left-color: var(--orange-hot); }
+.band .card:hover { background: rgba(255,255,255,.06); }
+.band .card-badge { color: rgba(255,255,255,.28); }
+.band .card-title { color: white; }
+.band .card p { color: rgba(255,255,255,.65); }
+.band .mi-n { color: white; }
+.band .mi-d { color: rgba(255,255,255,.4); }
+.band .mi { border-bottom-color: rgba(255,255,255,.06); }
+.band .tbl-note { color: rgba(255,255,255,.4); }
+.band .sg-card { background: rgba(255,255,255,.04); }
+.band .sg-card:hover { background: rgba(255,255,255,.06); }
+.band .addon { background: rgba(255,255,255,.03); border-color: var(--orange); }
+.band .custom-note { border-color: rgba(255,255,255,.08); }
+
+/* ══════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════ */
+.foot {
+  background: #060606; text-align: center;
+  padding: 60px clamp(20px, 4vw, 56px); position: relative;
+}
+.foot::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--orange));
+}
+.foot-art { width: 100px; margin: 0 auto 24px; opacity: .1; }
+.foot-art img { width: 100%; height: auto; }
+.foot-addr {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; font-size: .72rem;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: var(--text-lo); margin-bottom: 8px;
+}
+.foot a { color: var(--orange-hot); text-decoration: none; transition: color .2s; }
+.foot a:hover { color: var(--orange); }
+.foot .est {
+  font-family: 'DM Mono', monospace; font-size: .6rem;
+  color: var(--text-mute); margin-top: 18px; letter-spacing: .3em;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .mg, .pg { grid-template-columns: 1fr; }
+  .idx-in { grid-template-columns: repeat(4, 1fr); }
+  .idx-a:nth-child(4) { border-right: none; }
+  .nav-links a { padding: 18px 7px; font-size: .58rem; }
+  .nav-cta { display: none; }
+  .card { padding: 22px 20px; }
+  .art-center img { max-height: 160px; }
+  .hero-mascot { width: 150px; max-width: 20vw; bottom: 0; right: 2%; }
+  .hero { padding: 60px 24px 80px; }
+}
+@media (max-width: 480px) {
+  .hero-logo { width: 300px; }
+  .idx-in { grid-template-columns: repeat(4, 1fr); }
+  .idx-a { padding: 12px 4px; }
+  .idx-n { font-size: 1.1rem; }
+  .idx-l { font-size: .5rem; letter-spacing: .12em; }
+  .hero-mascot { display: none; }
+  .art-center img { max-height: 120px; }
+  .pq p { font-size: 1.1rem; }
+}
+@media print {
+  .nav, .idx, .hero-scroll, .hero-mascot { display: none; }
+  .hero { min-height: auto; padding: 36px 28px; }
+  .r { opacity: 1; transform: none; }
+  body::after { display: none; }
+  body, .bs, .hero { background: white; }
+  .band { background: #e8e8e8 !important; }
+  .sec-title, .card-title, .mi-n, .av-n, .space-n, .pl-n, .sg-n, .addon-t, .pg-item, .sub, .body, .body strong { color: #111 !important; }
+  .tbl tbody td, .card p, .sg-card p, .pq p, .mi-d, .tbl-note, .tbl-fine { color: #333 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ STICKY NAV ═══ -->
+<nav class="nav" role="navigation">
+  <div class="nav-in">
+    <a href="#top" class="nav-brand">PubKey <span>DC</span></a>
+    <div class="nav-links">
+      <a href="#story">Story</a>
+      <a href="#spaces">Spaces</a>
+      <a href="#production">Production</a>
+      <a href="#drinks">Drinks</a>
+      <a href="#appetizers">Appetizers</a>
+      <a href="#stations">Stations</a>
+      <a href="#plated">Plated</a>
+    </div>
+    <a href="mailto:events@pubkey.bar" class="nav-cta">Book Now</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero" id="top">
+  <div class="hero-logo">
+    <img src="art/pukey_art_-4-02white.png" alt="PubKey">
+  </div>
+  <div class="hero-rule"></div>
+  <h1>Private Events & Catering</h1>
+  <div class="hero-sub">All You Can Hold for 5* Sats</div>
+  <div class="hero-fine">*Actual number depends on the Bitcoin price. We checked.</div>
+  <div class="hero-contact">
+    <span>410 7th Street NW &middot; Washington, DC 20004</span>
+    <a href="mailto:events@pubkey.bar">events@pubkey.bar</a>
+  </div>
+  <div class="hero-mascot">
+    <img src="art/pubkey_shirt_02.png" alt="PubKey cat">
+  </div>
+  <div class="hero-scroll"><span></span></div>
+</header>
+
+<div class="bs">
+
+<!-- ═══ INDEX BAR ═══ -->
+<nav class="idx">
+  <div class="idx-in">
+    <a href="#story" class="idx-a"><div class="idx-n">01</div><div class="idx-l">Story</div></a>
+    <a href="#spaces" class="idx-a"><div class="idx-n">02</div><div class="idx-l">Spaces</div></a>
+    <a href="#production" class="idx-a"><div class="idx-n">03</div><div class="idx-l">Production</div></a>
+    <a href="#drinks" class="idx-a"><div class="idx-n">04</div><div class="idx-l">Drinks</div></a>
+    <a href="#appetizers" class="idx-a"><div class="idx-n">05</div><div class="idx-l">Apps</div></a>
+    <a href="#stations" class="idx-a"><div class="idx-n">06</div><div class="idx-l">Stations</div></a>
+    <a href="#plated" class="idx-a"><div class="idx-n">07</div><div class="idx-l">Plated</div></a>
+    <a href="mailto:events@pubkey.bar" class="idx-a"><div class="idx-n" style="color:var(--orange-hot)">&rarr;</div><div class="idx-l">Book</div></a>
+  </div>
+</nav>
+
+<!-- VENUE: Exterior sign -->
+<div class="venue-hero r">
+  <img src="venue/outside.jpg" alt="PubKey DC — exterior" loading="lazy">
+</div>
+
+<!-- ══════════════════════════════
+     01 — STORY
+     ══════════════════════════════ -->
+<section class="sec" id="story">
+  <div class="sec-head r">
+    <div class="sec-kick">01 &mdash; The Philosophy</div>
+    <h2 class="sec-title">Our Story</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <p class="body r r1">What PubKey puts on the table starts with a simple idea: the best food in the world is prepared to pair with drinks and best enjoyed among friends in those spaces between home and the street. Those places have many names. We call ours <strong>The Pub.</strong></p>
+  <p class="body r r2">Our kitchen runs on three words: <strong>familiarity, simplicity, quality.</strong> The food and the traditions that surround it are artifacts to be respected, not reinvented. When we do put our own spin on something, it's only to make the original stronger &mdash; never to throw it out of balance.</p>
+  <div class="pq r r3">
+    <p>For private events, the philosophy is the same &mdash; whether that's passed appetizers for a happy hour, a casual meal where guests eat until they're done, a seated dinner with courses, or a communal beefsteak thrown in the tradition of the old New York halls.</p>
+  </div>
+  <p class="body r r4">Every format is built so your guests eat, drink, talk, and stay.</p>
+  <p class="body r" style="font-family:'Playfair Display',serif;font-style:italic;color:var(--text-lo);margin-top:28px">Let's build something worth showing up for.<br>&mdash; The PubKey Team</p>
+</section>
+
+<!-- THE TRIPLE SET -->
+<div class="triple r">
+  <div class="triple-in">
+    <div class="triple-poster"><img src="art/pubkey_fake-ad_001.png" alt="PubKey — Orange Pill Drink" loading="lazy"></div>
+    <div class="triple-poster"><img src="art/pubkey_fake-ad_002.png" alt="PubKey — The Gang Opens a Bar" loading="lazy"></div>
+    <div class="triple-poster"><img src="art/pubkey_fake-ad_003.png" alt="PubKey — Free Dirty Dog" loading="lazy"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     02 — SPACES
+     ══════════════════════════════ -->
+<section class="sec" id="spaces">
+  <div class="sec-head r">
+    <div class="sec-kick">02 &mdash; Venue Layout</div>
+    <h2 class="sec-title">Spaces</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <p class="body r r1">PubKey DC has hosted <strong>500+ events</strong> &mdash; from intimate dinners to full-venue productions. The spaces below are designed to flex for any format.</p>
+
+  <!-- Venue gallery -->
+  <div class="venue-grid r r2" style="grid-template-columns:1fr 1fr">
+    <div class="venue-cell"><img src="venue/fulleventseated.png" alt="Seated event space" loading="lazy"><div class="venue-caption">Seated Event Space</div></div>
+    <div class="venue-cell"><img src="venue/fullevent.JPG" alt="Standing event space" loading="lazy"><div class="venue-caption">Standing Event Space</div></div>
+  </div>
+  <div class="venue-grid r r3" style="grid-template-columns:1fr 1fr">
+    <div class="venue-cell"><img src="venue/pub.jpeg" alt="The Pub" loading="lazy"><div class="venue-caption">The Pub</div></div>
+    <div class="venue-cell"><img src="venue/eventbar.jpg" alt="Event Bar" loading="lazy"><div class="venue-caption">Event Bar</div></div>
+  </div>
+  <div class="tbl-wrap r r2">
+  <table class="tbl">
+    <thead><tr><th>Tier</th><th>Space</th><th>Capacity</th><th>Min Hours</th><th>Min Spend</th><th>Per Person</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tier-n">1</span></td><td><span class="space-n">Ballroom (Partial)</span></td><td>Up to 40</td><td>2 hours</td><td>No minimum</td><td>&mdash;</td></tr>
+      <tr><td><span class="tier-n">2</span></td><td><span class="space-n">Ballroom (Full)</span></td><td>50 to 150</td><td>2 hours</td><td>$2,500</td><td>$25+/pp</td></tr>
+      <tr><td><span class="tier-n">3</span></td><td><span class="space-n">Ballroom + Bar</span></td><td>Up to 250</td><td>3 hours</td><td>$12,500</td><td>$50+/pp</td></tr>
+      <tr><td><span class="tier-n">4</span></td><td><span class="space-n">Full Venue</span></td><td>250+</td><td>4 hours</td><td>$25,000</td><td>$100+/pp</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="tbl-fine r r3">Per-person figures are floors, not caps. Events may exceed via bar revenue, catering, or AV add-ons. All pricing subject to applicable DC sales tax.</p>
+  <p class="tbl-note r r4"><strong style="color:var(--text-hi)">Tier 1</strong> &mdash; Bar tab only, no AV or catering. <strong style="color:var(--text-hi)">Tier 2</strong> &mdash; Bar + light AV, 1 manager. <strong style="color:var(--text-hi)">Tier 3</strong> &mdash; Full AV, catering, DJ, 2&ndash;3 managers. <strong style="color:var(--text-hi)">Tier 4</strong> &mdash; All spaces + full production.</p>
+</section>
+
+<div class="div"><div class="div-line"></div></div>
+
+<!-- ══════════════════════════════
+     03 — PRODUCTION
+     ══════════════════════════════ -->
+<section class="sec" id="production">
+  <div class="sec-head r">
+    <div class="sec-kick">03 &mdash; AV & Production</div>
+    <h2 class="sec-title">Production</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <h3 class="sub r">Production Assets</h3>
+  <p class="body r">Everything below is on-site and available for your event.</p>
+  <div class="pg r">
+    <div class="pg-item">10' &times; 5' LED Screen</div>
+    <div class="pg-item">4-Channel Mic System</div>
+    <div class="pg-item">Full PA + Mixing Board</div>
+    <div class="pg-item">Vinyl Decks + DJ Equipment</div>
+    <div class="pg-item">Podcast Recording Studio</div>
+    <div class="pg-item">PTZ Cameras for Live Streaming</div>
+  </div>
+  <h3 class="sub r">AV and Production Add-Ons</h3>
+  <p class="body r">All AV packages include a 3-hour block.</p>
+  <div class="tbl-wrap r">
+  <table class="tbl">
+    <thead><tr><th>Add-On</th><th>3-Hour Rate</th><th>Additional Hours</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="av-n">LED Screen (10' &times; 5')</span></td><td><span class="av-p">$500</span></td><td>$100/hour</td><td><span class="av-note">Custom content billed separately.</span></td></tr>
+      <tr><td><span class="av-n">Microphone Package (up to 4)</span></td><td><span class="av-p">$300</span></td><td>$75/hour</td><td><span class="av-note">Setup, sound check, operator included.</span></td></tr>
+      <tr><td><span class="av-n">DJ Equipment / Vinyl Decks</span></td><td><span class="av-p">$400</span></td><td>$100/hour</td><td><span class="av-note">Client provides DJ. We provide gear.</span></td></tr>
+      <tr><td><span class="av-n">Live Streaming (PTZ cameras)</span></td><td><span class="av-p">$750</span></td><td>$150/hour</td><td><span class="av-note">Camera operator + stream setup.</span></td></tr>
+      <tr><td><span class="av-n">Podcast Studio</span></td><td><span class="av-p">$350</span></td><td>$100/hour</td><td><span class="av-note">Post-production not included.</span></td></tr>
+      <tr><td><span class="av-n">Full Sound Board Operation</span></td><td><span class="av-p">$600</span></td><td>$125/hour</td><td><span class="av-note">Dedicated AV tech.</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div class="venue-hero r">
+  <img src="venue/beerflag.JPG" alt="Cheers" loading="lazy">
+</div>
+
+<!-- ══════════════════════════════
+     04 — DRINKS
+     ══════════════════════════════ -->
+<section class="sec" id="drinks">
+  <div class="sec-head r">
+    <div class="sec-kick">04 &mdash; Beverage Programs</div>
+    <h2 class="sec-title">Drinks</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <p class="body r r1">A bar and beverage package is required for the full length of the event. All packages include soft drinks, water, coffee, and tea. Pitcher beer service is included in all beefsteak pricing.</p>
+
+  <h3 class="sub r">Beer and Wine</h3>
+  <div class="card r">
+    <div class="card-badge">Beer &amp; Wine</div>
+    <div class="card-title">The Local</div>
+    <div class="card-price">$38/guest (2 hours) &nbsp;|&nbsp; $50/guest (3 hours)</div>
+    <p>Rotating draft selection (4 taps), house red and white wine.</p>
+  </div>
+
+  <h3 class="sub r">Full Bar</h3>
+  <div class="card r">
+    <div class="card-badge">Well Spirits</div>
+    <div class="card-title">The Regular</div>
+    <div class="card-price">$55/guest (2 hours) &nbsp;|&nbsp; $72/guest (3 hours)</div>
+    <p>Everything in The Local, plus well spirits, basic cocktails.</p>
+  </div>
+  <div class="card r">
+    <div class="card-badge">Top Shelf</div>
+    <div class="card-title">The Reserve</div>
+    <div class="card-price">$72/guest (2 hours) &nbsp;|&nbsp; $90/guest (3 hours)</div>
+    <p>Top-shelf spirits, craft cocktails, expanded wine list, full draft selection.</p>
+  </div>
+
+  <h3 class="sub r">Non-Alcoholic</h3>
+  <div class="card r">
+    <div class="card-badge">Zero Proof</div>
+    <div class="card-title">Soft Drinks and Coffee</div>
+    <div class="card-price">$8/guest</div>
+    <p>Included with food packages; standalone pricing shown.</p>
+  </div>
+  <div class="card r">
+    <div class="card-badge">Crafted N/A</div>
+    <div class="card-title">N/A Cocktail Package</div>
+    <div class="card-price">$24/guest (2 hours)</div>
+    <p>Crafted non-alcoholic cocktails.</p>
+  </div>
+</section>
+
+<!-- ART: Skeleton PubKey Bar -->
+<div class="art-wrap" style="background:var(--surface-1)">
+<div class="art-center r">
+  <img src="art/pukey_art_-09.png" alt="PubKey Bar" loading="lazy" style="filter:invert(1) drop-shadow(0 0 40px rgba(232,93,38,.1)); max-height:180px;">
+</div>
+</div>
+
+<div class="div div-orange"><div class="div-line"></div></div>
+
+<!-- ══════════════════════════════
+     05 — APPETIZERS
+     ══════════════════════════════ -->
+<section class="sec" id="appetizers">
+  <div class="sec-head r">
+    <div class="sec-kick">05 &mdash; Small Plates, Passed</div>
+    <h2 class="sec-title">Passed Appetizers</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <p class="body r r1">Minimum selection is 4 choices from the list below.</p>
+
+  <div class="card r r2">
+    <div class="card-badge">Opening Act</div>
+    <div class="card-title">Cocktail Hour &mdash; 1 Hour</div>
+    <div class="card-price">Choose 4 &mdash; $30/guest &nbsp;|&nbsp; Choose 6 &mdash; $44/guest</div>
+    <p>The opening act. Pair with a casual meal, plated dinner, or beefsteak. This is a light course &mdash; not enough to stand on its own. We recommend following it with a full meal.</p>
+  </div>
+  <div class="card r r3">
+    <div class="card-badge">Standalone Option</div>
+    <div class="card-title">Cocktail Reception &mdash; 2 Hours</div>
+    <div class="card-price">Choose 4 &mdash; $54/guest &nbsp;|&nbsp; Choose 6 &mdash; $78/guest</div>
+    <p>Suitable as a light meal on its own. This is our recommended minimum standalone food offering &mdash; enough to keep your guests comfortable for a full evening. If your group runs hungry, add a raw bar or upgrade to a casual meal.</p>
+  </div>
+
+  <h3 class="sub r">The Menu</h3>
+  <div class="mg r">
+    <div class="mi"><div class="mi-t"><div class="mi-n">Deviled Eggs</div><div class="mi-d">Pimento, dill, crispy bits</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Piggies</div><div class="mi-d">Vienna all-beef frank, puff pastry, mustard</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Caesar Boats</div><div class="mi-d">Seasoned crumb, parmesan</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Potato Empanadas</div><div class="mi-d">Garlic confit, crema</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Steak Tartare Bites</div><div class="mi-d">Waffle fry chip, chimichurri, quail egg</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Bacon Shrimp</div><div class="mi-d">Ol' Bay, tartare sauce, capers</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Mushroom Wontons</div><div class="mi-d">Caramelized onion, herb oil</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Tuna Tartare Cups</div><div class="mi-d">Ponzu, ginger, sesame, nori</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Duck Rillette Toast</div><div class="mi-d">Cornichon, mustard</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Crab Quesadilla Bites</div><div class="mi-d">Cotija, crema, cilantro</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Beet Skewers</div><div class="mi-d">Chimichurri, goat cheese</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Lamb Lollipops</div><div class="mi-d">Pomegranate, gremolata</div></div><span class="mi-s">+$4/guest</span></div>
+  </div>
+</section>
+
+<div class="div"><div class="div-line"></div></div>
+
+<!-- ══════════════════════════════
+     06 — STATIONS
+     ══════════════════════════════ -->
+<section class="sec" id="stations">
+  <div class="sec-head r">
+    <div class="sec-kick">06 &mdash; Casual Format</div>
+    <h2 class="sec-title">Stations</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <p class="body r r1">No courses, no formality. Food goes out on the table, people eat it, more comes. Guests eat until they're done. Minimum 25 guests.</p>
+  <p class="body r r2">Build your spread by choosing from the Sides and Smalls and Mains columns below. Or start with one of our suggested menus and swap from there.</p>
+
+  <div class="tbl-wrap r r3">
+  <table class="tbl">
+    <thead><tr><th>Package</th><th>Sides &amp; Smalls</th><th>Mains</th><th>Price</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pkg-n">3 + 2</span></td><td>Pick 3</td><td>Pick 2</td><td><span class="av-p">$38/guest</span></td></tr>
+      <tr><td><span class="pkg-n">4 + 3</span></td><td>Pick 4</td><td>Pick 3</td><td><span class="av-p">$48/guest</span></td></tr>
+      <tr><td><span class="pkg-n">5 + 4</span></td><td>Pick 5</td><td>Pick 4</td><td><span class="av-p">$58/guest</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub r">Suggested Menus</h3>
+  <div class="sg-card r">
+    <div class="sg-n">The PubKey Classic</div>
+    <div class="sg-p">$38/guest (3 + 2)</div>
+    <p><span class="lb">Sides &amp; Smalls:</span> Waffle Fries, Onion Rings, Pigs in Blankets</p>
+    <p><span class="lb">Mains:</span> Chicago Dogs (full dress), Wings (buffalo or dry BBQ)</p>
+  </div>
+  <div class="sg-card r">
+    <div class="sg-n">The District Dinner</div>
+    <div class="sg-p">$48/guest (4 + 3)</div>
+    <p><span class="lb">Sides &amp; Smalls:</span> Pub Board, Caesar Salad, Brussels with Bacon, Grilled Cheese Bites</p>
+    <p><span class="lb">Mains:</span> Mini Smashburgers, Wings, Chicken and Waffles</p>
+  </div>
+
+  <h3 class="sub r">Sides and Smalls</h3>
+  <div class="mg r">
+    <div class="mi"><div class="mi-t"><div class="mi-n">Waffle Fries</div><div class="mi-d">Well-dressed, pub sauce</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Onion Rings</div><div class="mi-d">Buttermilk battered, pub sauce</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Pub Rolls</div><div class="mi-d">Parker house, butter, pickles, green goop</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Jalapeno Poppers</div><div class="mi-d">Cream cheese, bacon, ranch</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Pigs in Blankets</div><div class="mi-d">Vienna all-beef, puff pastry, mustard selection</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Fried Mozz</div><div class="mi-d">Seasoned crumb, red sauce</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Grilled Cheese Bites</div><div class="mi-d">Fontina, caramelized onion, tomato soup shooters</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Nachos</div><div class="mi-d">Wagyu chili, crema, cilantro, pickled onion, jalapeno</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Caesar Salad</div><div class="mi-d">Seasoned crumb, parmesan</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Brussels with Bacon</div><div class="mi-d">Technically green</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Crudites and Dip</div><div class="mi-d">Seasonal vegetables, ranch, hummus</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Pub Board</div><div class="mi-d">Cured meats, aged cheddar, mustard, pickles, crackers</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Smorgasbord</div><div class="mi-d">Gravlax, pickled herring, rye, dill cream cheese, capers</div></div></div>
+  </div>
+
+  <h3 class="sub r">Mains</h3>
+  <div class="mg r">
+    <div class="mi"><div class="mi-t"><div class="mi-n">Wings</div><div class="mi-d">Buffalo or dry BBQ, celery, ranch or blue cheese</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Chicken Tenders</div><div class="mi-d">Honey mustard, 5 sauces</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Chicken and Waffles</div><div class="mi-d">Sweet chili brown butter</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Mini Smashburgers</div><div class="mi-d">American cheese, pub sauce, pickle</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Chicago Dogs</div><div class="mi-d">Vienna beef, the full dress</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Dirty Dogs</div><div class="mi-d">Half smoke, wagyu chili, slaw, habanero</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Fish and Chips</div><div class="mi-d">Beer-battered cod, chips, tartare, lemon</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Grilled Chicken</div><div class="mi-d">Half chicken, lemon pepper, more lemon</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Deep Fried Steak Frites (8oz)</div><div class="mi-d">Tallow fried, garlic butter</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Gochujang Fried Pork Belly</div><div class="mi-d">For when you mean it</div></div></div>
+  </div>
+
+  <h3 class="sub r">Add-Ons</h3>
+  <div class="addon r">
+    <div class="addon-t">Add Salad Course and Dessert</div>
+    <div class="addon-p">+$14/guest</div>
+    <p>Turns any station into a full buffet. Caesar or House salad, cookies and brownie bites or pancakes and maple ice cream.</p>
+  </div>
+  <div class="addon r">
+    <div class="addon-t">Raw Bar</div>
+    <div class="addon-p">+$18/guest</div>
+    <p>Chef's selection of oysters, jumbo shrimp, and snow crab claws. Served on ice.</p>
+  </div>
+  <div class="addon r">
+    <div class="addon-t">Seafood Towers</div>
+    <div class="addon-p">$100/tower</div>
+    <p>Dozen oysters, jumbo shrimp, snow crab claws. Serves 2 to 4.</p>
+  </div>
+  <div class="custom-note r">Not seeing what you're looking for? We build custom menus. Ask us.</div>
+</section>
+
+<div class="venue-hero r">
+  <img src="venue/tablesetting.png" alt="Table settings" loading="lazy">
+</div>
+
+<!-- ══════════════════════════════
+     07 — PLATED
+     ══════════════════════════════ -->
+<section class="sec" id="plated">
+  <div class="sec-head r">
+    <div class="sec-kick">07 &mdash; Sit-Down Service</div>
+    <h2 class="sec-title">Plated</h2>
+    <div class="sec-rule"></div>
+  </div>
+
+  <h3 class="sub r">Lunch</h3>
+  <p class="body r">Meat and two sides. Plated. Served to the table. Includes soft drinks, iced tea, coffee, and hot tea. Select two entrees for your guests to choose between. For groups larger than 50, individual selections must be provided one week in advance.</p>
+
+  <div class="price-xl r">$38<span>/guest</span></div>
+  <div class="price-sub r">Select two:</div>
+  <div class="r">
+    <div class="pl-item"><span class="pl-n">PubKey Smashburger</span> &mdash; <span class="pl-d">American cheese, pub sauce, pickles, fries</span></div>
+    <div class="pl-item"><span class="pl-n">Grilled Chicken</span> &mdash; <span class="pl-d">Half chicken, lemon pepper, rice and beans</span></div>
+    <div class="pl-item"><span class="pl-n">Fish and Chips</span> &mdash; <span class="pl-d">Beer-battered cod, chips, tartare</span></div>
+    <div class="pl-item"><span class="pl-n">Country Fried Steak</span> &mdash; <span class="pl-d">Sawmill gravy, whipped Yukons</span></div>
+    <div class="pl-item"><span class="pl-n">Cabbage Steak</span> &mdash; <span class="pl-d">Guanciale, gorgonzola, balsamic</span></div>
+    <div class="pl-item"><span class="pl-n">Steak and Ale Pie</span> &mdash; <span class="pl-d">Beef cheek, Guinness, house pastry, salad</span></div>
+  </div>
+
+  <div class="price-xl r" style="margin-top:44px">$48<span>/guest</span></div>
+  <div class="price-sub r">All options above, plus:</div>
+  <div class="r">
+    <div class="pl-item"><span class="pl-n">Steak Frites 12oz</span> &mdash; <span class="pl-d">Tallow-fried ribeye, garlic butter, fries</span></div>
+  </div>
+
+  <div class="addon r" style="margin-top:20px">
+    <div class="addon-t">Add Dessert</div>
+    <div class="addon-p">+$10/guest</div>
+    <p>Short Stack of Pancakes (maple ice cream) or Brownie Sundae (vanilla ice cream, hot fudge)</p>
+  </div>
+
+  <h3 class="sub r" style="margin-top:56px">Dinner</h3>
+  <p class="body r">Meat and three sides. Salad or soup to start, dessert to finish. Plated. Served to the table. Includes soft drinks, iced tea, coffee, and hot tea. Select two entrees for your guests to choose between.</p>
+  <p class="body r"><strong>First Course (select one):</strong> Caesar Salad &nbsp;|&nbsp; House Salad &nbsp;|&nbsp; Brussels with Bacon</p>
+
+  <div class="addon r">
+    <div class="addon-t">Optional Raw Bar Enhancement</div>
+    <div class="addon-p">+$18/guest</div>
+    <p>Oysters, shrimp, crab claws</p>
+  </div>
+
+  <div class="price-xl r">$58<span>/guest</span></div>
+  <div class="price-sub r">Select two:</div>
+  <div class="r">
+    <div class="pl-item"><span class="pl-n">Grilled Chicken</span> &mdash; <span class="pl-d">Half chicken, lemon pepper, whipped Yukons, broccolini</span></div>
+    <div class="pl-item"><span class="pl-n">Country Fried Steak</span> &mdash; <span class="pl-d">Sawmill gravy, whipped Yukons, green beans</span></div>
+    <div class="pl-item"><span class="pl-n">Fish and Chips</span> &mdash; <span class="pl-d">Beer-battered cod, chips, tartare, malt vinegar</span></div>
+    <div class="pl-item"><span class="pl-n">Cabbage Steak</span> &mdash; <span class="pl-d">Guanciale, gorgonzola, balsamic, roasted vegetables</span></div>
+    <div class="pl-item"><span class="pl-n">Steak and Ale Pie</span> &mdash; <span class="pl-d">Beef cheek, Guinness, house pastry, salad</span></div>
+  </div>
+
+  <h3 class="sub r" style="margin-top:36px">Add to Your Menu</h3>
+  <div class="r">
+    <div class="pl-item"><span class="pl-n">Crab Cake Plate</span> &mdash; <span class="pl-d">Two jumbo cakes, tartare, lemon, slaw</span> &nbsp; <span class="pl-s">+$14/guest</span></div>
+    <div class="pl-item"><span class="pl-n">Steak Frites 16oz</span> &mdash; <span class="pl-d">Tallow-fried petite tender, garlic butter, fries</span> &nbsp; <span class="pl-s">+$14/guest who chooses this</span></div>
+    <div class="pl-item"><span class="pl-n">Shareable 20oz Ribeye</span> &mdash; <span class="pl-d">Butter, salt, pepper</span> &nbsp; <span class="pl-s">+$75 per steak</span></div>
+  </div>
+
+  <p class="body r" style="margin-top:24px"><strong>Dessert (select one, included):</strong> Short Stack of Pancakes (maple ice cream) &nbsp;|&nbsp; Brownie Sundae (vanilla ice cream, hot fudge)</p>
+</section>
+
+<!-- ART: Line art cat — final moment before footer -->
+<div class="art-wrap" style="background:var(--surface-1)">
+<div class="art-center r">
+  <img src="art/pukey_art_-21.png" alt="PubKey cat" loading="lazy" style="filter:invert(1) opacity(.6); max-height:200px;">
+</div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="foot">
+  <div class="foot-art">
+    <img src="art/Untitled-1.png" alt="PubKey cat" loading="lazy">
+  </div>
+  <p class="foot-addr">PubKey DC &nbsp;&middot;&nbsp; 410 7th Street NW &nbsp;&middot;&nbsp; Washington, DC 20004</p>
+  <p class="foot-addr"><a href="mailto:events@pubkey.bar">EVENTS@PUBKEY.BAR</a></p>
+  <p class="est">est. 735075.</p>
+</footer>
+
+</div><!-- /bs -->
+
+<script>
+// Scroll reveals
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');ro.unobserve(e.target)}}),{threshold:.06,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.r').forEach(el=>ro.observe(el));
+
+// Sticky nav
+const nav=document.querySelector('.nav'),hero=document.querySelector('.hero');
+new IntersectionObserver(([e])=>nav.classList.toggle('v',!e.isIntersecting),{threshold:0,rootMargin:'-52px 0px 0px 0px'}).observe(hero);
+
+// Active link
+const secs=document.querySelectorAll('section[id]'),nls=document.querySelectorAll('.nav-links a');
+const mark=id=>nls.forEach(l=>l.classList.toggle('act',l.getAttribute('href')==='#'+id));
+secs.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)mark(e.target.id)}),{threshold:.1,rootMargin:'-64px 0px -50% 0px'}).observe(s));
+</script>
+</body>
+</html>
