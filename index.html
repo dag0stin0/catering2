@@ -32,7 +32,7 @@
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; -webkit-overflow-scrolling: touch; }
 :focus-visible { outline: 2px solid rgba(255,255,255,.4); outline-offset: 2px; }
 
 body {
@@ -40,7 +40,9 @@ body {
   color: var(--text);
   background: #080808;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 /* Grain */
@@ -234,6 +236,8 @@ body::after {
   text-decoration: none;
   border-right: 1px solid var(--border);
   transition: background .2s;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
 }
 .idx-a:last-child { border-right: none; }
 .idx-a:hover { background: rgba(255,255,255,.03); }
@@ -418,6 +422,8 @@ body::after {
   object-fit: contain;
   filter: brightness(.85) contrast(1.05);
   transition: transform 6s cubic-bezier(.22,1,.36,1);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .venue-hero:hover img { transform: scale(1.03); }
 .venue-hero::after {
@@ -443,6 +449,8 @@ body::after {
   width: 100%; height: 100%; object-fit: cover; display: block;
   filter: brightness(.88) contrast(1.05) saturate(.95);
   transition: filter .5s, transform 5s cubic-bezier(.22,1,.36,1);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .venue-cell:hover img {
   filter: brightness(.95) contrast(1.05) saturate(1);
@@ -458,13 +466,7 @@ body::after {
   color: rgba(255,255,255,.6);
   pointer-events: none;
 }
-@media (max-width: 600px) {
-  .venue-grid { grid-template-columns: 1fr; }
-  .venue-grid.two-col { grid-template-columns: 1fr; }
-  .venue-cell { aspect-ratio: 16/10; }
-  .venue-cell.tall { aspect-ratio: 16/10; }
-  .venue-hero img { width: 100%; }
-}
+/* Removed — consolidated into 480px breakpoint */
 
 /* Art center: when used inside a full-width bg wrapper, center the content */
 .art-wrap { width: 100%; }
@@ -764,31 +766,84 @@ body::after {
   .pg { grid-template-columns: 1fr; }
   .idx-in { grid-template-columns: repeat(4, 1fr); }
   .idx-a:nth-child(4) { border-right: none; }
-  .nav-links a { padding: 18px 7px; font-size: .58rem; }
+  .nav-links a { padding: 18px 7px; font-size: .58rem; letter-spacing: .12em; }
   .nav-cta { display: none; }
-  .card { padding: 22px 20px; }
+  .card { padding: 16px 0; margin: 0; }
+  .card-top { flex-direction: column; gap: 2px; }
   .art-center img { max-height: 160px; }
-  .hero-mascot { width: 150px; max-width: 20vw; bottom: 0; right: 2%; }
-  .hero { padding: 60px 24px 80px; }
-  .venue-grid { grid-template-columns: 1fr 1fr !important; }
+  .hero-mascot { width: 150px; max-width: 20vw; bottom: 60px; right: 2%; }
+  .hero { padding: 60px 24px 100px; }
+  .hero-contact {
+    position: absolute; bottom: 20px; right: auto; left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column; gap: 6px; align-items: center;
+    font-size: .78rem;
+  }
+  .venue-grid:not(.vg-full) { grid-template-columns: 1fr 1fr !important; }
+  .venue-grid.vg-full { grid-template-columns: 1fr !important; }
   .venue-cell { aspect-ratio: 4/3; }
-  .venue-hero img { max-height: 50vh; object-fit: cover; object-position: center; }
+  .venue-cell img { -webkit-transform: translateZ(0); }
+  .venue-hero img { max-height: 50vh; object-fit: cover; object-position: center; -webkit-transform: translateZ(0); }
   .sec { padding: 56px clamp(16px, 4vw, 56px); }
+  .sec-head::before { font-size: clamp(5rem, 12vw, 7rem); top: -20px; }
+  .tbl { min-width: 480px; }
+  .price-xl { font-size: 2.6rem; }
+  .addon { padding: 18px 16px; }
+  .sg-card { padding: 20px 18px; }
+  .custom-note { font-size: .95rem; padding: 20px 0; }
 }
 @media (max-width: 480px) {
-  .hero-logo { width: 300px; }
+  .hero-logo { width: 280px; }
+  .hero h1 { font-size: .8rem; letter-spacing: .3em; }
+  .hero-sub { font-size: 1rem; }
+  .hero-fine { font-size: .62rem; }
+  .hero-contact span, .hero-contact a { font-size: .72rem; }
   .idx-in { grid-template-columns: repeat(4, 1fr); }
   .idx-a { padding: 12px 4px; }
   .idx-n { font-size: 1.1rem; }
-  .idx-l { font-size: .5rem; letter-spacing: .12em; }
+  .idx-l { font-size: .48rem; letter-spacing: .1em; }
   .hero-mascot { display: none; }
+  .hero-contact { right: auto; left: 50%; transform: translateX(-50%); }
   .art-center img { max-height: 120px; }
   .pq p { font-size: 1.1rem; }
   .venue-hero img { max-height: 40vh; }
-  .sec { padding: 44px 16px; }
+  .venue-grid:not(.vg-full) { grid-template-columns: 1fr !important; }
+  .venue-cell { aspect-ratio: 16/9; }
+  .sec { padding: 40px 16px; }
   .sec-title { font-size: clamp(2rem, 8vw, 2.8rem); }
-  .price-xl { font-size: 2.4rem; }
-  .sub { font-size: 1.1rem; }
+  .sec-head { margin-bottom: 32px; }
+  .price-xl { font-size: 2.2rem; }
+  .sub { font-size: 1.05rem; margin-top: 40px; }
+  .body { font-size: .9rem; line-height: 1.75; }
+  .card-title { font-size: 1.25rem; }
+  .card-price { font-size: .95rem; }
+  .mi-n { font-size: .85rem; }
+  .mi-d { font-size: .74rem; }
+  .mg-scroll .mg { min-width: 500px; }
+  .tbl { font-size: .8rem; min-width: 420px; }
+  .tbl thead th { font-size: .52rem; padding: 10px 6px; }
+  .tbl tbody td { padding: 12px 6px; }
+  .tier-n { font-size: 1.2rem; }
+  .pg-item { font-size: .82rem; padding: 13px 0; }
+  .addon-t { font-size: .88rem; }
+  .addon-p { font-size: .8rem; }
+  .addon p { font-size: .78rem; }
+  .foot { padding: 44px 20px; }
+  .foot-addr { font-size: .62rem; letter-spacing: .18em; }
+}
+/* Touch devices — disable hover transforms that cause jank on iOS */
+@media (hover: none) {
+  .venue-cell:hover img { transform: none; }
+  .venue-hero:hover img { transform: none; }
+  .poster:hover img { transform: none; }
+  .triple-poster:hover img { transform: none; }
+  .art-center:hover img { transform: none; }
+  .venue-cell img, .venue-hero img, .poster img, .triple-poster img {
+    transition: filter .3s;
+  }
+  .nav-links { scroll-snap-type: x proximity; }
+  .idx-a { -webkit-tap-highlight-color: transparent; }
+  .nav-links a { -webkit-tap-highlight-color: transparent; }
 }
 @media print {
   .nav, .idx, .hero-scroll, .hero-mascot { display: none; }
@@ -849,8 +904,8 @@ body::after {
     <a href="#spaces" class="idx-a"><div class="idx-n">02</div><div class="idx-l">Spaces</div></a>
     <a href="#production" class="idx-a"><div class="idx-n">03</div><div class="idx-l">Production</div></a>
     <a href="#drinks" class="idx-a"><div class="idx-n">04</div><div class="idx-l">Drinks</div></a>
-    <a href="#appetizers" class="idx-a"><div class="idx-n">05</div><div class="idx-l">Apps</div></a>
-    <a href="#stations" class="idx-a"><div class="idx-n">06</div><div class="idx-l">Stations</div></a>
+    <a href="#stations" class="idx-a"><div class="idx-n">05</div><div class="idx-l">Stations</div></a>
+    <a href="#appetizers" class="idx-a"><div class="idx-n">06</div><div class="idx-l">Apps</div></a>
     <a href="#plated" class="idx-a"><div class="idx-n">07</div><div class="idx-l">Plated</div></a>
     <a href="mailto:events@pubkey.bar" class="idx-a"><div class="idx-n">&rarr;</div><div class="idx-l">Book</div></a>
   </div>
@@ -901,7 +956,7 @@ body::after {
     <h2 class="sec-title">Spaces</h2>
     <div class="sec-rule"></div>
   </div>
-  <p class="body r r1">PubKey DC has hosted <strong>500+ events</strong> &mdash; from intimate dinners to full-venue productions. The spaces below are designed to flex for any format.</p>
+  <p class="body r r1"><strong>500+ events</strong> hosted &mdash; intimate dinners to full-venue productions. Every space flexes to your format.</p>
 
   <!-- Venue gallery -->
   <div class="venue-grid r r2" style="grid-template-columns:1fr 1fr">
@@ -923,8 +978,8 @@ body::after {
     </tbody>
   </table>
   </div>
-  <p class="tbl-fine r r3">Per-person figures are floors, not caps. Events may exceed via bar revenue, catering, or AV add-ons. All pricing subject to applicable DC sales tax.</p>
-  <p class="tbl-note r r4"><strong style="color:var(--text-hi)">Tier 1</strong> &mdash; Bar tab only, no AV or catering. <strong style="color:var(--text-hi)">Tier 2</strong> &mdash; Bar + light AV, 1 manager. <strong style="color:var(--text-hi)">Tier 3</strong> &mdash; Full AV, catering, DJ, 2&ndash;3 managers. <strong style="color:var(--text-hi)">Tier 4</strong> &mdash; All spaces + full production.</p>
+  <p class="tbl-fine r r3">Per-person figures are floors, not caps. All pricing subject to DC sales tax.</p>
+  <p class="tbl-note r r4"><strong style="color:var(--text-hi)">T1</strong> Bar tab only &nbsp;&middot;&nbsp; <strong style="color:var(--text-hi)">T2</strong> Bar + light AV &nbsp;&middot;&nbsp; <strong style="color:var(--text-hi)">T3</strong> Full AV, catering, DJ &nbsp;&middot;&nbsp; <strong style="color:var(--text-hi)">T4</strong> All spaces, full production</p>
 </section>
 </div><!-- /sec-wrap -->
 
@@ -941,8 +996,8 @@ body::after {
     <div class="sec-rule"></div>
   </div>
 
-  <div class="venue-grid r" style="grid-template-columns:1fr; margin-bottom:36px">
-    <div class="venue-cell" style="aspect-ratio:21/10"><img src="venue/screen2.png" alt="LED screen setup" loading="lazy" style="object-fit:cover; object-position:center 30%"><div class="venue-caption">10' × 5' LED Screen</div></div>
+  <div class="venue-grid vg-full r" style="grid-template-columns:1fr; width:100%; margin-bottom:36px">
+    <div class="venue-cell" style="aspect-ratio:21/10; width:100%; min-width:0"><img src="venue/screen2.png" alt="LED screen setup" loading="lazy" style="object-fit:cover; object-position:center 30%"><div class="venue-caption">10' × 5' LED Screen</div></div>
   </div>
 
   <h3 class="sub r">Production Assets</h3>
@@ -988,7 +1043,7 @@ body::after {
     <div class="venue-cell"><img src="venue/beerflag.JPG" alt="Cheers with beers" loading="lazy"><div class="venue-caption">Cheers</div></div>
   </div>
 
-  <p class="body r r1">A bar and beverage package is required for the full length of the event. All packages include soft drinks, water, coffee, and tea. Pitcher beer service is included in all beefsteak pricing.</p>
+  <p class="body r r1">Bar package required for the full event. All packages include soft drinks, water, coffee, and tea.</p>
 
   <h3 class="sub r">Beer and Wine</h3>
   <div class="card r">
@@ -1026,64 +1081,21 @@ body::after {
 <div class="sec-divider"></div>
 
 <!-- ══════════════════════════════
-     05 — APPETIZERS
-     ══════════════════════════════ -->
-<div class="sec-wrap">
-<section class="sec" id="appetizers">
-  <div class="sec-head r" data-num="05">
-    <div class="sec-kick">05 &mdash; Small Plates, Passed</div>
-    <h2 class="sec-title">Passed Appetizers</h2>
-    <div class="sec-rule"></div>
-  </div>
-  <p class="body r r1">Minimum selection is 4 choices from the list below.</p>
-
-  <div class="card r r2">
-    <div class="card-badge">Opening Act</div>
-    <div class="card-top"><div class="card-title">Cocktail Hour &mdash; 1 Hour</div><div class="card-price">4 for $30/guest &nbsp;|&nbsp; 6 for $44/guest</div></div>
-    <p>Pair with a casual meal, plated dinner, or beefsteak. Light course &mdash; we recommend following with a full meal.</p>
-  </div>
-  <div class="card r r3">
-    <div class="card-badge">Standalone Option</div>
-    <div class="card-top"><div class="card-title">Cocktail Reception &mdash; 2 Hours</div><div class="card-price">4 for $54/guest &nbsp;|&nbsp; 6 for $78/guest</div></div>
-    <p>Enough to stand on its own for a full evening. If your group runs hungry, add a raw bar or upgrade to a casual meal.</p>
-  </div>
-
-  <h3 class="sub r">The Menu</h3>
-  <div class="mg-scroll r">
-  <div class="mg">
-    <div class="mi"><div class="mi-t"><div class="mi-n">Deviled Eggs</div><div class="mi-d">Pimento, dill, crispy bits</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Piggies</div><div class="mi-d">Vienna all-beef frank, puff pastry, mustard</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Caesar Boats</div><div class="mi-d">Seasoned crumb, parmesan</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Potato Empanadas</div><div class="mi-d">Garlic confit, crema</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Steak Tartare Bites</div><div class="mi-d">Waffle fry chip, chimichurri, quail egg</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Bacon Shrimp</div><div class="mi-d">Ol' Bay, tartare sauce, capers</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Mushroom Wontons</div><div class="mi-d">Caramelized onion, herb oil</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Tuna Tartare Cups</div><div class="mi-d">Ponzu, ginger, sesame, nori</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Duck Rillette Toast</div><div class="mi-d">Cornichon, mustard</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Crab Quesadilla Bites</div><div class="mi-d">Cotija, crema, cilantro</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Beet Skewers</div><div class="mi-d">Chimichurri, goat cheese</div></div></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Lamb Lollipops</div><div class="mi-d">Pomegranate, gremolata</div></div><span class="mi-s">+$4/guest</span></div>
-  </div>
-  </div>
-</section>
-</div><!-- /sec-wrap -->
-
-<!-- ══════════════════════════════
-     06 — STATIONS
+     05 — STATIONS
      ══════════════════════════════ -->
 <div class="sec-wrap sec-wrap--alt">
 <section class="sec" id="stations">
-  <div class="sec-head r" data-num="06">
-    <div class="sec-kick">06 &mdash; Casual Format</div>
+  <div class="sec-head r" data-num="05">
+    <div class="sec-kick">05 &mdash; Casual Format</div>
     <h2 class="sec-title">Stations</h2>
     <div class="sec-rule"></div>
   </div>
-  <p class="body r r1">No courses, no formality. Food goes out on the table, people eat it, more comes. Guests eat until they're done. Minimum 25 guests.</p>
-  <p class="body r r2">Build your spread by choosing from the Sides and Smalls and Mains columns below. Or start with one of our suggested menus and swap from there.</p>
+  <p class="body r r1">No courses, no formality. Food hits the table, people eat, more comes. Minimum 25 guests.</p>
+  <p class="body r r2">Pick from Sides &amp; Smalls and Mains below, or start with a suggested menu and swap from there.</p>
 
   <!-- Food gallery: service + kitchen + spread -->
-  <div class="venue-grid r r2" style="grid-template-columns:1fr; margin-bottom:16px">
-    <div class="venue-cell" style="aspect-ratio:16/8"><img src="food/ladyservice.png" alt="Table service" loading="lazy"><div class="venue-caption">Service</div></div>
+  <div class="venue-grid vg-full r r2" style="grid-template-columns:1fr; width:100%; margin-bottom:16px">
+    <div class="venue-cell" style="aspect-ratio:16/8; width:100%; min-width:0"><img src="food/ladyservice.png" alt="Table service" loading="lazy"><div class="venue-caption">Service</div></div>
   </div>
   <div class="venue-grid r r2" style="grid-template-columns:1fr 1fr; margin-bottom:36px">
     <div class="venue-cell"><img src="food/chefdog.png" alt="Chef plating a loaded dog" loading="lazy"><div class="venue-caption">From the Kitchen</div></div>
@@ -1154,19 +1166,62 @@ body::after {
   <div class="addon r">
     <div class="addon-t">Add Salad Course and Dessert</div>
     <div class="addon-p">+$14/guest</div>
-    <p>Turns any station into a full buffet. Caesar or House salad, cookies and brownie bites or pancakes and maple ice cream.</p>
+    <p>Caesar or House salad, cookies and brownie bites or pancakes with maple ice cream.</p>
   </div>
   <div class="addon r">
     <div class="addon-t">Raw Bar</div>
     <div class="addon-p">+$18/guest</div>
-    <p>Chef's selection of oysters, jumbo shrimp, and snow crab claws. Served on ice.</p>
+    <p>Oysters, jumbo shrimp, snow crab claws. On ice.</p>
   </div>
   <div class="addon r">
     <div class="addon-t">Seafood Towers</div>
     <div class="addon-p">$100/tower</div>
-    <p>Dozen oysters, jumbo shrimp, snow crab claws. Serves 2 to 4.</p>
+    <p>Dozen oysters, jumbo shrimp, snow crab. Serves 2&ndash;4.</p>
   </div>
   <div class="custom-note r">Not seeing what you're looking for? We build custom menus. Ask us.</div>
+</section>
+</div><!-- /sec-wrap -->
+
+<!-- ══════════════════════════════
+     06 — APPETIZERS
+     ══════════════════════════════ -->
+<div class="sec-wrap">
+<section class="sec" id="appetizers">
+  <div class="sec-head r" data-num="06">
+    <div class="sec-kick">06 &mdash; Small Plates, Passed</div>
+    <h2 class="sec-title">Passed Appetizers</h2>
+    <div class="sec-rule"></div>
+  </div>
+  <p class="body r r1">Minimum selection is 4 choices from the list below.</p>
+
+  <div class="card r r2">
+    <div class="card-badge">Opening Act</div>
+    <div class="card-top"><div class="card-title">Cocktail Hour &mdash; 1 Hour</div><div class="card-price">4 for $30/guest &nbsp;|&nbsp; 6 for $44/guest</div></div>
+    <p>Light course &mdash; pair with a meal, plated dinner, or beefsteak.</p>
+  </div>
+  <div class="card r r3">
+    <div class="card-badge">Standalone Option</div>
+    <div class="card-top"><div class="card-title">Cocktail Reception &mdash; 2 Hours</div><div class="card-price">4 for $54/guest &nbsp;|&nbsp; 6 for $78/guest</div></div>
+    <p>Stands on its own for a full evening. Add a raw bar if your group runs hungry.</p>
+  </div>
+
+  <h3 class="sub r">The Menu</h3>
+  <div class="mg-scroll r">
+  <div class="mg">
+    <div class="mi"><div class="mi-t"><div class="mi-n">Deviled Eggs</div><div class="mi-d">Pimento, dill, crispy bits</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Piggies</div><div class="mi-d">Vienna all-beef frank, puff pastry, mustard</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Caesar Boats</div><div class="mi-d">Seasoned crumb, parmesan</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Potato Empanadas</div><div class="mi-d">Garlic confit, crema</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Steak Tartare Bites</div><div class="mi-d">Waffle fry chip, chimichurri, quail egg</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Bacon Shrimp</div><div class="mi-d">Ol' Bay, tartare sauce, capers</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Mushroom Wontons</div><div class="mi-d">Caramelized onion, herb oil</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Tuna Tartare Cups</div><div class="mi-d">Ponzu, ginger, sesame, nori</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Duck Rillette Toast</div><div class="mi-d">Cornichon, mustard</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Crab Quesadilla Bites</div><div class="mi-d">Cotija, crema, cilantro</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Beet Skewers</div><div class="mi-d">Chimichurri, goat cheese</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Lamb Lollipops</div><div class="mi-d">Pomegranate, gremolata</div></div><span class="mi-s">+$4/guest</span></div>
+  </div>
+  </div>
 </section>
 </div><!-- /sec-wrap -->
 
@@ -1181,12 +1236,12 @@ body::after {
     <div class="sec-rule"></div>
   </div>
 
-  <div class="venue-grid r" style="grid-template-columns:1fr; margin-bottom:36px">
+  <div class="venue-grid vg-full r" style="grid-template-columns:1fr; margin-bottom:36px">
     <div class="venue-cell" style="aspect-ratio:21/9"><img src="venue/tablesetting.png" alt="Table setting" loading="lazy"><div class="venue-caption">Plated Service</div></div>
   </div>
 
   <h3 class="sub r">Lunch</h3>
-  <p class="body r">Meat and two sides. Plated. Served to the table. Includes soft drinks, iced tea, coffee, and hot tea. Select two entrees for your guests to choose between. For groups larger than 50, individual selections must be provided one week in advance.</p>
+  <p class="body r">Meat and two sides, plated and served. Soft drinks, tea, and coffee included. Select two entrees &mdash; groups over 50, send selections one week ahead.</p>
 
   <div class="price-xl r">$38<span>/guest</span></div>
   <div class="price-sub r">Select two:</div>
@@ -1216,7 +1271,7 @@ body::after {
   </div>
 
   <h3 class="sub r" style="margin-top:56px">Dinner</h3>
-  <p class="body r">Meat and three sides. Salad or soup to start, dessert to finish. Plated. Served to the table. Includes soft drinks, iced tea, coffee, and hot tea. Select two entrees for your guests to choose between.</p>
+  <p class="body r">Three courses, plated and served. Salad or soup to start, dessert to finish. Select two entrees.</p>
   <p class="body r"><strong>First Course (select one):</strong> Caesar Salad &nbsp;|&nbsp; House Salad &nbsp;|&nbsp; Brussels with Bacon</p>
 
   <div class="addon r">
