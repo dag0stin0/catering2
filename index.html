@@ -598,6 +598,14 @@ body::after {
    MENU GRID
    ══════════════════════════════════════════ */
 .mg { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; margin: 16px 0; }
+.mg-scroll {
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; margin: 16px 0;
+}
+.mg-scroll::-webkit-scrollbar { display: none; }
+.mg-scroll .mg {
+  min-width: 600px; margin: 0;
+}
 .mi {
   padding: 13px 0; border-bottom: 1px solid var(--border);
   display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
@@ -753,7 +761,7 @@ body::after {
    RESPONSIVE
    ══════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .mg, .pg { grid-template-columns: 1fr; }
+  .pg { grid-template-columns: 1fr; }
   .idx-in { grid-template-columns: repeat(4, 1fr); }
   .idx-a:nth-child(4) { border-right: none; }
   .nav-links a { padding: 18px 7px; font-size: .58rem; }
@@ -1042,7 +1050,8 @@ body::after {
   </div>
 
   <h3 class="sub r">The Menu</h3>
-  <div class="mg r">
+  <div class="mg-scroll r">
+  <div class="mg">
     <div class="mi"><div class="mi-t"><div class="mi-n">Deviled Eggs</div><div class="mi-d">Pimento, dill, crispy bits</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Piggies</div><div class="mi-d">Vienna all-beef frank, puff pastry, mustard</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Caesar Boats</div><div class="mi-d">Seasoned crumb, parmesan</div></div></div>
@@ -1055,6 +1064,7 @@ body::after {
     <div class="mi"><div class="mi-t"><div class="mi-n">Crab Quesadilla Bites</div><div class="mi-d">Cotija, crema, cilantro</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Beet Skewers</div><div class="mi-d">Chimichurri, goat cheese</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Lamb Lollipops</div><div class="mi-d">Pomegranate, gremolata</div></div><span class="mi-s">+$4/guest</span></div>
+  </div>
   </div>
 </section>
 </div><!-- /sec-wrap -->
@@ -1104,7 +1114,8 @@ body::after {
   </div>
 
   <h3 class="sub r">Sides and Smalls</h3>
-  <div class="mg r">
+  <div class="mg-scroll r">
+  <div class="mg">
     <div class="mi"><div class="mi-t"><div class="mi-n">Waffle Fries</div><div class="mi-d">Well-dressed, pub sauce</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Onion Rings</div><div class="mi-d">Buttermilk battered, pub sauce</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Pub Rolls</div><div class="mi-d">Parker house, butter, pickles, green goop</div></div></div>
@@ -1119,9 +1130,11 @@ body::after {
     <div class="mi"><div class="mi-t"><div class="mi-n">Pub Board</div><div class="mi-d">Cured meats, aged cheddar, mustard, pickles, crackers</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Smorgasbord</div><div class="mi-d">Gravlax, pickled herring, rye, dill cream cheese, capers</div></div></div>
   </div>
+  </div>
 
   <h3 class="sub r">Mains</h3>
-  <div class="mg r">
+  <div class="mg-scroll r">
+  <div class="mg">
     <div class="mi"><div class="mi-t"><div class="mi-n">Wings</div><div class="mi-d">Buffalo or dry BBQ, celery, ranch or blue cheese</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Chicken Tenders</div><div class="mi-d">Honey mustard, 5 sauces</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Chicken and Waffles</div><div class="mi-d">Sweet chili brown butter</div></div></div>
@@ -1132,6 +1145,7 @@ body::after {
     <div class="mi"><div class="mi-t"><div class="mi-n">Grilled Chicken</div><div class="mi-d">Half chicken, lemon pepper, more lemon</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Deep Fried Steak Frites (8oz)</div><div class="mi-d">Tallow fried, garlic butter</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Gochujang Fried Pork Belly</div><div class="mi-d">For when you mean it</div></div></div>
+  </div>
   </div>
 
   <h3 class="sub r">Add-Ons</h3>
