@@ -183,9 +183,11 @@ body::after {
   opacity: 0; animation: fadeUp .5s .85s ease forwards;
 }
 .hero-contact {
-  margin-top: 32px;
+  position: absolute; bottom: 24px; right: 4%;
   display: flex; gap: 28px; flex-wrap: wrap; justify-content: center;
   opacity: 0; animation: fadeUp .5s 1s ease forwards;
+  white-space: nowrap;
+  z-index: 5;
 }
 .hero-contact span, .hero-contact a {
   font-size: .85rem; color: var(--text-lo); text-decoration: none;
@@ -194,7 +196,7 @@ body::after {
 
 /* Mascot floating */
 .hero-mascot {
-  position: absolute; bottom: -6px; right: 4%;
+  position: absolute; bottom: 80px; right: 4%;
   width: 220px; max-width: 24vw; z-index: 3;
   opacity: 0; animation: mascotIn .8s 1.1s cubic-bezier(.22,1,.36,1) forwards;
   filter: drop-shadow(0 4px 20px rgba(0,0,0,.5));
@@ -940,7 +942,7 @@ body::after {
   </div>
 
   <div class="venue-grid r" style="grid-template-columns:1fr; margin-bottom:36px">
-    <div class="venue-cell" style="aspect-ratio:21/9"><img src="venue/screen2.png" alt="LED screen setup" loading="lazy" style="object-fit:cover; object-position:center top"><div class="venue-caption">10' × 5' LED Screen</div></div>
+    <div class="venue-cell" style="aspect-ratio:21/10"><img src="venue/screen2.png" alt="LED screen setup" loading="lazy" style="object-fit:cover; object-position:center 30%"><div class="venue-caption">10' × 5' LED Screen</div></div>
   </div>
 
   <h3 class="sub r">Production Assets</h3>
