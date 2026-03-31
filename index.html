@@ -348,9 +348,20 @@ body::after {
   transform: scale(1.04);
 }
 @media (max-width: 600px) {
-  .triple-in { grid-template-columns: 1fr; }
-  .triple-poster { border-right: none; border-bottom: 1px solid rgba(0,0,0,.6); }
-  .triple-poster:last-child { border-bottom: none; }
+  .triple-in {
+    grid-template-columns: 1fr 1fr 1fr;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .triple-in::-webkit-scrollbar { display: none; }
+  .triple-poster {
+    min-width: 55vw; scroll-snap-align: start;
+    border-right: 2px solid rgba(0,0,0,.6);
+    border-bottom: none;
+    max-height: 65vh;
+  }
+  .triple-poster:last-child { border-right: none; }
 }
 
 /* ══════════════════════════════════════════
@@ -711,6 +722,10 @@ body::after {
   .art-center img { max-height: 160px; }
   .hero-mascot { width: 150px; max-width: 20vw; bottom: 0; right: 2%; }
   .hero { padding: 60px 24px 80px; }
+  .venue-grid { grid-template-columns: 1fr 1fr !important; }
+  .venue-cell { aspect-ratio: 4/3; }
+  .venue-hero img { max-height: 50vh; object-fit: cover; object-position: center; }
+  .sec { padding: 56px clamp(16px, 4vw, 56px); }
 }
 @media (max-width: 480px) {
   .hero-logo { width: 300px; }
@@ -721,6 +736,11 @@ body::after {
   .hero-mascot { display: none; }
   .art-center img { max-height: 120px; }
   .pq p { font-size: 1.1rem; }
+  .venue-hero img { max-height: 40vh; }
+  .sec { padding: 44px 16px; }
+  .sec-title { font-size: clamp(2rem, 8vw, 2.8rem); }
+  .price-xl { font-size: 2.4rem; }
+  .sub { font-size: 1.1rem; }
 }
 @media print {
   .nav, .idx, .hero-scroll, .hero-mascot { display: none; }
@@ -894,7 +914,7 @@ body::after {
 </section>
 
 <div class="venue-hero r">
-  <img src="venue/beerflag.JPG" alt="Cheers" loading="lazy">
+  <img src="food/cocktail.png" alt="Cocktail at PubKey" loading="lazy">
 </div>
 
 <!-- ══════════════════════════════
@@ -945,15 +965,6 @@ body::after {
   </div>
 </section>
 
-<!-- ART: Skeleton PubKey Bar -->
-<div class="art-wrap" style="background:var(--surface-1)">
-<div class="art-center r">
-  <img src="art/pukey_art_-09.png" alt="PubKey Bar" loading="lazy" style="filter:invert(1) drop-shadow(0 0 40px rgba(232,93,38,.1)); max-height:180px;">
-</div>
-</div>
-
-<div class="div div-orange"><div class="div-line"></div></div>
-
 <!-- ══════════════════════════════
      05 — APPETIZERS
      ══════════════════════════════ -->
@@ -995,8 +1006,6 @@ body::after {
   </div>
 </section>
 
-<div class="div"><div class="div-line"></div></div>
-
 <!-- ══════════════════════════════
      06 — STATIONS
      ══════════════════════════════ -->
@@ -1008,6 +1017,12 @@ body::after {
   </div>
   <p class="body r r1">No courses, no formality. Food goes out on the table, people eat it, more comes. Guests eat until they're done. Minimum 25 guests.</p>
   <p class="body r r2">Build your spread by choosing from the Sides and Smalls and Mains columns below. Or start with one of our suggested menus and swap from there.</p>
+
+  <!-- Food gallery: kitchen action + pub grub spread -->
+  <div class="venue-grid r r2" style="grid-template-columns:1fr 1fr; margin-bottom:36px">
+    <div class="venue-cell"><img src="food/chefdog.png" alt="Chef plating a loaded dog" loading="lazy"><div class="venue-caption">From the Kitchen</div></div>
+    <div class="venue-cell"><img src="food/platter2.png" alt="Wings, tenders, nachos, beers" loading="lazy"><div class="venue-caption">The Spread</div></div>
+  </div>
 
   <div class="tbl-wrap r r3">
   <table class="tbl">
@@ -1084,8 +1099,9 @@ body::after {
   <div class="custom-note r">Not seeing what you're looking for? We build custom menus. Ask us.</div>
 </section>
 
+<!-- FOOD: Three plates — dogs, burger, beautiful lighting -->
 <div class="venue-hero r">
-  <img src="venue/tablesetting.png" alt="Table settings" loading="lazy">
+  <img src="food/dogsburghat.png" alt="PubKey plated — dogs and smashburger" loading="lazy">
 </div>
 
 <!-- ══════════════════════════════
