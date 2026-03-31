@@ -306,7 +306,7 @@ body::after {
 }
 
 /* Alt section overrides — cards and addons on lighter bg */
-.sec-wrap--alt .card { background: var(--surface-4); }
+.sec-wrap--alt .card { border-bottom-color: rgba(255,255,255,.08); }
 .sec-wrap--alt .sg-card { background: var(--surface-4); }
 .sec-wrap--alt .addon { background: var(--surface-4); }
 .sec-wrap--alt .tbl tbody tr:hover { background: rgba(255,255,255,.04); }
@@ -565,33 +565,32 @@ body::after {
    CARDS
    ══════════════════════════════════════════ */
 .card {
-  background: var(--surface-3); border-left: 3px solid var(--orange);
-  padding: 26px 28px; margin: 14px 0;
-  transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, border-color .25s;
+  padding: 20px 0; margin: 0;
+  border-bottom: 1px solid var(--border);
   position: relative; z-index: 1;
 }
-.card:hover {
-  transform: translateX(5px);
-  box-shadow: -6px 6px 30px rgba(0,0,0,.4);
-  border-left-color: var(--orange-hot);
+.card:last-child { border-bottom: none; }
+.card-top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 16px; flex-wrap: wrap;
 }
 .card-badge {
-  font-family: 'DM Mono', monospace; font-size: .58rem;
+  font-family: 'DM Mono', monospace; font-size: .55rem;
   letter-spacing: .15em; text-transform: uppercase;
-  color: var(--text-lo); margin-bottom: 5px;
+  color: var(--text-lo); margin-bottom: 4px;
 }
 .card-title {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900; font-size: 1.2rem;
+  font-weight: 900; font-size: 1.5rem;
   text-transform: uppercase; letter-spacing: .04em;
-  color: var(--text-hi); margin-bottom: 2px;
+  color: var(--text-hi);
 }
 .card-price {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700; color: var(--orange); font-size: .88rem;
-  letter-spacing: .02em; margin-bottom: 8px;
+  font-weight: 700; color: var(--orange); font-size: 1.1rem;
+  letter-spacing: .02em; white-space: nowrap;
 }
-.card p { font-size: .88rem; line-height: 1.7; color: var(--text); margin-bottom: 3px; }
+.card p { font-size: .85rem; line-height: 1.7; color: var(--text-lo); margin-top: 4px; }
 .card .lb { font-weight: 600; color: var(--text-hi); }
 
 /* ══════════════════════════════════════════
@@ -716,11 +715,10 @@ body::after {
 .band .sec-rule::after { background: rgba(43,94,167,.15); }
 .band .body { color: rgba(255,255,255,.75); }
 .band .sub { color: white; border-bottom-color: rgba(255,255,255,.15); }
-.band .card { background: rgba(255,255,255,.04); border-left-color: rgba(255,255,255,.12); }
-.band .card:hover { background: rgba(255,255,255,.06); }
+.band .card { border-bottom-color: rgba(255,255,255,.06); }
 .band .card-badge { color: rgba(255,255,255,.28); }
 .band .card-title { color: white; }
-.band .card p { color: rgba(255,255,255,.65); }
+.band .card p { color: rgba(255,255,255,.5); }
 .band .mi-n { color: white; }
 .band .mi-d { color: rgba(255,255,255,.4); }
 .band .mi { border-bottom-color: rgba(255,255,255,.06); }
@@ -968,10 +966,6 @@ body::after {
 </section>
 </div><!-- /sec-wrap -->
 
-<div class="venue-hero r">
-  <img src="food/cocktail.png" alt="Cocktail at PubKey" loading="lazy">
-</div>
-
 <!-- ══════════════════════════════
      04 — DRINKS
      ══════════════════════════════ -->
@@ -982,41 +976,40 @@ body::after {
     <h2 class="sec-title">Drinks</h2>
     <div class="sec-rule"></div>
   </div>
+  <div class="venue-grid r" style="grid-template-columns:1fr; margin-bottom:36px">
+    <div class="venue-cell" style="aspect-ratio:16/8"><img src="food/cocktail.png" alt="Cocktail at PubKey" loading="lazy" style="object-fit:cover; object-position:center 45%"><div class="venue-caption">The Bar</div></div>
+  </div>
+
   <p class="body r r1">A bar and beverage package is required for the full length of the event. All packages include soft drinks, water, coffee, and tea. Pitcher beer service is included in all beefsteak pricing.</p>
 
   <h3 class="sub r">Beer and Wine</h3>
   <div class="card r">
     <div class="card-badge">Beer &amp; Wine</div>
-    <div class="card-title">The Local</div>
-    <div class="card-price">$38/guest (2 hours) &nbsp;|&nbsp; $50/guest (3 hours)</div>
+    <div class="card-top"><div class="card-title">The Local</div><div class="card-price">$38/guest (2 hrs) &nbsp;|&nbsp; $50/guest (3 hrs)</div></div>
     <p>Rotating draft selection (4 taps), house red and white wine.</p>
   </div>
 
   <h3 class="sub r">Full Bar</h3>
   <div class="card r">
     <div class="card-badge">Well Spirits</div>
-    <div class="card-title">The Regular</div>
-    <div class="card-price">$55/guest (2 hours) &nbsp;|&nbsp; $72/guest (3 hours)</div>
+    <div class="card-top"><div class="card-title">The Regular</div><div class="card-price">$55/guest (2 hrs) &nbsp;|&nbsp; $72/guest (3 hrs)</div></div>
     <p>Everything in The Local, plus well spirits, basic cocktails.</p>
   </div>
   <div class="card r">
     <div class="card-badge">Top Shelf</div>
-    <div class="card-title">The Reserve</div>
-    <div class="card-price">$72/guest (2 hours) &nbsp;|&nbsp; $90/guest (3 hours)</div>
+    <div class="card-top"><div class="card-title">The Reserve</div><div class="card-price">$72/guest (2 hrs) &nbsp;|&nbsp; $90/guest (3 hrs)</div></div>
     <p>Top-shelf spirits, craft cocktails, expanded wine list, full draft selection.</p>
   </div>
 
   <h3 class="sub r">Non-Alcoholic</h3>
   <div class="card r">
     <div class="card-badge">Zero Proof</div>
-    <div class="card-title">Soft Drinks and Coffee</div>
-    <div class="card-price">$8/guest</div>
+    <div class="card-top"><div class="card-title">Soft Drinks and Coffee</div><div class="card-price">$8/guest</div></div>
     <p>Included with food packages; standalone pricing shown.</p>
   </div>
   <div class="card r">
     <div class="card-badge">Crafted N/A</div>
-    <div class="card-title">N/A Cocktail Package</div>
-    <div class="card-price">$24/guest (2 hours)</div>
+    <div class="card-top"><div class="card-title">N/A Cocktail Package</div><div class="card-price">$24/guest (2 hrs)</div></div>
     <p>Crafted non-alcoholic cocktails.</p>
   </div>
 </section>
@@ -1038,15 +1031,13 @@ body::after {
 
   <div class="card r r2">
     <div class="card-badge">Opening Act</div>
-    <div class="card-title">Cocktail Hour &mdash; 1 Hour</div>
-    <div class="card-price">Choose 4 &mdash; $30/guest &nbsp;|&nbsp; Choose 6 &mdash; $44/guest</div>
-    <p>The opening act. Pair with a casual meal, plated dinner, or beefsteak. This is a light course &mdash; not enough to stand on its own. We recommend following it with a full meal.</p>
+    <div class="card-top"><div class="card-title">Cocktail Hour &mdash; 1 Hour</div><div class="card-price">4 for $30/guest &nbsp;|&nbsp; 6 for $44/guest</div></div>
+    <p>Pair with a casual meal, plated dinner, or beefsteak. Light course &mdash; we recommend following with a full meal.</p>
   </div>
   <div class="card r r3">
     <div class="card-badge">Standalone Option</div>
-    <div class="card-title">Cocktail Reception &mdash; 2 Hours</div>
-    <div class="card-price">Choose 4 &mdash; $54/guest &nbsp;|&nbsp; Choose 6 &mdash; $78/guest</div>
-    <p>Suitable as a light meal on its own. This is our recommended minimum standalone food offering &mdash; enough to keep your guests comfortable for a full evening. If your group runs hungry, add a raw bar or upgrade to a casual meal.</p>
+    <div class="card-top"><div class="card-title">Cocktail Reception &mdash; 2 Hours</div><div class="card-price">4 for $54/guest &nbsp;|&nbsp; 6 for $78/guest</div></div>
+    <p>Enough to stand on its own for a full evening. If your group runs hungry, add a raw bar or upgrade to a casual meal.</p>
   </div>
 
   <h3 class="sub r">The Menu</h3>
@@ -1177,6 +1168,10 @@ body::after {
     <div class="sec-kick">07 &mdash; Sit-Down Service</div>
     <h2 class="sec-title">Plated</h2>
     <div class="sec-rule"></div>
+  </div>
+
+  <div class="venue-grid r" style="grid-template-columns:1fr; margin-bottom:36px">
+    <div class="venue-cell" style="aspect-ratio:21/9"><img src="venue/tablesetting.png" alt="Table setting" loading="lazy"><div class="venue-caption">Plated Service</div></div>
   </div>
 
   <h3 class="sub r">Lunch</h3>
