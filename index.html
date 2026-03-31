@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PubKey DC — Private events, catering, and venue hire in Washington, DC. Full bar, plated dinners, stations, AV production.">
+<meta name="theme-color" content="#080808">
 <title>PubKey DC — Private Events & Catering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +33,7 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+:focus-visible { outline: 2px solid rgba(255,255,255,.4); outline-offset: 2px; }
 
 body {
   font-family: 'DM Sans', sans-serif;
@@ -54,6 +57,11 @@ body::after {
 .r { opacity: 0; transform: translateY(20px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
 .r.v { opacity: 1; transform: translateY(0); }
 .r1 { transition-delay: .05s } .r2 { transition-delay: .1s } .r3 { transition-delay: .15s } .r4 { transition-delay: .2s }
+@media (prefers-reduced-motion: reduce) {
+  .r { opacity: 1; transform: none; transition: none; }
+  .r1, .r2, .r3, .r4 { transition-delay: 0s; }
+  .hero-logo, .hero-rule, .hero h1, .hero-sub, .hero-fine, .hero-contact, .hero-mascot, .hero-scroll { opacity: 1; animation: none; }
+}
 
 /* ══════════════════════════════════════════
    BROADSHEET
@@ -67,7 +75,7 @@ body::after {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   background: rgba(8,8,8,.92);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border-bottom: 2px solid var(--orange);
+  border-bottom: 1px solid rgba(255,255,255,.08);
   transform: translateY(-100%);
   transition: transform .4s cubic-bezier(.22,1,.36,1);
 }
@@ -94,7 +102,7 @@ body::after {
   padding: 18px 10px; white-space: nowrap;
   transition: color .2s;
 }
-.nav-links a:hover, .nav-links a.act { color: var(--orange-hot); }
+.nav-links a:hover, .nav-links a.act { color: white; }
 .nav-cta {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700; font-size: .65rem;
@@ -141,8 +149,8 @@ body::after {
 .hero-logo img { width: 100%; height: auto; display: block; }
 
 .hero-rule {
-  width: 80px; height: 3px;
-  background: var(--orange);
+  width: 60px; height: 1px;
+  background: rgba(255,255,255,.2);
   margin: 0 auto 24px;
   opacity: 0;
   animation: fadeIn .6s .6s ease forwards;
@@ -205,7 +213,7 @@ body::after {
 }
 .hero-scroll span {
   display: block; width: 1px; height: 36px;
-  background: linear-gradient(to bottom, var(--orange), transparent);
+  background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent);
   margin: 0 auto;
   animation: pulse 2.5s ease-in-out infinite;
 }
@@ -226,7 +234,7 @@ body::after {
   transition: background .2s;
 }
 .idx-a:last-child { border-right: none; }
-.idx-a:hover { background: var(--orange-glow); }
+.idx-a:hover { background: rgba(255,255,255,.03); }
 .idx-n {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900; font-size: 1.4rem;
@@ -248,7 +256,31 @@ body::after {
   position: relative;
 }
 
-.sec-head { margin-bottom: 36px; position: relative; z-index: 1; }
+/* Section wrapper — alternating backgrounds */
+.sec-wrap {
+  width: 100%; position: relative;
+}
+.sec-wrap--alt {
+  background: var(--surface-1);
+}
+.sec-wrap--alt::before,
+.sec-wrap--alt::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 1px;
+  background: var(--border-mid);
+}
+.sec-wrap--alt::before { top: 0; }
+.sec-wrap--alt::after { bottom: 0; }
+
+/* Section number — big background watermark */
+.sec-head { margin-bottom: 44px; position: relative; z-index: 1; }
+.sec-head::before {
+  content: attr(data-num);
+  position: absolute; top: -28px; right: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: clamp(6rem, 14vw, 10rem);
+  color: rgba(232,93,38,.06);
+  line-height: 1; pointer-events: none; z-index: -1;
+}
 .sec-kick {
   font-family: 'DM Mono', monospace;
   font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
@@ -261,22 +293,30 @@ body::after {
   color: var(--text-hi); line-height: .88;
 }
 .sec-rule {
-  width: 100%; height: 3px;
-  background: var(--orange); margin-top: 12px;
+  width: 60px; height: 2px;
+  background: var(--orange); margin-top: 14px;
   position: relative;
 }
-.sec-rule::after {
-  content: ''; position: absolute;
-  top: 5px; left: 0; width: 100%; height: 1px;
-  background: var(--border);
+
+/* Clean accent stripe between sections */
+.sec-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+  position: relative;
 }
+
+/* Alt section overrides — cards and addons on lighter bg */
+.sec-wrap--alt .card { background: var(--surface-4); }
+.sec-wrap--alt .sg-card { background: var(--surface-4); }
+.sec-wrap--alt .addon { background: var(--surface-4); }
+.sec-wrap--alt .tbl tbody tr:hover { background: rgba(255,255,255,.04); }
 
 .body { font-size: .98rem; line-height: 1.88; color: var(--text); margin-bottom: 16px; max-width: 640px; position: relative; z-index: 1; }
 .body strong { color: var(--text-hi); }
 
 /* Pull quote */
 .pq {
-  border-left: 4px solid var(--orange);
+  border-left: 3px solid rgba(255,255,255,.15);
   padding: 20px 0 20px 28px; margin: 36px 0;
 }
 .pq p {
@@ -294,7 +334,7 @@ body::after {
   font-weight: 800; font-size: 1.25rem;
   text-transform: uppercase; letter-spacing: .06em;
   color: var(--text-hi); margin-top: 52px; padding-bottom: 8px;
-  border-bottom: 3px solid var(--orange); margin-bottom: 16px;
+  border-bottom: 2px solid rgba(255,255,255,.12); margin-bottom: 16px;
 }
 
 /* ══════════════════════════════════════════
@@ -323,8 +363,8 @@ body::after {
    ══════════════════════════════════════════ */
 .triple {
   width: 100%; background: var(--surface-1);
-  border-top: 3px solid var(--orange);
-  border-bottom: 3px solid var(--orange);
+  border-top: 1px solid var(--border-mid);
+  border-bottom: 1px solid var(--border-mid);
   overflow: hidden;
 }
 .triple-in {
@@ -450,8 +490,8 @@ body::after {
 /* Fake ad as full-width interstitial */
 .ad-break {
   position: relative; overflow: hidden;
-  border-top: 3px solid var(--orange);
-  border-bottom: 3px solid var(--orange);
+  border-top: 1px solid var(--border-mid);
+  border-bottom: 1px solid var(--border-mid);
   background: var(--surface-1);
   display: flex; justify-content: center;
 }
@@ -466,7 +506,7 @@ body::after {
 /* Divider */
 .div { max-width: 1080px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
 .div-line { height: 1px; background: var(--border-mid); }
-.div-orange .div-line { height: 3px; background: var(--orange); }
+.div-orange .div-line { height: 1px; background: rgba(255,255,255,.15); }
 
 /* ══════════════════════════════════════════
    TABLES
@@ -479,11 +519,11 @@ body::after {
   text-transform: uppercase; letter-spacing: .22em;
   color: var(--text-lo); text-align: left;
   padding: 12px 10px;
-  border-bottom: 3px solid var(--orange);
+  border-bottom: 2px solid rgba(255,255,255,.15);
 }
 .tbl tbody td { padding: 15px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .tbl tbody tr { transition: background .2s; }
-.tbl tbody tr:hover { background: var(--orange-glow); }
+.tbl tbody tr:hover { background: rgba(255,255,255,.03); }
 .tier-n {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900; font-size: 1.5rem; color: var(--orange); line-height: 1;
@@ -502,7 +542,7 @@ body::after {
 .av-note { font-size: .8rem; color: var(--text-lo); font-style: italic; }
 .pkg-n {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900; font-size: 1.1rem; color: var(--orange);
+  font-weight: 900; font-size: 1.1rem; color: var(--text-hi);
 }
 
 /* ══════════════════════════════════════════
@@ -515,17 +555,17 @@ body::after {
   display: flex; align-items: center; gap: 12px;
   transition: transform .15s, color .15s;
 }
-.pg-item:hover { transform: translateX(4px); color: var(--orange-hot); }
+.pg-item:hover { transform: translateX(4px); color: white; }
 .pg-item::before {
-  content: ''; width: 7px; height: 7px;
-  background: var(--orange); flex-shrink: 0; transform: rotate(45deg);
+  content: ''; width: 5px; height: 5px;
+  background: rgba(255,255,255,.35); flex-shrink: 0; border-radius: 50%;
 }
 
 /* ══════════════════════════════════════════
    CARDS
    ══════════════════════════════════════════ */
 .card {
-  background: var(--surface-3); border-left: 4px solid var(--orange);
+  background: var(--surface-3); border-left: 3px solid var(--orange);
   padding: 26px 28px; margin: 14px 0;
   transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, border-color .25s;
   position: relative; z-index: 1;
@@ -593,12 +633,12 @@ body::after {
    ══════════════════════════════════════════ */
 .addon {
   background: var(--surface-3);
-  border: 2px dashed var(--orange);
+  border: 1px dashed rgba(255,255,255,.12);
   padding: 22px 24px; margin: 14px 0;
   position: relative; z-index: 1;
   transition: border-color .2s;
 }
-.addon:hover { border-color: var(--orange-hot); }
+.addon:hover { border-color: rgba(255,255,255,.25); }
 .addon-t {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 800; font-size: .98rem;
@@ -664,11 +704,11 @@ body::after {
 .band .sec { position: relative; z-index: 1; }
 .band .sec-kick { color: var(--orange-hot); }
 .band .sec-title { color: white; }
-.band .sec-rule { background: var(--orange); }
+.band .sec-rule { background: var(--orange-hot); }
 .band .sec-rule::after { background: rgba(43,94,167,.15); }
 .band .body { color: rgba(255,255,255,.75); }
-.band .sub { color: white; border-bottom-color: var(--orange-hot); }
-.band .card { background: rgba(255,255,255,.04); border-left-color: var(--orange-hot); }
+.band .sub { color: white; border-bottom-color: rgba(255,255,255,.15); }
+.band .card { background: rgba(255,255,255,.04); border-left-color: rgba(255,255,255,.12); }
 .band .card:hover { background: rgba(255,255,255,.06); }
 .band .card-badge { color: rgba(255,255,255,.28); }
 .band .card-title { color: white; }
@@ -679,7 +719,7 @@ body::after {
 .band .tbl-note { color: rgba(255,255,255,.4); }
 .band .sg-card { background: rgba(255,255,255,.04); }
 .band .sg-card:hover { background: rgba(255,255,255,.06); }
-.band .addon { background: rgba(255,255,255,.03); border-color: var(--orange); }
+.band .addon { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.1); }
 .band .custom-note { border-color: rgba(255,255,255,.08); }
 
 /* ══════════════════════════════════════════
@@ -692,7 +732,7 @@ body::after {
 .foot::before {
   content: ''; position: absolute;
   top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--blue), var(--orange));
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
 }
 .foot-art { width: 100px; margin: 0 auto 24px; opacity: .1; }
 .foot-art img { width: 100%; height: auto; }
@@ -804,7 +844,7 @@ body::after {
     <a href="#appetizers" class="idx-a"><div class="idx-n">05</div><div class="idx-l">Apps</div></a>
     <a href="#stations" class="idx-a"><div class="idx-n">06</div><div class="idx-l">Stations</div></a>
     <a href="#plated" class="idx-a"><div class="idx-n">07</div><div class="idx-l">Plated</div></a>
-    <a href="mailto:events@pubkey.bar" class="idx-a"><div class="idx-n" style="color:var(--orange-hot)">&rarr;</div><div class="idx-l">Book</div></a>
+    <a href="mailto:events@pubkey.bar" class="idx-a"><div class="idx-n">&rarr;</div><div class="idx-l">Book</div></a>
   </div>
 </nav>
 
@@ -816,20 +856,23 @@ body::after {
 <!-- ══════════════════════════════
      01 — STORY
      ══════════════════════════════ -->
+<div class="sec-wrap">
 <section class="sec" id="story">
-  <div class="sec-head r">
+  <div class="sec-head r" data-num="01">
     <div class="sec-kick">01 &mdash; The Philosophy</div>
     <h2 class="sec-title">Our Story</h2>
     <div class="sec-rule"></div>
   </div>
-  <p class="body r r1">What PubKey puts on the table starts with a simple idea: the best food in the world is prepared to pair with drinks and best enjoyed among friends in those spaces between home and the street. Those places have many names. We call ours <strong>The Pub.</strong></p>
-  <p class="body r r2">Our kitchen runs on three words: <strong>familiarity, simplicity, quality.</strong> The food and the traditions that surround it are artifacts to be respected, not reinvented. When we do put our own spin on something, it's only to make the original stronger &mdash; never to throw it out of balance.</p>
-  <div class="pq r r3">
-    <p>For private events, the philosophy is the same &mdash; whether that's passed appetizers for a happy hour, a casual meal where guests eat until they're done, a seated dinner with courses, or a communal beefsteak thrown in the tradition of the old New York halls.</p>
+  <p class="body r r1">The best food is made to pair with drinks and share with friends in the spaces between home and the street. We call ours <strong>The Pub.</strong></p>
+  <p class="body r r2">Our kitchen runs on three words: <strong>familiarity, simplicity, quality.</strong> We respect the traditions &mdash; and when we put our own spin on something, it's only to make the original stronger.</p>
+  <p class="body r r3">For private events, the philosophy holds &mdash; passed apps for a happy hour, a casual meal that keeps coming, a seated dinner with courses, or a communal beefsteak in the old New York tradition. Every format is built so your guests eat, drink, talk, and stay.</p>
+
+  <div class="r r4" style="margin-top:48px; padding:32px 0; border-top:1px solid var(--border-mid); border-bottom:1px solid var(--border-mid); text-align:center;">
+    <p style="font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.4rem,3.5vw,2rem); color:var(--text-hi); line-height:1.4; letter-spacing:.01em;">Let's build something worth showing up for.</p>
+    <p style="font-family:'DM Mono',monospace; font-size:.7rem; color:var(--text-lo); margin-top:10px; letter-spacing:.2em; text-transform:uppercase;">&mdash; The PubKey Team</p>
   </div>
-  <p class="body r r4">Every format is built so your guests eat, drink, talk, and stay.</p>
-  <p class="body r" style="font-family:'Playfair Display',serif;font-style:italic;color:var(--text-lo);margin-top:28px">Let's build something worth showing up for.<br>&mdash; The PubKey Team</p>
 </section>
+</div><!-- /sec-wrap -->
 
 <!-- THE TRIPLE SET -->
 <div class="triple r">
@@ -843,8 +886,9 @@ body::after {
 <!-- ══════════════════════════════
      02 — SPACES
      ══════════════════════════════ -->
+<div class="sec-wrap sec-wrap--alt">
 <section class="sec" id="spaces">
-  <div class="sec-head r">
+  <div class="sec-head r" data-num="02">
     <div class="sec-kick">02 &mdash; Venue Layout</div>
     <h2 class="sec-title">Spaces</h2>
     <div class="sec-rule"></div>
@@ -874,14 +918,16 @@ body::after {
   <p class="tbl-fine r r3">Per-person figures are floors, not caps. Events may exceed via bar revenue, catering, or AV add-ons. All pricing subject to applicable DC sales tax.</p>
   <p class="tbl-note r r4"><strong style="color:var(--text-hi)">Tier 1</strong> &mdash; Bar tab only, no AV or catering. <strong style="color:var(--text-hi)">Tier 2</strong> &mdash; Bar + light AV, 1 manager. <strong style="color:var(--text-hi)">Tier 3</strong> &mdash; Full AV, catering, DJ, 2&ndash;3 managers. <strong style="color:var(--text-hi)">Tier 4</strong> &mdash; All spaces + full production.</p>
 </section>
+</div><!-- /sec-wrap -->
 
-<div class="div"><div class="div-line"></div></div>
+<div class="sec-divider"></div>
 
 <!-- ══════════════════════════════
      03 — PRODUCTION
      ══════════════════════════════ -->
+<div class="sec-wrap">
 <section class="sec" id="production">
-  <div class="sec-head r">
+  <div class="sec-head r" data-num="03">
     <div class="sec-kick">03 &mdash; AV & Production</div>
     <h2 class="sec-title">Production</h2>
     <div class="sec-rule"></div>
@@ -912,6 +958,7 @@ body::after {
   </table>
   </div>
 </section>
+</div><!-- /sec-wrap -->
 
 <div class="venue-hero r">
   <img src="food/cocktail.png" alt="Cocktail at PubKey" loading="lazy">
@@ -920,8 +967,9 @@ body::after {
 <!-- ══════════════════════════════
      04 — DRINKS
      ══════════════════════════════ -->
+<div class="sec-wrap sec-wrap--alt">
 <section class="sec" id="drinks">
-  <div class="sec-head r">
+  <div class="sec-head r" data-num="04">
     <div class="sec-kick">04 &mdash; Beverage Programs</div>
     <h2 class="sec-title">Drinks</h2>
     <div class="sec-rule"></div>
@@ -964,12 +1012,16 @@ body::after {
     <p>Crafted non-alcoholic cocktails.</p>
   </div>
 </section>
+</div><!-- /sec-wrap -->
+
+<div class="sec-divider"></div>
 
 <!-- ══════════════════════════════
      05 — APPETIZERS
      ══════════════════════════════ -->
+<div class="sec-wrap">
 <section class="sec" id="appetizers">
-  <div class="sec-head r">
+  <div class="sec-head r" data-num="05">
     <div class="sec-kick">05 &mdash; Small Plates, Passed</div>
     <h2 class="sec-title">Passed Appetizers</h2>
     <div class="sec-rule"></div>
@@ -1005,12 +1057,14 @@ body::after {
     <div class="mi"><div class="mi-t"><div class="mi-n">Lamb Lollipops</div><div class="mi-d">Pomegranate, gremolata</div></div><span class="mi-s">+$4/guest</span></div>
   </div>
 </section>
+</div><!-- /sec-wrap -->
 
 <!-- ══════════════════════════════
      06 — STATIONS
      ══════════════════════════════ -->
+<div class="sec-wrap sec-wrap--alt">
 <section class="sec" id="stations">
-  <div class="sec-head r">
+  <div class="sec-head r" data-num="06">
     <div class="sec-kick">06 &mdash; Casual Format</div>
     <h2 class="sec-title">Stations</h2>
     <div class="sec-rule"></div>
@@ -1098,17 +1152,14 @@ body::after {
   </div>
   <div class="custom-note r">Not seeing what you're looking for? We build custom menus. Ask us.</div>
 </section>
-
-<!-- FOOD: Three plates — dogs, burger, beautiful lighting -->
-<div class="venue-hero r">
-  <img src="food/dogsburghat.png" alt="PubKey plated — dogs and smashburger" loading="lazy">
-</div>
+</div><!-- /sec-wrap -->
 
 <!-- ══════════════════════════════
      07 — PLATED
      ══════════════════════════════ -->
+<div class="sec-wrap">
 <section class="sec" id="plated">
-  <div class="sec-head r">
+  <div class="sec-head r" data-num="07">
     <div class="sec-kick">07 &mdash; Sit-Down Service</div>
     <h2 class="sec-title">Plated</h2>
     <div class="sec-rule"></div>
@@ -1169,6 +1220,7 @@ body::after {
 
   <p class="body r" style="margin-top:24px"><strong>Dessert (select one, included):</strong> Short Stack of Pancakes (maple ice cream) &nbsp;|&nbsp; Brownie Sundae (vanilla ice cream, hot fudge)</p>
 </section>
+</div><!-- /sec-wrap -->
 
 <!-- ART: Line art cat — final moment before footer -->
 <div class="art-wrap" style="background:var(--surface-1)">
