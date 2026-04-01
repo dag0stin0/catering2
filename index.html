@@ -105,6 +105,8 @@ body::after {
   transition: color .2s;
 }
 .nav-links a:hover, .nav-links a.act { color: white; }
+.nav-sep { color: rgba(255,255,255,.15); font-size: .55rem; padding: 0 2px; align-self: center; }
+.nav-links a.nav-sub { font-size: .55rem; font-weight: 500; letter-spacing: .14em; padding-left: 4px; padding-right: 4px; }
 .nav-cta {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700; font-size: .65rem;
@@ -296,7 +298,7 @@ body::after {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900; font-size: clamp(2.6rem, 6vw, 4rem);
   text-transform: uppercase; letter-spacing: .03em;
-  color: var(--text-hi); line-height: .88;
+  color: var(--orange); line-height: .88;
 }
 .sec-rule {
   width: 60px; height: 2px;
@@ -325,29 +327,29 @@ body::after {
 }
 .food-chapter-label {
   font-family: 'DM Mono', monospace; font-size: .72rem;
-  letter-spacing: .18em; color: var(--orange-hot);
+  letter-spacing: .18em; color: rgba(255,255,255,.5);
   text-transform: uppercase;
 }
 .food-chapter-title {
   font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.4rem, 6vw, 4rem);
   font-weight: 900; letter-spacing: -.02em;
-  color: var(--orange); line-height: 1;
+  color: var(--text-hi); line-height: 1;
 }
 .food-chapter-sub {
   font-family: 'DM Mono', monospace; font-size: .68rem;
-  letter-spacing: .14em; color: var(--text-lo);
+  letter-spacing: .14em; color: rgba(255,255,255,.5);
   text-transform: uppercase; margin-left: auto;
   align-self: center;
 }
 .food-chapter-sub a {
-  color: var(--orange); text-decoration: none;
-  border-bottom: 1px solid rgba(255,165,0,.35);
+  color: var(--text-hi); text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.25);
   padding-bottom: 1px;
   transition: color .2s, border-color .2s;
 }
 .food-chapter-sub a:hover {
-  color: var(--orange-hot);
-  border-bottom-color: var(--orange-hot);
+  color: white;
+  border-bottom-color: rgba(255,255,255,.5);
 }
 
 /* Alt section overrides — cards and addons on lighter bg */
@@ -397,7 +399,7 @@ body::after {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900; font-size: clamp(1.8rem, 4vw, 2.4rem);
   text-transform: uppercase; letter-spacing: .04em;
-  color: var(--text-hi); line-height: 1; margin: 0;
+  color: var(--orange); line-height: 1; margin: 0;
 }
 
 /* ══════════════════════════════════════════
@@ -1162,6 +1164,12 @@ body::after {
       <a href="#production">Production</a>
       <a href="#drinks">Drinks</a>
       <a href="#food">Food</a>
+      <span class="nav-sep">/</span>
+      <a href="#stations" class="nav-sub">Stations</a>
+      <span class="nav-sep">/</span>
+      <a href="#appetizers" class="nav-sub">Passed</a>
+      <span class="nav-sep">/</span>
+      <a href="#plated" class="nav-sub">Plated</a>
     </div>
     <a href="mailto:events@pubkey.bar" class="nav-cta">Book Now</a>
   </div>
@@ -1246,7 +1254,7 @@ body::after {
     <h2 class="sec-title">Spaces</h2>
     <div class="sec-rule"></div>
   </div>
-  <p class="body r r1"><strong>500+ events</strong> hosted &mdash; intimate dinners to full-venue productions. Every space flexes to your format.</p>
+  <p class="body r r1"><strong>500+ events</strong> hosted &mdash; intimate dinners to full-venue productions.<br>Every space flexes to your format.</p>
 
   <!-- Venue gallery -->
   <div class="venue-grid r r2" style="grid-template-columns:1fr 1fr">
@@ -1633,7 +1641,7 @@ body::after {
   </div>
   </div>
 
-  <div class="addon-grid r" style="grid-template-columns:1fr 1fr 1fr; margin-top:20px">
+  <div class="addon-grid r" style="grid-template-columns:repeat(2,1fr); margin-top:20px">
     <div class="addon">
       <div class="addon-t">Add Dessert</div>
       <div class="addon-p">+$10 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ guest</span></div>
@@ -1648,13 +1656,20 @@ body::after {
   <p class="body r">Three courses, plated and served. Salad or soup to start, dessert to finish. Select two entrees.</p>
 
   <div class="tier-grid r" style="grid-template-columns:1fr">
-    <div class="tier-card" style="max-width:480px; border-color:var(--orange)">
-      <div class="tier-label">Plated Dinner &middot; 3 Courses</div>
-      <div class="tier-name">$58 / guest</div>
-      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>First Course (select one):</strong> Caesar Salad, House Salad, or Brussels with Bacon</div>
-      <div class="tier-inc"><strong>Entree:</strong> Select two from the menu below</div>
-      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Dessert (included):</strong> Short Stack of Pancakes (maple ice cream) or Brownie Sundae (vanilla ice cream, hot fudge)</div>
+    <div class="tier-card tier-card--featured" style="max-width:480px">
+      <div class="tier-label">Plated Dinner</div>
+      <div class="tier-name">3 Courses</div>
+      <div class="tier-price">$58 <span>/ guest</span></div>
+      <div class="tier-inc">Select two entrees from the menu below. Includes appetizer, entree, dessert, soft drinks, tea &amp; coffee</div>
     </div>
+  </div>
+  <h3 class="sub r">Apps (Select One)</h3>
+  <div class="mg-scroll r">
+  <div class="mg">
+    <div class="mi"><div class="mi-t"><div class="mi-n">Caesar Salad</div><div class="mi-d">Seasoned crumb, parmesan</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">House Salad</div><div class="mi-d">Mixed greens, seasonal vegetables</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Brussels with Bacon</div><div class="mi-d">Technically green</div></div></div>
+  </div>
   </div>
 
   <h3 class="sub r">Select Two Entrees</h3>
@@ -1665,6 +1680,14 @@ body::after {
     <div class="mi"><div class="mi-t"><div class="mi-n">Fish and Chips</div><div class="mi-d">Beer-battered cod, chips, tartare, malt vinegar</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Cabbage Steak</div><div class="mi-d">Guanciale, gorgonzola, balsamic, roasted vegetables</div></div></div>
     <div class="mi"><div class="mi-t"><div class="mi-n">Steak and Ale Pie</div><div class="mi-d">Beef cheek, Guinness, house pastry, salad</div></div></div>
+  </div>
+  </div>
+
+  <h3 class="sub r">Dessert</h3>
+  <div class="mg-scroll r">
+  <div class="mg">
+    <div class="mi"><div class="mi-t"><div class="mi-n">Short Stack of Pancakes</div><div class="mi-d">Maple ice cream</div></div></div>
+    <div class="mi"><div class="mi-t"><div class="mi-n">Brownie Sundae</div><div class="mi-d">Vanilla ice cream, hot fudge</div></div></div>
   </div>
   </div>
 
