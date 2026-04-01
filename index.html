@@ -314,7 +314,7 @@ body::after {
 /* Food chapter break */
 .food-chapter {
   width: 100%;
-  background: var(--ink);
+  background: var(--surface);
   border-top: 1px solid rgba(255,255,255,.1);
   border-bottom: 1px solid rgba(255,255,255,.1);
 }
@@ -324,23 +324,23 @@ body::after {
   display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap;
 }
 .food-chapter-label {
-  font-family: var(--font-mono); font-size: .72rem;
+  font-family: 'DM Mono', monospace; font-size: .72rem;
   letter-spacing: .18em; color: var(--orange-hot);
   text-transform: uppercase;
 }
 .food-chapter-title {
-  font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, 4rem);
+  font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.4rem, 6vw, 4rem);
   font-weight: 900; letter-spacing: -.02em;
   color: var(--text-hi); line-height: 1;
 }
 .food-chapter-sub {
-  font-family: var(--font-mono); font-size: .68rem;
-  letter-spacing: .14em; color: var(--text-mid);
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  letter-spacing: .14em; color: var(--text-lo);
   text-transform: uppercase; margin-left: auto;
   align-self: center;
 }
 .food-chapter-sub a {
-  color: var(--text-mid); text-decoration: none;
+  color: var(--text-lo); text-decoration: none;
   border-bottom: 1px solid rgba(255,255,255,.2);
   padding-bottom: 1px;
   transition: color .2s, border-color .2s;
@@ -352,11 +352,11 @@ body::after {
 
 /* Alt section overrides — cards and addons on lighter bg */
 .sec-wrap--alt .card { border-bottom-color: rgba(255,255,255,.08); }
-.sec-wrap--alt .sg-card { background: var(--surface-4); }
-.sec-wrap--alt .addon { background: var(--surface-4); }
+.sec-wrap--alt .sg-card { background: var(--surface-3); }
+.sec-wrap--alt .addon { background: var(--surface-3); }
 .sec-wrap--alt .tbl tbody tr:hover { background: rgba(255,255,255,.04); }
 
-.body { font-size: .98rem; line-height: 1.88; color: var(--text); margin-bottom: 16px; max-width: 640px; position: relative; z-index: 1; }
+.body { font-family: 'Playfair Display', serif; font-size: .95rem; line-height: 1.95; color: var(--text); margin-bottom: 16px; max-width: 640px; position: relative; z-index: 1; letter-spacing: .01em; }
 .body strong { color: var(--text-hi); }
 
 /* Pull quote */
@@ -385,12 +385,11 @@ body::after {
 /* Plated Lunch / Dinner section headers */
 .meal-head {
   margin-top: 48px; margin-bottom: 20px;
-  padding: 20px 24px;
-  border-left: 3px solid var(--orange-hot);
-  background: rgba(255,255,255,.03);
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-mid);
 }
 .meal-head-label {
-  font-family: var(--font-mono); font-size: .62rem;
+  font-family: 'DM Mono', monospace; font-size: .62rem;
   letter-spacing: .2em; text-transform: uppercase;
   color: var(--orange-hot); margin-bottom: 6px;
 }
@@ -524,7 +523,7 @@ body::after {
   color: rgba(255,255,255,.6);
   pointer-events: none;
 }
-/* Removed — consolidated into 480px breakpoint */
+
 
 /* Art center: when used inside a full-width bg wrapper, center the content */
 .art-wrap { width: 100%; }
@@ -655,6 +654,73 @@ body::after {
 .card p { font-size: .85rem; line-height: 1.7; color: var(--text-lo); margin-top: 4px; }
 .card .lb { font-weight: 600; color: var(--text-hi); }
 
+/* ── TIER CARDS (Open Bar Packages) ── */
+.tier-grid {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  gap: 12px; margin: 24px 0 12px;
+}
+.tier-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border-mid);
+  padding: 20px 18px 18px; position: relative;
+  transition: border-color .2s;
+}
+.tier-card:hover { border-color: rgba(255,255,255,.2); }
+.tier-card--featured {
+  border-color: var(--orange);
+  background: linear-gradient(180deg, rgba(232,93,38,.06) 0%, var(--surface-2) 40%);
+}
+.tier-card--featured::before {
+  content: 'POPULAR';
+  position: absolute; top: -1px; right: 20px;
+  font-family: 'DM Mono', monospace; font-size: .5rem;
+  letter-spacing: .2em; color: white;
+  background: var(--orange); padding: 4px 10px;
+}
+.space-tier-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 1.25rem;
+  text-transform: uppercase; letter-spacing: .03em;
+  color: var(--orange); line-height: 1; margin-bottom: 2px;
+}
+.space-grid .tier-card { display:flex; flex-direction:column; }
+.space-grid .tier-name { font-size: 1.1rem; margin-bottom: 4px; }
+.space-grid .tier-price { font-size: .95rem; margin-bottom: 8px; }
+.space-grid .tier-price-placeholder { height: 1.1rem; margin-bottom: 8px; }
+.space-grid .tier-label { font-size: .45rem; margin-bottom: 5px; }
+.space-grid .tier-inc { font-size: .68rem; padding-top: 8px; }
+.tier-label {
+  font-family: 'DM Mono', monospace; font-size: .48rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-lo); margin-bottom: 8px;
+}
+.tier-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 1.25rem;
+  text-transform: uppercase; letter-spacing: .03em;
+  color: var(--text-hi); line-height: 1; margin-bottom: 5px;
+}
+.tier-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 1.05rem;
+  color: var(--orange); margin-bottom: 10px;
+}
+.tier-price span {
+  font-size: .62rem; font-weight: 500;
+  color: var(--text-lo); margin-left: 2px;
+}
+.tier-inc {
+  font-size: .74rem; color: var(--text-lo);
+  line-height: 1.55; border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+.tier-inc strong { color: var(--text); font-weight: 500; }
+.tier-ext {
+  font-family: 'DM Mono', monospace; font-size: .58rem;
+  color: var(--text-lo); margin-top: 10px;
+  letter-spacing: .04em;
+}
+
 /* ══════════════════════════════════════════
    MENU GRID
    ══════════════════════════════════════════ */
@@ -700,25 +766,33 @@ body::after {
 /* ══════════════════════════════════════════
    ADD-ON STAMPS
    ══════════════════════════════════════════ */
+.addon-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin: 24px 0 12px;
+}
 .addon {
-  background: var(--surface-3);
-  border: 1px dashed rgba(255,255,255,.12);
-  padding: 22px 24px; margin: 14px 0;
+  background: var(--surface-2);
+  border: 1px dashed var(--orange);
+  padding: 16px 16px 14px; margin: 0;
   position: relative; z-index: 1;
   transition: border-color .2s;
 }
 .addon:hover { border-color: rgba(255,255,255,.25); }
 .addon-t {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 800; font-size: .98rem;
-  text-transform: uppercase; letter-spacing: .04em;
-  color: var(--text-hi); margin-bottom: 3px;
+  font-weight: 900; font-size: 1.15rem;
+  text-transform: uppercase; letter-spacing: .03em;
+  color: var(--text-hi); line-height: 1; margin-bottom: 4px;
 }
 .addon-p {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700; color: var(--orange); font-size: .86rem; margin-bottom: 4px;
+  font-weight: 700; font-size: 1rem;
+  color: var(--orange); margin-bottom: 8px;
 }
-.addon p { font-size: .85rem; color: var(--text-lo); line-height: 1.6; }
+.addon p {
+  font-size: .78rem; color: var(--text-lo); line-height: 1.55;
+  border-top: 1px solid var(--border); padding-top: 10px;
+}
 
 .custom-note {
   font-family: 'Playfair Display', serif; font-style: italic;
@@ -730,27 +804,43 @@ body::after {
 }
 
 /* Suggested menus */
+.sg-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; margin: 24px 0 12px;
+}
 .sg-card {
-  background: var(--surface-3); padding: 24px 26px; margin: 14px 0;
-  border-left: 4px solid var(--blue);
-  transition: transform .2s, box-shadow .2s, border-color .2s;
+  background: var(--surface-2);
+  border: 1px solid var(--border-mid);
+  padding: 20px 18px 18px; position: relative;
+  transition: border-color .2s;
 }
-.sg-card:hover {
-  transform: translateX(3px);
-  box-shadow: -3px 3px 20px rgba(0,0,0,.3);
-  border-left-color: var(--blue-light);
-}
+.sg-card:hover { border-color: rgba(255,255,255,.2); }
 .sg-n {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900; font-size: 1.1rem;
-  text-transform: uppercase; letter-spacing: .04em; color: var(--text-hi);
+  font-weight: 900; font-size: 1.25rem;
+  text-transform: uppercase; letter-spacing: .03em;
+  color: var(--text-hi); line-height: 1; margin-bottom: 5px;
+}
+.sg-badge {
+  font-family: 'DM Mono', monospace; font-size: .48rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-lo); margin-bottom: 8px;
 }
 .sg-p {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700; color: var(--orange); font-size: .86rem; margin-bottom: 6px;
+  font-weight: 700; font-size: 1.05rem;
+  color: var(--orange); margin-bottom: 10px;
 }
-.sg-card p { font-size: .86rem; line-height: 1.65; color: var(--text); }
-.sg-card .lb { font-weight: 600; color: var(--text-hi); }
+.sg-p span {
+  font-size: .62rem; font-weight: 500;
+  color: var(--text-lo); margin-left: 2px;
+}
+.sg-card p {
+  font-size: .74rem; line-height: 1.55; color: var(--text-lo);
+  border-top: 1px solid var(--border); padding-top: 10px; margin-top: 0;
+}
+.sg-card p + p { border-top: none; padding-top: 4px; }
+.sg-card .lb { font-weight: 500; color: var(--text); }
 
 /* ══════════════════════════════════════════
    BLUE BAND
@@ -774,7 +864,6 @@ body::after {
 .band .sec-kick { color: var(--orange-hot); }
 .band .sec-title { color: white; }
 .band .sec-rule { background: var(--orange-hot); }
-.band .sec-rule::after { background: rgba(43,94,167,.15); }
 .band .body { color: rgba(255,255,255,.75); }
 .band .sub { color: white; border-bottom-color: rgba(255,255,255,.15); }
 .band .card { border-bottom-color: rgba(255,255,255,.06); }
@@ -785,8 +874,8 @@ body::after {
 .band .mi-d { color: rgba(255,255,255,.4); }
 .band .mi { border-bottom-color: rgba(255,255,255,.06); }
 .band .tbl-note { color: rgba(255,255,255,.4); }
-.band .sg-card { background: rgba(255,255,255,.04); }
-.band .sg-card:hover { background: rgba(255,255,255,.06); }
+.band .sg-card { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
+.band .sg-card:hover { border-color: rgba(255,255,255,.2); }
 .band .addon { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.1); }
 .band .custom-note { border-color: rgba(255,255,255,.08); }
 
@@ -822,10 +911,15 @@ body::after {
    ══════════════════════════════════════════ */
 @media (max-width: 768px) {
   .pg { grid-template-columns: 1fr; }
-  .idx-in { grid-template-columns: repeat(4, 1fr); }
-  .idx-a:nth-child(4) { border-right: none; }
+  .idx-in { grid-template-columns: repeat(3, 1fr); }
+  .idx-a:nth-child(3) { border-right: none; }
+  .idx-a:nth-child(6) { border-right: none; }
   .nav-links a { padding: 18px 7px; font-size: .58rem; letter-spacing: .12em; }
   .nav-cta { display: none; }
+  .tier-grid { grid-auto-flow: row; grid-template-columns: 1fr; grid-auto-columns: auto; gap: 10px; }
+  .space-grid { grid-template-columns: 1fr !important; }
+  .tier-name { font-size: 1.3rem; }
+  .tier-price { font-size: 1.1rem; }
   .card { padding: 16px 0; margin: 0; }
   .card-top { flex-direction: column; gap: 2px; }
   .art-center img { max-height: 160px; }
@@ -846,8 +940,12 @@ body::after {
   .sec-head::before { font-size: clamp(5rem, 12vw, 7rem); top: -20px; }
   .tbl { min-width: 480px; }
   .price-xl { font-size: 2.6rem; }
-  .addon { padding: 18px 16px; }
-  .sg-card { padding: 20px 18px; }
+  .addon-grid { grid-template-columns: 1fr; gap: 10px; }
+  .addon { padding: 14px 14px; }
+  .sg-grid { grid-template-columns: 1fr; gap: 10px; }
+  .sg-card { padding: 16px 14px; }
+  .sg-n { font-size: 1.1rem; }
+  .body[style*="white-space"] { white-space: normal !important; }
   .custom-note { font-size: .95rem; padding: 20px 0; }
 }
 @media (max-width: 480px) {
@@ -856,7 +954,7 @@ body::after {
   .hero-sub { font-size: 1rem; }
   .hero-fine { font-size: .62rem; }
   .hero-contact span, .hero-contact a { font-size: .72rem; }
-  .idx-in { grid-template-columns: repeat(4, 1fr); }
+  .idx-in { grid-template-columns: repeat(3, 1fr); }
   .idx-a { padding: 12px 4px; }
   .idx-n { font-size: 1.1rem; }
   .idx-l { font-size: .48rem; letter-spacing: .1em; }
@@ -883,8 +981,8 @@ body::after {
   .tbl tbody td { padding: 12px 6px; }
   .tier-n { font-size: 1.2rem; }
   .pg-item { font-size: .82rem; padding: 13px 0; }
-  .addon-t { font-size: .88rem; }
-  .addon-p { font-size: .8rem; }
+  .addon-t { font-size: 1.1rem; }
+  .addon-p { font-size: .95rem; }
   .addon p { font-size: .78rem; }
   .foot { padding: 44px 20px; }
   .foot-addr { font-size: .62rem; letter-spacing: .18em; }
@@ -910,6 +1008,12 @@ body::after {
   body::after { display: none; }
   body, .bs, .hero { background: white; }
   .band { background: #e8e8e8 !important; }
+  .tier-grid { grid-auto-flow: column; grid-auto-columns: 1fr; }
+  .tier-card { border-color: #ccc; background: #f8f8f8; }
+  .tier-card--featured { border-color: var(--orange); }
+  .tier-name, .tier-label { color: #111 !important; }
+  .tier-price { color: var(--orange) !important; }
+  .tier-inc, .tier-ext, .tier-price span { color: #444 !important; }
   .sec-title, .card-title, .mi-n, .av-n, .space-n, .pl-n, .sg-n, .addon-t, .pg-item, .sub, .body, .body strong { color: #111 !important; }
   .tbl tbody td, .card p, .sg-card p, .pq p, .mi-d, .tbl-note, .tbl-fine { color: #333 !important; }
 }
@@ -918,7 +1022,7 @@ body::after {
 <body>
 
 <!-- ═══ STICKY NAV ═══ -->
-<nav class="nav" role="navigation">
+<nav class="nav" role="navigation" aria-label="Primary">
   <div class="nav-in">
     <a href="#top" class="nav-brand">PubKey <span>DC</span></a>
     <div class="nav-links">
@@ -954,7 +1058,7 @@ body::after {
 <div class="bs">
 
 <!-- ═══ INDEX BAR ═══ -->
-<nav class="idx">
+<nav class="idx" aria-label="Section index">
   <div class="idx-in">
     <a href="#story" class="idx-a"><div class="idx-n">01</div><div class="idx-l">Story</div></a>
     <a href="#spaces" class="idx-a"><div class="idx-n">02</div><div class="idx-l">Spaces</div></a>
@@ -965,6 +1069,7 @@ body::after {
   </div>
 </nav>
 
+<main>
 <!-- VENUE: Exterior sign -->
 <div class="venue-hero r">
   <img src="venue/outside.jpg" alt="PubKey DC — exterior" loading="lazy">
@@ -1021,19 +1126,45 @@ body::after {
     <div class="venue-cell"><img src="venue/pub.jpeg" alt="The Pub" loading="lazy"><div class="venue-caption">The Pub</div></div>
     <div class="venue-cell"><img src="venue/eventbar.jpg" alt="Event Bar" loading="lazy"><div class="venue-caption">Event Bar</div></div>
   </div>
-  <div class="tbl-wrap r r2">
-  <table class="tbl">
-    <thead><tr><th>Tier</th><th>Space</th><th>Capacity</th><th>Min Hours</th><th>Min Spend</th><th>Per Person</th></tr></thead>
-    <tbody>
-      <tr><td><span class="tier-n">1</span></td><td><span class="space-n">Ballroom (Partial)</span></td><td>Up to 40</td><td>2 hours</td><td>No minimum</td><td>&mdash;</td></tr>
-      <tr><td><span class="tier-n">2</span></td><td><span class="space-n">Ballroom (Full)</span></td><td>50 to 150</td><td>2 hours</td><td>$2,500</td><td>$25+/pp</td></tr>
-      <tr><td><span class="tier-n">3</span></td><td><span class="space-n">Ballroom + Bar</span></td><td>Up to 250</td><td>3 hours</td><td>$7,500</td><td>$50+/pp</td></tr>
-      <tr><td><span class="tier-n">4</span></td><td><span class="space-n">Full Venue</span></td><td>250+</td><td>4 hours</td><td>$25,000</td><td>$100+/pp</td></tr>
-    </tbody>
-  </table>
+  <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:24px 0 12px" class="r r4 space-grid">
+    <div class="tier-card">
+      <div class="space-tier-num">Tier 1</div>
+      <div class="tier-label">Bar Tab Only</div>
+      <div class="tier-name">Ballroom (Partial)</div>
+      <div class="tier-price-placeholder"></div>
+      <div class="tier-inc"><strong>Capacity:</strong> Up to 40</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Min Hours:</strong> 2 hours</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Min Spend:</strong> No minimum</div>
+    </div>
+    <div class="tier-card">
+      <div class="space-tier-num">Tier 2</div>
+      <div class="tier-label">Bar + Light AV</div>
+      <div class="tier-name">Ballroom (Full)</div>
+      <div class="tier-price">$25+ <span>/ pp</span></div>
+      <div class="tier-inc"><strong>Capacity:</strong> 50 to 150</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Min Hours:</strong> 2 hours</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Min Spend:</strong> $2,500</div>
+    </div>
+    <div class="tier-card tier-card--featured">
+      <div class="space-tier-num">Tier 3</div>
+      <div class="tier-label">Full AV, Catering, DJ</div>
+      <div class="tier-name">Ballroom + Bar</div>
+      <div class="tier-price">$50+ <span>/ pp</span></div>
+      <div class="tier-inc"><strong>Capacity:</strong> Up to 250</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Min Hours:</strong> 3 hours</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Min Spend:</strong> $7,500</div>
+    </div>
+    <div class="tier-card">
+      <div class="space-tier-num">Tier 4</div>
+      <div class="tier-label">All Spaces, Full Production</div>
+      <div class="tier-name">Full Venue</div>
+      <div class="tier-price">$100+ <span>/ pp</span></div>
+      <div class="tier-inc"><strong>Capacity:</strong> 250+</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Min Hours:</strong> 4 hours</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Min Spend:</strong> $25,000</div>
+    </div>
   </div>
   <p class="tbl-fine r r3">Per-person figures are floors, not caps. All pricing subject to DC sales tax.</p>
-  <p class="tbl-note r r4"><strong style="color:var(--text-hi)">T1</strong> Bar tab only &nbsp;&middot;&nbsp; <strong style="color:var(--text-hi)">T2</strong> Bar + light AV &nbsp;&middot;&nbsp; <strong style="color:var(--text-hi)">T3</strong> Full AV, catering, DJ &nbsp;&middot;&nbsp; <strong style="color:var(--text-hi)">T4</strong> All spaces, full production</p>
 </section>
 </div><!-- /sec-wrap -->
 
@@ -1097,37 +1228,47 @@ body::after {
     <div class="venue-cell"><img src="venue/beerflag.JPG" alt="Cheers with beers" loading="lazy"><div class="venue-caption">Cheers</div></div>
   </div>
 
-  <p class="body r r1">Bar package required for the full event. All packages include soft drinks, water, coffee, and tea.</p>
+  <p class="body r r1" style="white-space:nowrap">Bar package required for the full event.<br>All packages include soft drinks, water, coffee, and tea.</p>
 
-  <h3 class="sub r">Beer and Wine</h3>
-  <div class="card r">
-    <div class="card-badge">Beer &amp; Wine</div>
-    <div class="card-top"><div class="card-title">The Local</div><div class="card-price">$38/guest (2 hrs) &nbsp;|&nbsp; $50/guest (3 hrs)</div></div>
-    <p>Rotating draft selection (4 taps), house red and white wine.</p>
-  </div>
-
-  <h3 class="sub r">Full Bar</h3>
-  <div class="card r">
-    <div class="card-badge">Well Spirits</div>
-    <div class="card-top"><div class="card-title">The Regular</div><div class="card-price">$55/guest (2 hrs) &nbsp;|&nbsp; $72/guest (3 hrs)</div></div>
-    <p>Everything in The Local, plus well spirits, basic cocktails.</p>
-  </div>
-  <div class="card r">
-    <div class="card-badge">Top Shelf</div>
-    <div class="card-top"><div class="card-title">The Reserve</div><div class="card-price">$72/guest (2 hrs) &nbsp;|&nbsp; $90/guest (3 hrs)</div></div>
-    <p>Top-shelf spirits, craft cocktails, expanded wine list, full draft selection.</p>
+  <h3 class="sub r">Open Bar Packages</h3>
+  <div class="tier-grid r">
+    <div class="tier-card">
+      <div class="tier-label">Beer &amp; Wine</div>
+      <div class="tier-name">The Local</div>
+      <div class="tier-price">$38 <span>/ guest &middot; 2 hrs</span></div>
+      <div class="tier-inc">Rotating draft selection (4 taps), house red &amp; white wine, non-alcoholic beverages</div>
+      <div class="tier-ext">3 hrs: $50/guest</div>
+    </div>
+    <div class="tier-card tier-card--featured">
+      <div class="tier-label">Well Spirits</div>
+      <div class="tier-name">The Regular</div>
+      <div class="tier-price">$55 <span>/ guest &middot; 2 hrs</span></div>
+      <div class="tier-inc">Everything in The Local + well spirits, basic cocktails</div>
+      <div class="tier-ext">3 hrs: $72/guest</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-label">Top Shelf</div>
+      <div class="tier-name">The Reserve</div>
+      <div class="tier-price">$72 <span>/ guest &middot; 2 hrs</span></div>
+      <div class="tier-inc">Top-shelf spirits, craft cocktails, expanded wine list, full draft selection</div>
+      <div class="tier-ext">3 hrs: $90/guest</div>
+    </div>
   </div>
 
   <h3 class="sub r">Non-Alcoholic</h3>
-  <div class="card r">
-    <div class="card-badge">Zero Proof</div>
-    <div class="card-top"><div class="card-title">Soft Drinks and Coffee</div><div class="card-price">$8/guest</div></div>
-    <p>Included with food packages; standalone pricing shown.</p>
-  </div>
-  <div class="card r">
-    <div class="card-badge">Crafted N/A</div>
-    <div class="card-top"><div class="card-title">N/A Cocktail Package</div><div class="card-price">$24/guest (2 hrs)</div></div>
-    <p>Crafted non-alcoholic cocktails.</p>
+  <div class="tier-grid r">
+    <div class="tier-card">
+      <div class="tier-label">Zero Proof</div>
+      <div class="tier-name">Soft Drinks &amp; Coffee</div>
+      <div class="tier-price">$8 <span>/ guest</span></div>
+      <div class="tier-inc">Included with food packages; standalone pricing shown</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-label">Crafted N/A</div>
+      <div class="tier-name">N/A Cocktails</div>
+      <div class="tier-price">$24 <span>/ guest &middot; 2 hrs</span></div>
+      <div class="tier-inc">Crafted non-alcoholic cocktails</div>
+    </div>
   </div>
 </section>
 </div><!-- /sec-wrap -->
@@ -1160,36 +1301,32 @@ body::after {
 
   <!-- Food gallery: service + kitchen + spread -->
   <div class="venue-grid vg-full r r2" style="grid-template-columns:1fr; width:100%; margin-bottom:16px">
-    <div class="venue-cell" style="aspect-ratio:16/8; width:100%; min-width:0"><img src="food/ladyservice.png" alt="Table service" loading="lazy"><div class="venue-caption">Service</div></div>
+    <div class="venue-cell" style="aspect-ratio:16/7; width:100%; min-width:0"><img src="food/ladyservice.png" alt="Table service" loading="lazy" style="object-fit:cover"><div class="venue-caption">Service</div></div>
   </div>
   <div class="venue-grid r r2" style="grid-template-columns:1fr 1fr; margin-bottom:36px">
     <div class="venue-cell"><img src="food/chefdog.png" alt="Chef plating a loaded dog" loading="lazy"><div class="venue-caption">From the Kitchen</div></div>
     <div class="venue-cell"><img src="food/platter2.png" alt="Wings, tenders, nachos, beers" loading="lazy"><div class="venue-caption">The Spread</div></div>
   </div>
 
-  <div class="tbl-wrap r r3">
-  <table class="tbl">
-    <thead><tr><th>Package</th><th>Sides &amp; Smalls</th><th>Mains</th><th>Price</th></tr></thead>
-    <tbody>
-      <tr><td><span class="pkg-n">3 + 2</span></td><td>Pick 3</td><td>Pick 2</td><td><span class="av-p">$38/guest</span></td></tr>
-      <tr><td><span class="pkg-n">4 + 3</span></td><td>Pick 4</td><td>Pick 3</td><td><span class="av-p">$48/guest</span></td></tr>
-      <tr><td><span class="pkg-n">5 + 4</span></td><td>Pick 5</td><td>Pick 4</td><td><span class="av-p">$58/guest</span></td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <h3 class="sub r">Suggested Menus</h3>
-  <div class="sg-card r">
-    <div class="sg-n">The PubKey Classic</div>
-    <div class="sg-p">$38/guest (3 + 2)</div>
-    <p><span class="lb">Sides &amp; Smalls:</span> Waffle Fries, Onion Rings, Pigs in Blankets</p>
-    <p><span class="lb">Mains:</span> Chicago Dogs (full dress), Wings (buffalo or dry BBQ)</p>
-  </div>
-  <div class="sg-card r">
-    <div class="sg-n">The District Dinner</div>
-    <div class="sg-p">$48/guest (4 + 3)</div>
-    <p><span class="lb">Sides &amp; Smalls:</span> Pub Board, Caesar Salad, Brussels with Bacon, Grilled Cheese Bites</p>
-    <p><span class="lb">Mains:</span> Mini Smashburgers, Wings, Chicken and Waffles</p>
+  <div class="tier-grid r r3">
+    <div class="tier-card">
+      <div class="tier-label">3 Sides + 2 Mains</div>
+      <div class="tier-name">3 + 2</div>
+      <div class="tier-price">$38 <span>/ guest</span></div>
+      <div class="tier-inc">Pick 3 from Sides &amp; Smalls, pick 2 from Mains</div>
+    </div>
+    <div class="tier-card tier-card--featured">
+      <div class="tier-label">4 Sides + 3 Mains</div>
+      <div class="tier-name">4 + 3</div>
+      <div class="tier-price">$48 <span>/ guest</span></div>
+      <div class="tier-inc">Pick 4 from Sides &amp; Smalls, pick 3 from Mains</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-label">5 Sides + 4 Mains</div>
+      <div class="tier-name">5 + 4</div>
+      <div class="tier-price">$58 <span>/ guest</span></div>
+      <div class="tier-inc">Pick 5 from Sides &amp; Smalls, pick 4 from Mains</div>
+    </div>
   </div>
 
   <h3 class="sub r">Sides and Smalls</h3>
@@ -1228,21 +1365,42 @@ body::after {
   </div>
 
   <h3 class="sub r">Add-Ons</h3>
-  <div class="addon r">
-    <div class="addon-t">Add Salad Course and Dessert</div>
-    <div class="addon-p">+$14/guest</div>
-    <p>Caesar or House salad, cookies and brownie bites or pancakes with maple ice cream.</p>
+  <div class="addon-grid r">
+    <div class="addon">
+      <div class="addon-t">Salad &amp; Dessert</div>
+      <div class="addon-p">+$14 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ guest</span></div>
+      <p>Caesar or House salad, cookies and brownie bites or pancakes with maple ice cream.</p>
+    </div>
+    <div class="addon">
+      <div class="addon-t">Raw Bar</div>
+      <div class="addon-p">+$18 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ guest</span></div>
+      <p>Oysters, jumbo shrimp, snow crab claws. On ice.</p>
+    </div>
+    <div class="addon">
+      <div class="addon-t">Seafood Towers</div>
+      <div class="addon-p">$100 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ tower</span></div>
+      <p>Dozen oysters, jumbo shrimp, snow crab. Serves 2&ndash;4.</p>
+    </div>
   </div>
-  <div class="addon r">
-    <div class="addon-t">Raw Bar</div>
-    <div class="addon-p">+$18/guest</div>
-    <p>Oysters, jumbo shrimp, snow crab claws. On ice.</p>
+  <h3 class="sub r">Suggested Menus</h3>
+  <div class="sg-grid r">
+    <div class="sg-card">
+      <div class="sg-badge">3 + 2 Package</div>
+      <div class="sg-n">The PubKey Classic</div>
+      <div class="sg-p">$38 <span>/ guest</span></div>
+      <p><span class="lb">Sides &amp; Smalls:</span> Waffle Fries, Onion Rings, Pigs in Blankets</p>
+      <p><span class="lb">Mains:</span> Chicago Dogs (full dress), Wings (buffalo or dry BBQ)</p>
+    </div>
+    <div class="sg-card" style="border-color:var(--orange); background:linear-gradient(180deg, rgba(232,93,38,.06) 0%, var(--surface-2) 40%); position:relative; overflow:visible">
+      <div style="position:absolute; top:-1px; right:20px; font-family:'DM Mono',monospace; font-size:.5rem; letter-spacing:.2em; color:white; background:var(--orange); padding:4px 10px">POPULAR</div>
+      <div class="sg-badge">4 + 3 Package</div>
+      <div class="sg-n">The District Dinner</div>
+      <div class="sg-p">$48 <span>/ guest</span></div>
+      <p><span class="lb">Sides &amp; Smalls:</span> Pub Board, Caesar Salad, Brussels with Bacon, Grilled Cheese Bites</p>
+      <p><span class="lb">Mains:</span> Mini Smashburgers, Wings, Chicken and Waffles</p>
+    </div>
   </div>
-  <div class="addon r">
-    <div class="addon-t">Seafood Towers</div>
-    <div class="addon-p">$100/tower</div>
-    <p>Dozen oysters, jumbo shrimp, snow crab. Serves 2&ndash;4.</p>
-  </div>
+
   <div class="custom-note r">Not seeing what you're looking for? We build custom menus. Ask us.</div>
 </section>
 </div><!-- /sec-wrap -->
@@ -1259,16 +1417,22 @@ body::after {
   </div>
   <p class="body r r1">Minimum selection is 4 choices from the list below.</p>
 
-  <div class="card r r2">
-    <div class="card-badge">Opening Act</div>
-    <div class="card-top"><div class="card-title">Cocktail Hour &mdash; 1 Hour</div><div class="card-price">4 for $30/guest &nbsp;|&nbsp; 6 for $44/guest</div></div>
-    <p>Light course &mdash; pair with a meal, plated dinner, or beefsteak.</p>
-  </div>
-  <div class="card r r3">
-    <div class="card-badge">Standalone Option</div>
-    <div class="card-top"><div class="card-title">Cocktail Reception &mdash; 2 Hours</div><div class="card-price">4 for $54/guest &nbsp;|&nbsp; 6 for $78/guest</div></div>
-    <p>Stands on its own for a full evening. Add a raw bar if your group runs hungry.</p>
-  </div>
+  <div class="tier-grid r r2">
+    <div class="tier-card">
+      <div class="tier-label">Opening Act</div>
+      <div class="tier-name">Cocktail Hour</div>
+      <div class="tier-price">1 <span>hour</span></div>
+      <div class="tier-inc"><strong>4 choices</strong> $30/guest &nbsp;&middot;&nbsp; <strong>6 choices</strong> $44/guest</div>
+      <div class="tier-ext">Light course &mdash; pair with a meal, plated dinner, or beefsteak</div>
+    </div>
+    <div class="tier-card tier-card--featured">
+      <div class="tier-label">Standalone Option</div>
+      <div class="tier-name">Cocktail Reception</div>
+      <div class="tier-price">2 <span>hours</span></div>
+      <div class="tier-inc"><strong>4 choices</strong> $54/guest &nbsp;&middot;&nbsp; <strong>6 choices</strong> $78/guest</div>
+      <div class="tier-ext">Stands on its own for a full evening. Add a raw bar if your group runs hungry.</div>
+    </div>
+  </div><!-- /tier-grid -->
 
   <h3 class="sub r">The Menu</h3>
   <div class="mg-scroll r">
@@ -1311,8 +1475,22 @@ body::after {
   </div>
   <p class="body r">Meat and two sides, plated and served. Soft drinks, tea, and coffee included. Select two entrees &mdash; groups over 50, send selections one week ahead.</p>
 
-  <div class="price-xl r">$38<span>/guest</span></div>
-  <div class="price-sub r">Select two:</div>
+  <div class="tier-grid r">
+    <div class="tier-card tier-card--featured">
+      <div class="tier-label">Plated Lunch</div>
+      <div class="tier-name">Standard</div>
+      <div class="tier-price">$38 <span>/ guest</span></div>
+      <div class="tier-inc">Select two entrees from the menu below. Includes meat, two sides, soft drinks, tea &amp; coffee</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-label">Plated Lunch + Steak</div>
+      <div class="tier-name">Premium</div>
+      <div class="tier-price">$48 <span>/ guest</span></div>
+      <div class="tier-inc">All standard options plus <strong>Steak Frites 12oz</strong> &mdash; tallow-fried ribeye, garlic butter, fries</div>
+    </div>
+  </div>
+
+  <h3 class="sub r">Select Two Entrees</h3>
   <div class="mg-scroll r">
   <div class="mg">
     <div class="mi"><div class="mi-t"><div class="mi-n">PubKey Smashburger</div><div class="mi-d">American cheese, pub sauce, pickles, fries</div></div></div>
@@ -1324,18 +1502,12 @@ body::after {
   </div>
   </div>
 
-  <div class="price-xl r" style="margin-top:44px">$48<span>/guest</span></div>
-  <div class="price-sub r">All options above, plus:</div>
-  <div class="mg-scroll r">
-  <div class="mg">
-    <div class="mi"><div class="mi-t"><div class="mi-n">Steak Frites 12oz</div><div class="mi-d">Tallow-fried ribeye, garlic butter, fries</div></div></div>
-  </div>
-  </div>
-
-  <div class="addon r" style="margin-top:20px">
-    <div class="addon-t">Add Dessert</div>
-    <div class="addon-p">+$10/guest</div>
-    <p>Short Stack of Pancakes (maple ice cream) or Brownie Sundae (vanilla ice cream, hot fudge)</p>
+  <div class="addon-grid r" style="grid-template-columns:1fr; margin-top:20px">
+    <div class="addon">
+      <div class="addon-t">Add Dessert</div>
+      <div class="addon-p">+$10 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ guest</span></div>
+      <p>Short Stack of Pancakes (maple ice cream) or Brownie Sundae (vanilla ice cream, hot fudge)</p>
+    </div>
   </div>
 
   <div class="meal-head r" style="margin-top:64px">
@@ -1343,16 +1515,18 @@ body::after {
     <h3 class="meal-head-title">Dinner</h3>
   </div>
   <p class="body r">Three courses, plated and served. Salad or soup to start, dessert to finish. Select two entrees.</p>
-  <p class="body r"><strong>First Course (select one):</strong> Caesar Salad &nbsp;|&nbsp; House Salad &nbsp;|&nbsp; Brussels with Bacon</p>
 
-  <div class="addon r">
-    <div class="addon-t">Optional Raw Bar Enhancement</div>
-    <div class="addon-p">+$18/guest</div>
-    <p>Oysters, shrimp, crab claws</p>
+  <div class="tier-grid r" style="grid-template-columns:1fr">
+    <div class="tier-card" style="max-width:480px; border-color:var(--orange)">
+      <div class="tier-label">Plated Dinner &middot; 3 Courses</div>
+      <div class="tier-name">$58 / guest</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>First Course (select one):</strong> Caesar Salad, House Salad, or Brussels with Bacon</div>
+      <div class="tier-inc"><strong>Entree:</strong> Select two from the menu below</div>
+      <div class="tier-inc" style="border-top:none; padding-top:0"><strong>Dessert (included):</strong> Short Stack of Pancakes (maple ice cream) or Brownie Sundae (vanilla ice cream, hot fudge)</div>
+    </div>
   </div>
 
-  <div class="price-xl r">$58<span>/guest</span></div>
-  <div class="price-sub r">Select two:</div>
+  <h3 class="sub r">Select Two Entrees</h3>
   <div class="mg-scroll r">
   <div class="mg">
     <div class="mi"><div class="mi-t"><div class="mi-n">Grilled Chicken</div><div class="mi-d">Half chicken, lemon pepper, whipped Yukons, broccolini</div></div></div>
@@ -1364,17 +1538,32 @@ body::after {
   </div>
 
   <h3 class="sub r" style="margin-top:36px">Add to Your Menu</h3>
-  <div class="mg-scroll r">
-  <div class="mg">
-    <div class="mi"><div class="mi-t"><div class="mi-n">Crab Cake Plate</div><div class="mi-d">Two jumbo cakes, tartare, lemon, slaw</div></div><span class="mi-s">+$14/guest</span></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Steak Frites 16oz</div><div class="mi-d">Tallow-fried petite tender, garlic butter, fries</div></div><span class="mi-s">+$14/guest who chooses this</span></div>
-    <div class="mi"><div class="mi-t"><div class="mi-n">Shareable 20oz Ribeye</div><div class="mi-d">Butter, salt, pepper</div></div><span class="mi-s">+$75 per steak</span></div>
+  <div class="addon-grid r" style="grid-template-columns:repeat(2,1fr)">
+    <div class="addon">
+      <div class="addon-t">Crab Cake Plate</div>
+      <div class="addon-p">+$14 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ guest</span></div>
+      <p>Two jumbo cakes, tartare, lemon, slaw</p>
+    </div>
+    <div class="addon">
+      <div class="addon-t">Steak Frites 16oz</div>
+      <div class="addon-p">+$14 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ guest who chooses</span></div>
+      <p>Tallow-fried petite tender, garlic butter, fries</p>
+    </div>
+    <div class="addon">
+      <div class="addon-t">Shareable Ribeye 20oz</div>
+      <div class="addon-p">$75 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ steak</span></div>
+      <p>Butter, salt, pepper</p>
+    </div>
+    <div class="addon">
+      <div class="addon-t">Raw Bar</div>
+      <div class="addon-p">+$18 <span style="font-size:.72rem;font-weight:500;color:var(--text-lo)">/ guest</span></div>
+      <p>Oysters, shrimp, crab claws</p>
+    </div>
   </div>
-  </div>
-
-  <p class="body r" style="margin-top:24px"><strong>Dessert (select one, included):</strong> Short Stack of Pancakes (maple ice cream) &nbsp;|&nbsp; Brownie Sundae (vanilla ice cream, hot fudge)</p>
 </section>
 </div><!-- /sec-wrap -->
+
+</main>
 
 <!-- ART: Line art cat — final moment before footer -->
 <div class="art-wrap" style="background:var(--surface-1)">
