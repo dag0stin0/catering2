@@ -331,7 +331,7 @@ body::after {
 .food-chapter-title {
   font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.4rem, 6vw, 4rem);
   font-weight: 900; letter-spacing: -.02em;
-  color: var(--text-hi); line-height: 1;
+  color: var(--orange); line-height: 1;
 }
 .food-chapter-sub {
   font-family: 'DM Mono', monospace; font-size: .68rem;
@@ -340,13 +340,13 @@ body::after {
   align-self: center;
 }
 .food-chapter-sub a {
-  color: var(--text-lo); text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,.2);
+  color: var(--orange); text-decoration: none;
+  border-bottom: 1px solid rgba(255,165,0,.35);
   padding-bottom: 1px;
   transition: color .2s, border-color .2s;
 }
 .food-chapter-sub a:hover {
-  color: var(--text-hi);
+  color: var(--orange-hot);
   border-bottom-color: var(--orange-hot);
 }
 
@@ -1002,20 +1002,151 @@ body::after {
   .nav-links a { -webkit-tap-highlight-color: transparent; }
 }
 @media print {
+  /* Hide interactive / decorative elements */
   .nav, .idx, .hero-scroll, .hero-mascot { display: none; }
-  .hero { min-height: auto; padding: 36px 28px; }
-  .r { opacity: 1; transform: none; }
   body::after { display: none; }
-  body, .bs, .hero { background: white; }
-  .band { background: #e8e8e8 !important; }
+
+  /* Reveal all animated elements */
+  .r { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+  /* White background for clean, lightweight PDF */
+  body, .bs, .hero { background: white !important; }
+  .sec-wrap, .sec-wrap--alt { background: white !important; }
+  .sec-wrap--alt::before, .sec-wrap--alt::after { display: none; }
+  .band { background: #f0f0f0 !important; }
+  .band::before, .band::after { display: none; }
+  .food-chapter { background: #f5f5f5 !important; border-color: #ddd !important; }
+  .art-wrap { background: white !important; }
+  .foot { background: #fafafa !important; }
+  .foot::before { display: none; }
+
+  /* Hero tightening */
+  .hero { min-height: auto; padding: 36px 28px 24px; background: white !important; }
+  .hero::before { display: none; }
+  .hero h1 { color: var(--orange) !important; }
+  .hero-sub { color: #333 !important; }
+  .hero-fine { color: #888 !important; }
+  .hero-contact span { color: #666 !important; }
+
+  /* Remove image filters so photos render properly */
+  .venue-cell img, .venue-hero img, .poster img, .triple-poster img, .art-center img {
+    filter: none !important;
+  }
+
+  /* Text colors for white background */
+  .sec-kick { color: var(--orange) !important; }
+  .sec-title { color: #111 !important; }
+  .sec-head::before { color: rgba(232,93,38,.08) !important; }
+  .body { color: #222 !important; }
+  .body strong { color: #111 !important; }
+  .sub { color: var(--orange) !important; border-bottom-color: #ddd !important; }
+  .sec-rule { background: var(--orange) !important; }
+  .sec-divider { background: #ddd !important; }
+
+  /* Card colors */
+  .card { border-bottom-color: #eee !important; }
+  .card-badge { color: #888 !important; }
+  .card-title { color: #111 !important; }
+  .card p { color: #555 !important; }
+
+  /* Tier cards */
   .tier-grid { grid-auto-flow: column; grid-auto-columns: 1fr; }
-  .tier-card { border-color: #ccc; background: #f8f8f8; }
-  .tier-card--featured { border-color: var(--orange); }
-  .tier-name, .tier-label { color: #111 !important; }
+  .tier-card { border-color: #ccc !important; background: #f8f8f8 !important; }
+  .tier-card--featured { border-color: var(--orange) !important; background: linear-gradient(180deg, rgba(232,93,38,.06) 0%, #f8f8f8 40%) !important; }
+  .tier-card--featured::before { background: var(--orange) !important; }
+  .tier-name, .tier-label, .space-tier-num { color: #111 !important; }
+  .space-tier-num { color: var(--orange) !important; }
   .tier-price { color: var(--orange) !important; }
-  .tier-inc, .tier-ext, .tier-price span { color: #444 !important; }
-  .sec-title, .card-title, .mi-n, .av-n, .space-n, .pl-n, .sg-n, .addon-t, .pg-item, .sub, .body, .body strong { color: #111 !important; }
-  .tbl tbody td, .card p, .sg-card p, .pq p, .mi-d, .tbl-note, .tbl-fine { color: #333 !important; }
+  .tier-inc { color: #444 !important; border-top-color: #ddd !important; }
+  .tier-inc strong { color: #111 !important; }
+  .tier-ext, .tier-price span { color: #666 !important; }
+
+  /* Addon cards */
+  .addon-grid { grid-template-columns: repeat(3, 1fr); }
+  .addon { background: #f8f8f8 !important; border-color: var(--orange) !important; }
+  .addon-t { color: #111 !important; }
+  .addon p { color: #555 !important; border-top-color: #ddd !important; }
+
+  /* Suggested menu cards */
+  .sg-grid { grid-template-columns: repeat(2, 1fr); }
+  .sg-card { background: #f8f8f8 !important; border-color: #ccc !important; }
+  .sg-n { color: #111 !important; }
+  .sg-badge { color: #888 !important; }
+  .sg-card p { color: #555 !important; border-top-color: #ddd !important; }
+  .sg-card .lb { color: #222 !important; }
+
+  /* Menu items */
+  .mi { border-bottom-color: #eee !important; }
+  .mi-n { color: #111 !important; }
+  .mi-d { color: #555 !important; }
+  .mi-s { color: var(--orange) !important; }
+
+  /* Tables */
+  .tbl thead th { color: #666 !important; border-bottom-color: #ccc !important; }
+  .tbl tbody td { color: #333 !important; border-bottom-color: #eee !important; }
+  .av-n { color: #111 !important; }
+  .av-p { color: var(--orange) !important; }
+  .av-note { color: #666 !important; }
+  .tbl-note, .tbl-fine { color: #888 !important; }
+
+  /* Production grid */
+  .pg-item { color: #111 !important; border-bottom-color: #eee !important; }
+  .pg-item::before { background: #999 !important; }
+
+  /* Pull quote */
+  .pq { border-left-color: #ddd !important; }
+  .pq p { color: #222 !important; }
+  .pq cite { color: #888 !important; }
+
+  /* Custom note */
+  .custom-note { color: #555 !important; border-color: #ddd !important; }
+
+  /* Food chapter */
+  .food-chapter-label { color: var(--orange) !important; }
+  .food-chapter-title { color: #111 !important; }
+  .food-chapter-sub { color: #888 !important; }
+  .food-chapter-sub a { color: #888 !important; }
+
+  /* Meal head */
+  .meal-head { border-bottom-color: #ddd !important; }
+  .meal-head-label { color: var(--orange) !important; }
+  .meal-head-title { color: #111 !important; }
+
+  /* Footer */
+  .foot-addr { color: #666 !important; }
+  .foot a { color: var(--orange) !important; }
+  .foot .est { color: #bbb !important; }
+  .foot-art { opacity: .3; }
+
+  /* Venue photos — no gradient overlays for print */
+  .venue-hero::after, .poster::after { display: none; }
+  .venue-caption { background: linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 100%) !important; color: white !important; }
+
+  /* Triple posters */
+  .triple { border-color: #ddd !important; background: white !important; }
+  .triple-poster { border-right-color: white !important; }
+  .triple-poster img { filter: none !important; }
+
+  /* Reduce section spacing for tighter PDF */
+  .sec { padding: 48px clamp(20px, 4vw, 56px); }
+  .sec-head { margin-bottom: 28px; }
+  .sec-head::before { font-size: clamp(4rem, 10vw, 7rem); }
+  .sub { margin-top: 32px; }
+  .meal-head { margin-top: 32px; }
+  .venue-grid { margin: 16px 0 6px; }
+  .tbl-wrap { margin: 12px 0 10px; }
+  .pg { margin: 12px 0 24px; }
+  .pq { margin: 24px 0; }
+  .custom-note { margin-top: 20px; padding: 16px 0; }
+  .art-center { padding: 28px clamp(20px, 4vw, 56px); }
+  .art-center img { filter: invert(0) !important; opacity: .15 !important; }
+  .food-chapter-inner { padding: 32px clamp(20px, 4vw, 56px); }
+  .foot { padding: 36px clamp(20px, 4vw, 56px); }
+
+  /* Prevent page breaks inside key blocks */
+  .tier-card, .addon, .sg-card, .card, .mi { break-inside: avoid; }
+  .sec-head, .sub { break-after: avoid; }
+  .venue-cell { break-inside: avoid; }
 }
 </style>
 </head>
@@ -1301,11 +1432,11 @@ body::after {
 
   <!-- Food gallery: service + kitchen + spread -->
   <div class="venue-grid vg-full r r2" style="grid-template-columns:1fr; width:100%; margin-bottom:16px">
-    <div class="venue-cell" style="aspect-ratio:16/7; width:100%; min-width:0"><img src="food/ladyservice.png" alt="Table service" loading="lazy" style="object-fit:cover"><div class="venue-caption">Service</div></div>
+    <div class="venue-cell" style="aspect-ratio:16/6; width:100%; min-width:0"><img src="food/service.jpg" alt="Table service" loading="lazy" style="object-fit:cover"><div class="venue-caption">Service</div></div>
   </div>
   <div class="venue-grid r r2" style="grid-template-columns:1fr 1fr; margin-bottom:36px">
     <div class="venue-cell"><img src="food/chefdog.png" alt="Chef plating a loaded dog" loading="lazy"><div class="venue-caption">From the Kitchen</div></div>
-    <div class="venue-cell"><img src="food/platter2.png" alt="Wings, tenders, nachos, beers" loading="lazy"><div class="venue-caption">The Spread</div></div>
+    <div class="venue-cell"><img src="food/spread.jpg" alt="Wings, tenders, nachos, beers" loading="lazy"><div class="venue-caption">The Spread</div></div>
   </div>
 
   <div class="tier-grid r r3">
