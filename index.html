@@ -327,11 +327,13 @@ body::after {
 .sec-head { margin-bottom: 44px; position: relative; z-index: 1; }
 .sec-head::before {
   content: attr(data-num);
-  position: absolute; top: -10px; right: 0;
+  position: absolute; top: 0; right: 0; bottom: 0;
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900; font-size: clamp(4rem, 10vw, 7rem);
+  font-weight: 900;
   color: rgba(232,93,38,0.12);
-  line-height: 1; pointer-events: none; z-index: -1;
+  pointer-events: none; z-index: -1;
+  line-height: 0.78;
+  font-size: clamp(5.5rem, 12vw, 8rem);
 }
 .sec-kick {
   font-family: 'DM Mono', monospace;
@@ -399,6 +401,7 @@ body::after {
 /* Alt section overrides — cards and addons on lighter bg */
 .sec-wrap--alt .card { border-bottom-color: rgba(255,255,255,.08); }
 .sec-wrap--alt .sg-card { background: var(--surface-3); }
+.sec-wrap--alt .sg-card--featured { background: linear-gradient(180deg, var(--orange-dim) 0%, var(--surface-3) 40%); }
 .sec-wrap--alt .addon { background: var(--surface-3); }
 .sec-wrap--alt .tbl tbody tr:hover { background: rgba(255,255,255,.04); }
 
@@ -1064,7 +1067,7 @@ body::after {
   display: flex; align-items: center; justify-content: center; gap: 24px;
   margin: 0 auto 28px;
 }
-.foot-art-duo img { height: 140px; width: auto; opacity: .3; }
+.foot-art-duo img { height: 140px; width: auto; opacity: .6; }
 .foot-addr {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 600; font-size: .72rem;
