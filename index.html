@@ -68,7 +68,7 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Grain */
+/* Grain — static background to avoid per-frame filter repaints */
 body::after {
   content: '';
   position: fixed; inset: 0;
@@ -76,6 +76,8 @@ body::after {
   opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* ── REVEALS ── */
@@ -86,6 +88,88 @@ body::after {
   .r { opacity: 1; transform: none; transition: none; }
   .r1, .r2, .r3, .r4 { transition-delay: 0s; }
   .hero-logo, .hero-rule, .hero h1, .hero-sub, .hero-fine, .hero-contact, .hero-mascot, .hero-scroll { opacity: 1; animation: none; }
+}
+
+/* ══════════════════════════════════════════
+   PAGES
+   ══════════════════════════════════════════ */
+.page {
+  display: none;
+  min-height: calc(100vh - 52px);
+  animation: pageIn .4s var(--ease-out);
+}
+.page--active { display: block; }
+@keyframes pageIn {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Page nav bar — fixed bottom */
+.page-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001;
+  background: rgba(8,8,8,.94);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; height: 48px;
+  padding: 0 clamp(12px, 3vw, 40px);
+  transition: transform .4s var(--ease-out);
+}
+.page-nav-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: .8rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-lo);
+  padding: 12px 18px;
+  transition: color .15s, transform .1s;
+  -webkit-tap-highlight-color: transparent;
+  min-width: 44px; min-height: 44px;
+  display: flex; align-items: center; justify-content: center;
+}
+.page-nav-btn:hover { color: white; }
+.page-nav-btn:active { transform: scale(.95); }
+.page-nav-btn:disabled { opacity: .2; cursor: default; pointer-events: none; }
+.page-nav-btn--prev::before { content: '\2190'; margin-right: 6px; font-size: 1rem; }
+.page-nav-btn--next::after { content: '\2192'; margin-left: 6px; font-size: 1rem; }
+
+.page-dots {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 16px;
+}
+.page-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--text-mute);
+  border: none; cursor: pointer;
+  transition: background .2s, transform .2s;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.page-dot:hover { background: var(--text-lo); transform: scale(1.3); }
+.page-dot--active { background: var(--orange); transform: scale(1.3); }
+.page-dot[title]::after { content: none; }
+
+.page-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .14em;
+  color: var(--text-lo); text-transform: uppercase;
+  position: absolute; right: clamp(12px, 3vw, 40px);
+  white-space: nowrap;
+}
+.page-count {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; letter-spacing: .14em;
+  color: var(--text-lo);
+  position: absolute; left: clamp(12px, 3vw, 40px);
+}
+
+/* Adjust body padding for fixed bottom nav */
+.bs { padding-bottom: 56px; }
+
+@media (max-width: 600px) {
+  .page-nav-btn span { display: none; }
+  .page-label { display: none; }
+  .page-count { font-size: .6rem; }
 }
 
 /* ══════════════════════════════════════════
@@ -173,7 +257,7 @@ body::after {
   0% { opacity: 0; transform: scale(.92) translateY(-16px); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
-.hero-logo img { width: 100%; height: auto; display: block; }
+.hero-logo img { width: 100%; height: auto; display: block; content-visibility: auto; }
 
 .hero-rule {
   width: 60px; height: 1px;
@@ -235,18 +319,53 @@ body::after {
 }
 .hero-mascot img { width: 100%; height: auto; }
 
-.hero-scroll {
-  position: absolute; bottom: 20px; left: 50%;
-  transform: translateX(-50%); z-index: 2;
-  opacity: 0; animation: fadeUp .5s 1.4s ease forwards;
+/* Hero cover — tap to enter */
+.hero--cover { cursor: pointer; }
+.hero-enter {
+  margin-top: 32px;
+  z-index: 5;
+  text-align: center;
+  opacity: 0; animation: fadeUp .6s 1.4s ease forwards;
 }
-.hero-scroll span {
-  display: block; width: 1px; height: 36px;
-  background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent);
-  margin: 0 auto;
+.hero-enter-text {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: clamp(.85rem, 1.4vw, 1rem);
+  letter-spacing: .32em; text-transform: uppercase;
+  color: var(--orange-hot);
+  padding: 12px 32px;
+  border: 1px solid var(--orange-border);
+  background: rgba(232,93,38,0.06);
+  transition: background .25s, border-color .25s, transform .2s;
+}
+.hero--cover:hover .hero-enter-text {
+  background: rgba(232,93,38,0.14);
+  border-color: var(--orange-hot);
+  transform: translateY(-2px);
+}
+.hero-enter-line {
+  display: block; width: 1px; height: 32px;
+  background: linear-gradient(to bottom, var(--orange-border), transparent);
+  margin: 14px auto 0;
   animation: pulse 2.5s ease-in-out infinite;
 }
 @keyframes pulse { 0%,100% { opacity: .6 } 50% { opacity: .15 } }
+
+/* Hide nav + page-nav while on cover */
+body.on-cover .nav { transform: translateY(-100%) !important; }
+body.on-cover .page-nav { transform: translateY(100%); }
+body.on-cover .idx { display: none; }
+body.on-cover .bs { padding-bottom: 0; }
+
+/* Transition for hero dismissal */
+.hero--dismissed {
+  animation: heroDismiss .5s var(--ease-out) forwards;
+  pointer-events: none;
+}
+@keyframes heroDismiss {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(.97) translateY(-20px); }
+}
 
 /* Post-production CTA glow breathe */
 .cta-glow {
@@ -273,6 +392,7 @@ body::after {
    SECTION INDEX BAR
    ══════════════════════════════════════════ */
 .idx {
+  display: none; /* Replaced by page-nav dots */
   background: var(--surface-1); padding: 0; width: 100%;
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
 }
@@ -1177,152 +1297,256 @@ body::after {
   .nav-links a { -webkit-tap-highlight-color: transparent; }
 }
 @media print {
-  /* Hide interactive / decorative elements */
-  .nav, .idx, .hero-scroll, .hero-mascot, .skip-link { display: none; }
-  body::after { display: none; }
+  /* ═══════════════════════════════════════
+     PRINT — LANDSCAPE DECK
+     ═══════════════════════════════════════ */
+  @page { size: 11in 8.5in; margin: 0.45in 0.6in; }
 
-  /* Reveal all animated elements */
+  /* ── FORCE BACKGROUNDS ── */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+
+  /* ── RESET ANIMATIONS ── */
   .r { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .note-reveal { opacity: 1 !important; transform: none !important; }
+  .cta-glow { animation: none !important; text-shadow: none !important; }
 
-  /* White background for clean, lightweight PDF */
-  body, .bs, .hero { background: white !important; }
-  .sec-wrap, .sec-wrap--alt { background: white !important; }
-  .sec-wrap--alt::before, .sec-wrap--alt::after { display: none; }
-  .band { background: #f0f0f0 !important; }
-  .band::before, .band::after { display: none; }
-  .food-chapter { background: #f5f5f5 !important; border-color: #ddd !important; }
-  .art-wrap { background: white !important; }
-  .foot { background: #fafafa !important; }
-  .foot::before { display: none; }
+  /* ═══════════════════════════════════════
+     GHOST ELEMENTS — completely removed from flow
+     These interstitials create blank pages if they
+     remain in the document flow between page-broken sections.
+     ═══════════════════════════════════════ */
+  .nav, .idx, .hero-scroll, .skip-link,
+  .hero-mascot, .page-nav {
+    display: none !important;
+  }
+  .page { display: block !important; }
+  /* Interstitials between sections — must be position:absolute
+     so they cannot generate page breaks or empty boxes */
+  .triple,
+  .art-wrap,
+  .sec-divider,
+  .div,
+  .venue-hero {
+    display: none !important;
+    position: absolute !important;
+    width: 0 !important; height: 0 !important;
+    margin: 0 !important; padding: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+  }
+  /* Pseudo-elements that could generate boxes */
+  body::after,
+  .sec-wrap--alt::before,
+  .sec-wrap--alt::after,
+  .band::before, .band::after,
+  .foot::before { display: none !important; content: none !important; }
 
-  /* Hero tightening */
-  .hero { min-height: auto; padding: 36px 28px 24px; background: white !important; }
+  /* Photos: hidden by default, selectively restored */
+  .venue-grid { display: none !important; }
+  #spaces .venue-grid { display: grid !important; }
+  #production .venue-grid { display: grid !important; }
+  #stations .venue-grid { display: grid !important; }
+  #plated .venue-grid { display: grid !important; }
+
+  /* ── DARK SURFACES ── */
+  body, .bs, .sec-wrap, .food-chapter, .foot { background: var(--ink) !important; }
+  .sec-wrap--alt { background: var(--surface-1) !important; }
+  .band { background: var(--blue-band) !important; }
+
+  /* ── IMAGES ── */
+  .venue-cell img { filter: none !important; }
+  .venue-caption { background: linear-gradient(to top, rgba(0,0,0,.8) 0%, transparent 100%) !important; color: white !important; font-size: .5rem !important; padding: 12px 10px 6px !important; }
+
+  /* ═══════════════════════════════════════
+     COVER PAGE — centered on landscape page
+     ═══════════════════════════════════════ */
+  .hero {
+    min-height: calc(8.5in - 0.9in);
+    padding: 0 80px;
+    background: var(--ink) !important;
+    text-align: center;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
   .hero::before { display: none; }
-  .hero h1 { color: var(--orange) !important; }
-  .hero-sub { color: #333 !important; }
-  .hero-fine { color: #888 !important; }
-  .hero-contact span { color: #666 !important; }
+  .hero-logo { width: 340px; margin-bottom: 28px; }
+  .hero-rule { margin-bottom: 18px; width: 50px; }
+  .hero h1 { font-size: 1.05rem; letter-spacing: .4em; margin-bottom: 10px; }
+  .hero-sub { font-size: 1.15rem; margin-bottom: 5px; }
+  .hero-fine { font-size: .62rem; color: var(--text-lo); }
+  .hero-contact {
+    position: static; margin-top: 32px;
+    display: flex; gap: 24px; justify-content: center;
+    opacity: 1 !important; animation: none !important;
+  }
+  .hero-contact span, .hero-contact a { font-size: .74rem; }
 
-  /* Remove image filters so photos render properly */
-  .venue-cell img, .venue-hero img, .poster img, .triple-poster img, .art-center img {
-    filter: none !important;
+  /* ═══════════════════════════════════════
+     PAGE BREAKS — only visible content sections
+     ═══════════════════════════════════════ */
+  .sec-wrap { break-before: page; }
+  .band { break-before: page; }
+  .food-chapter { break-before: page; }
+  .foot { break-before: page; }
+
+  /* ═══════════════════════════════════════
+     SECTION LAYOUT — slide-like pages
+     ═══════════════════════════════════════ */
+  .sec {
+    max-width: none; width: 100%;
+    padding: 0;
   }
 
-  /* Text colors for white background */
-  .sec-kick { color: var(--orange) !important; }
-  .sec-title { color: #111 !important; }
-  .sec-head::before { color: rgba(232,93,38,.08) !important; }
-  .body { color: #222 !important; }
-  .body strong { color: #111 !important; }
-  .sub { color: var(--orange) !important; border-bottom-color: #ddd !important; }
-  .sec-rule { background: var(--orange) !important; }
-  .sec-divider { background: #ddd !important; }
+  /* Section header — clear hierarchy with breathing room */
+  .sec-head { margin-bottom: 14px; position: relative; }
+  .sec-head::before { font-size: 4.5rem; }
+  .sec-kick { font-size: .58rem; letter-spacing: .18em; margin-bottom: 3px; }
+  .sec-title { font-size: 2.2rem; line-height: .88; }
+  .sec-rule { margin-top: 8px; width: 44px; height: 2px; }
 
-  /* Card colors */
-  .card { border-bottom-color: #eee !important; }
-  .card-badge { color: #888 !important; }
-  .card-title { color: #111 !important; }
-  .card p { color: #555 !important; }
-
-  /* Tier cards */
-  .tier-grid { grid-auto-flow: column; grid-auto-columns: 1fr; }
-  .tier-card { border-color: #ccc !important; background: #f8f8f8 !important; }
-  .tier-card--featured { border-color: var(--orange) !important; background: linear-gradient(180deg, rgba(232,93,38,.06) 0%, #f8f8f8 40%) !important; }
-  .featured-label { background: var(--orange) !important; }
-  .tier-name, .tier-label, .space-tier-num { color: #111 !important; }
-  .space-tier-num { color: var(--orange) !important; }
-  .tier-price { color: var(--orange) !important; }
-  .tier-inc { color: #444 !important; border-top-color: #ddd !important; }
-  .tier-inc strong { color: #111 !important; }
-  .tier-ext, .tier-price span { color: #666 !important; }
-
-  /* Addon cards */
-  .addon-grid { grid-template-columns: repeat(3, 1fr); }
-  .addon { background: #f8f8f8 !important; border-color: var(--orange) !important; }
-  .addon-t { color: #111 !important; }
-  .addon p { color: #555 !important; border-top-color: #ddd !important; }
-
-  /* Suggested menu cards */
-  .sg-grid { grid-template-columns: repeat(2, 1fr); }
-  .sg-card { background: #f8f8f8 !important; border-color: #ccc !important; }
-  .sg-n { color: #111 !important; }
-  .sg-badge { color: #888 !important; }
-  .sg-card p { color: #555 !important; border-top-color: #ddd !important; }
-  .sg-card .lb { color: #222 !important; }
-
-  /* Menu items */
-  .mi { border-bottom-color: #eee !important; }
-  .mi-n { color: #111 !important; }
-  .mi-d { color: #555 !important; }
-  .mi-s { color: var(--orange) !important; }
-
-  /* Tables */
-  .tbl thead th { color: #666 !important; border-bottom-color: #ccc !important; }
-  .tbl tbody td { color: #333 !important; border-bottom-color: #eee !important; }
-  .av-n { color: #111 !important; }
-  .av-p { color: var(--orange) !important; }
-  .av-note { color: #666 !important; }
-  .tbl-note, .tbl-fine { color: #888 !important; }
-
-  /* Production grid */
-  .pg-item { color: #111 !important; border-bottom-color: #eee !important; }
-  .pg-item::before { background: #999 !important; }
+  /* Body */
+  .body { font-size: .74rem; line-height: 1.6; margin-bottom: 8px; max-width: none; }
 
   /* Pull quote */
-  .pq { border-left-color: #ddd !important; }
-  .pq p { color: #222 !important; }
-  .pq cite { color: #888 !important; }
+  .pq { margin: 12px 0; padding: 10px 0 10px 18px; }
+  .pq p { font-size: .88rem; line-height: 1.4; }
+  .pq cite { font-size: .55rem; margin-top: 5px; }
 
-  /* Custom note */
-  .custom-note { color: #555 !important; border-color: #ddd !important; }
+  /* Sub headings — rhythm between groups */
+  .sub { font-size: .95rem; margin-top: 16px; margin-bottom: 8px; padding-bottom: 5px; border-bottom-width: 1px; }
 
-  /* Food chapter */
-  .food-chapter-label { color: var(--orange) !important; }
-  .food-chapter-title { color: #111 !important; }
-  .food-chapter-sub { color: #888 !important; }
-  .food-chapter-sub a { color: #888 !important; }
+  /* Meal heads */
+  .meal-head { margin-top: 18px; margin-bottom: 8px; padding: 10px 0; }
+  .meal-head-label { font-size: .5rem; margin-bottom: 3px; }
+  .meal-head-title { font-size: 1.4rem; }
+  .meal-head--spaced { margin-top: 20px; }
 
-  /* Meal head */
-  .meal-head { border-bottom-color: #ddd !important; }
-  .meal-head-label { color: var(--orange) !important; }
-  .meal-head-title { color: #111 !important; }
+  /* Callout */
+  .callout { margin-top: 16px; padding: 14px 0; }
+  .callout-quote { font-size: 1.05rem; text-shadow: none; }
+  .callout-attr { font-size: .52rem; margin-top: 5px; }
 
-  /* Footer */
-  .foot-addr { color: #666 !important; }
-  .foot a { color: var(--orange) !important; }
-  .foot .est { color: #bbb !important; }
-  .foot-art { opacity: .3; }
-  .foot-art-duo { opacity: .3; }
+  /* Notes & CTA */
+  .custom-note { font-size: .78rem; margin-top: 10px; padding: 10px 0; }
+  .cta-block { font-size: .78rem; margin-top: 12px; }
+  .tbl-fine { font-size: .58rem; margin-top: 5px; }
 
-  /* Venue photos — no gradient overlays for print */
-  .venue-hero::after, .poster::after { display: none; }
-  .venue-caption { background: linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 100%) !important; color: white !important; }
+  /* ═══════════════════════════════════════
+     SECTION PHOTOS — sized for print impact
+     ═══════════════════════════════════════ */
+  #spaces .venue-grid { margin: 8px 0 6px; gap: 3px; }
+  #spaces .venue-cell { aspect-ratio: 16/9; max-height: 120px; }
+  #production .venue-grid { margin: 8px 0 10px; gap: 3px; }
+  #production .venue-cell { max-height: 150px; }
+  #stations .venue-grid { margin: 6px 0; gap: 3px; }
+  #stations .venue-cell { max-height: 110px; }
+  #plated .venue-grid { margin: 6px 0 10px; gap: 3px; }
+  #plated .venue-cell { max-height: 130px; }
 
-  /* Triple posters */
-  .triple { border-color: #ddd !important; background: white !important; }
-  .triple-poster { border-right-color: white !important; }
-  .triple-poster img { filter: none !important; }
+  /* ═══════════════════════════════════════
+     TIER CARDS — breathing room in grid
+     ═══════════════════════════════════════ */
+  .tier-grid { grid-auto-flow: column; grid-auto-columns: 1fr; gap: 8px; margin: 10px 0 8px; }
+  .tier-card { padding: 10px 12px 9px; }
+  .tier-label { font-size: .4rem; margin-bottom: 4px; letter-spacing: .14em; }
+  .tier-name { font-size: .88rem; margin-bottom: 3px; }
+  .tier-price { font-size: .8rem; margin-bottom: 5px; }
+  .tier-price span { font-size: .5rem; }
+  .tier-inc { font-size: .58rem; line-height: 1.45; padding-top: 5px; }
+  .tier-inc strong { font-size: .58rem; }
+  .tier-ext { font-size: .48rem; margin-top: 4px; }
+  .featured-label { font-size: .38rem; padding: 2px 7px; }
 
-  /* Reduce section spacing for tighter PDF */
-  .sec { padding: 48px clamp(20px, 4vw, 56px); }
-  .sec-head { margin-bottom: 28px; }
-  .sec-head::before { font-size: clamp(4rem, 10vw, 7rem); }
-  .sub { margin-top: 32px; }
-  .meal-head { margin-top: 32px; }
-  .venue-grid { margin: 16px 0 6px; }
-  .tbl-wrap { margin: 12px 0 10px; }
-  .pg { margin: 12px 0 24px; }
-  .pq { margin: 24px 0; }
-  .custom-note { margin-top: 20px; padding: 16px 0; }
-  .art-center { padding: 28px clamp(20px, 4vw, 56px); }
-  .art-center img { filter: invert(0) !important; opacity: .15 !important; }
-  .food-chapter-inner { padding: 32px clamp(20px, 4vw, 56px); }
-  .foot { padding: 36px clamp(20px, 4vw, 56px); }
+  /* Space grid */
+  .space-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 6px; margin: 10px 0 6px; }
+  .space-grid .tier-card { padding: 8px 10px 7px; }
+  .space-grid .tier-name { font-size: .76rem; }
+  .space-grid .tier-price { font-size: .68rem; }
+  .space-grid .tier-inc { font-size: .52rem; }
+  .space-tier-num { font-size: .88rem; }
 
-  /* Prevent page breaks inside key blocks */
+  /* ═══════════════════════════════════════
+     MENU ITEMS — 3 columns, comfortable density
+     ═══════════════════════════════════════ */
+  .mg-scroll { margin: 5px 0; overflow: visible !important; }
+  .mg { grid-template-columns: 1fr 1fr 1fr !important; gap: 0 20px; min-width: 0 !important; }
+  .mi { padding: 5px 0; border-bottom-width: 1px; }
+  .mi-n { font-size: .68rem; }
+  .mi-d { font-size: .54rem; margin-top: 1px; }
+  .mi-s { font-size: .6rem; }
+
+  /* ═══════════════════════════════════════
+     ADDON STAMPS
+     ═══════════════════════════════════════ */
+  .addon-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+  .addon-grid--2col { grid-template-columns: repeat(2, 1fr); }
+  .addon { padding: 8px 10px 7px; }
+  .addon-t { font-size: .76rem; margin-bottom: 2px; }
+  .addon-p { font-size: .68rem; margin-bottom: 4px; }
+  .addon-unit { font-size: .52rem; }
+  .addon p { font-size: .54rem; line-height: 1.4; padding-top: 5px; }
+
+  /* ═══════════════════════════════════════
+     SUGGESTED MENUS
+     ═══════════════════════════════════════ */
+  .sg-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; margin: 8px 0; }
+  .sg-card { padding: 10px 12px 9px; }
+  .sg-n { font-size: .88rem; margin-bottom: 3px; }
+  .sg-badge { font-size: .38rem; margin-bottom: 4px; }
+  .sg-p { font-size: .76rem; margin-bottom: 5px; }
+  .sg-p span { font-size: .5rem; }
+  .sg-card p { font-size: .54rem; line-height: 1.4; padding-top: 5px; }
+
+  /* ═══════════════════════════════════════
+     TABLES (Production AV)
+     ═══════════════════════════════════════ */
+  .tbl-wrap { margin: 8px 0; }
+  .tbl { font-size: .64rem; min-width: 0 !important; }
+  .tbl thead th { font-size: .44rem; padding: 6px 8px; letter-spacing: .16em; }
+  .tbl tbody td { padding: 6px 8px; }
+  .tbl-note { font-size: .54rem; margin-top: 5px; }
+
+  /* Production grid */
+  .pg { grid-template-columns: 1fr 1fr 1fr !important; margin: 8px 0 12px; gap: 0 20px; }
+  .pg-item { font-size: .68rem; padding: 6px 0; }
+  .pg-item::before { width: 4px; height: 4px; }
+
+  /* ═══════════════════════════════════════
+     FOOD CHAPTER TITLE PAGE — centered
+     ═══════════════════════════════════════ */
+  .food-chapter-inner {
+    padding: 0; display: flex; align-items: center;
+    min-height: calc(8.5in - 0.9in);
+    justify-content: center; text-align: center;
+    flex-direction: column; gap: 10px;
+  }
+  .food-chapter-label { font-size: .65rem; letter-spacing: .25em; }
+  .food-chapter-title { font-size: 3.5rem; }
+  .food-chapter-sub { font-size: .58rem; margin-left: 0; letter-spacing: .15em; }
+
+  /* ═══════════════════════════════════════
+     FOOTER — CLOSING PAGE — centered
+     ═══════════════════════════════════════ */
+  .foot {
+    padding: 0; text-align: center;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: calc(8.5in - 0.9in);
+  }
+  .foot-art-duo { margin-bottom: 24px; }
+  .foot-art-duo img { height: 90px; }
+  .foot-addr { font-size: .65rem; margin-bottom: 5px; }
+  .foot a { color: var(--orange-hot) !important; }
+  .foot .est { font-size: .48rem; margin-top: 14px; }
+
+  /* ═══════════════════════════════════════
+     BLOCK INTEGRITY — prevent orphans
+     ═══════════════════════════════════════ */
   .tier-card, .addon, .sg-card, .card, .mi { break-inside: avoid; }
-  .sec-head, .sub { break-after: avoid; }
-  .venue-cell { break-inside: avoid; }
+  .sec-head, .sub, .meal-head { break-after: avoid; }
+  .venue-cell, .venue-grid { break-inside: avoid; }
+  .tier-grid, .addon-grid, .sg-grid { break-inside: avoid; }
+  .pg, .callout, .tbl-wrap { break-inside: avoid; }
 }
 </style>
 </head>
@@ -1350,8 +1574,8 @@ body::after {
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<header class="hero" id="top">
+<!-- ═══ HERO / COVER ═══ -->
+<header class="hero hero--cover" id="top" role="button" tabindex="0" aria-label="Tap to enter">
   <div class="hero-logo">
     <img src="art/pukey_art_-4-02white.png" alt="PubKey">
   </div>
@@ -1359,6 +1583,9 @@ body::after {
   <h1>Private Events & Catering</h1>
   <div class="hero-sub">All You Can Hold for 5* Sats</div>
   <div class="hero-fine">*Actual number depends on the Bitcoin price. We checked.</div>
+  <div class="hero-enter" aria-hidden="true">
+    <span class="hero-enter-text">Enter Here</span>
+  </div>
   <div class="hero-contact">
     <span>410 7th Street NW &middot; Washington, DC 20004</span>
     <a href="mailto:events@pubkey.bar">events@pubkey.bar</a>
@@ -1366,7 +1593,6 @@ body::after {
   <div class="hero-mascot">
     <img src="art/pubkey_shirt_02.png" alt="PubKey cat">
   </div>
-  <div class="hero-scroll" aria-hidden="true"><span></span></div>
 </header>
 
 <div class="bs">
@@ -1384,9 +1610,12 @@ body::after {
 </nav>
 
 <main>
+
+<!-- ═══ PAGE 1: STORY ═══ -->
+<div class="page" data-page="1" data-label="Story">
 <!-- VENUE: Exterior sign -->
 <div class="venue-hero r">
-  <img src="venue/outside.jpg" alt="PubKey DC — exterior" loading="lazy">
+  <img src="venue/outside.jpg" alt="PubKey DC — exterior" loading="eager" fetchpriority="high" width="1600" height="1065">
 </div>
 
 <!-- ══════════════════════════════
@@ -1413,12 +1642,21 @@ body::after {
 <!-- THE TRIPLE SET -->
 <div class="triple r">
   <div class="triple-in">
-    <div class="triple-poster"><img src="art/pubkey_fake-ad_001.png" alt="PubKey — Orange Pill Drink" loading="lazy"></div>
-    <div class="triple-poster"><img src="art/pubkey_fake-ad_002.png" alt="PubKey — The Gang Opens a Bar" loading="lazy"></div>
-    <div class="triple-poster"><img src="art/pubkey_fake-ad_003.png" alt="PubKey — Free Dirty Dog" loading="lazy"></div>
+    <div class="triple-poster"><img src="art/pubkey_fake-ad_001.jpg" alt="PubKey — Orange Pill Drink" loading="lazy"></div>
+    <div class="triple-poster"><img src="art/pubkey_fake-ad_002.jpg" alt="PubKey — The Gang Opens a Bar" loading="lazy"></div>
+    <div class="triple-poster"><img src="art/pubkey_fake-ad_003.jpg" alt="PubKey — Free Dirty Dog" loading="lazy"></div>
   </div>
 </div>
 
+<footer class="foot">
+  <p class="foot-addr">PubKey DC &nbsp;&middot;&nbsp; 410 7th Street NW &nbsp;&middot;&nbsp; Washington, DC 20004</p>
+  <p class="foot-addr"><a href="mailto:events@pubkey.bar">EVENTS@PUBKEY.BAR</a></p>
+  <p class="est">est. 735075.</p>
+</footer>
+</div><!-- /page 1 -->
+
+<!-- ═══ PAGE 2: SPACES ═══ -->
+<div class="page" data-page="2" data-label="Spaces">
 <!-- ══════════════════════════════
      02 — SPACES
      ══════════════════════════════ -->
@@ -1433,7 +1671,7 @@ body::after {
 
   <!-- Venue gallery -->
   <div class="venue-grid venue-grid--2col r r2" style="margin-bottom:3px">
-    <div class="venue-cell"><img src="venue/fulleventseated.png" alt="Seated event space" loading="lazy"><div class="venue-caption">Seated Event Space</div></div>
+    <div class="venue-cell"><img src="venue/fulleventseated.jpg" alt="Seated event space" loading="lazy"><div class="venue-caption">Seated Event Space</div></div>
     <div class="venue-cell"><img src="venue/fullevent.JPG" alt="Standing event space" loading="lazy"><div class="venue-caption">Standing Event Space</div></div>
   </div>
   <div class="venue-grid venue-grid--2col r r3" style="margin-top:0">
@@ -1483,8 +1721,15 @@ body::after {
 </section>
 </div><!-- /sec-wrap -->
 
-<div class="sec-divider"></div>
+<footer class="foot">
+  <p class="foot-addr">PubKey DC &nbsp;&middot;&nbsp; 410 7th Street NW &nbsp;&middot;&nbsp; Washington, DC 20004</p>
+  <p class="foot-addr"><a href="mailto:events@pubkey.bar">EVENTS@PUBKEY.BAR</a></p>
+  <p class="est">est. 735075.</p>
+</footer>
+</div><!-- /page 2 -->
 
+<!-- ═══ PAGE 3: PRODUCTION ═══ -->
+<div class="page" data-page="3" data-label="Production">
 <!-- ══════════════════════════════
      03 — PRODUCTION
      ══════════════════════════════ -->
@@ -1497,7 +1742,7 @@ body::after {
   </div>
 
   <div class="venue-grid venue-grid--full venue-grid--mb r">
-    <div class="venue-cell venue-cell--wide"><img src="venue/screen2.png" alt="LED screen setup" loading="lazy" style="object-fit:cover; object-position:center 30%"><div class="venue-caption">10' × 5' LED Screen</div></div>
+    <div class="venue-cell venue-cell--wide"><img src="venue/screen2.jpg" alt="LED screen setup" loading="lazy" style="object-fit:cover; object-position:center 30%"><div class="venue-caption">10' × 5' LED Screen</div></div>
   </div>
 
   <h3 class="sub r">Production Assets</h3>
@@ -1529,6 +1774,15 @@ body::after {
 </section>
 </div><!-- /sec-wrap -->
 
+<footer class="foot">
+  <p class="foot-addr">PubKey DC &nbsp;&middot;&nbsp; 410 7th Street NW &nbsp;&middot;&nbsp; Washington, DC 20004</p>
+  <p class="foot-addr"><a href="mailto:events@pubkey.bar">EVENTS@PUBKEY.BAR</a></p>
+  <p class="est">est. 735075.</p>
+</footer>
+</div><!-- /page 3 -->
+
+<!-- ═══ PAGE 4: DRINKS ═══ -->
+<div class="page" data-page="4" data-label="Drinks">
 <!-- ══════════════════════════════
      04 — DRINKS
      ══════════════════════════════ -->
@@ -1540,7 +1794,7 @@ body::after {
     <div class="sec-rule"></div>
   </div>
   <div class="venue-grid venue-grid--2col venue-grid--mb r">
-    <div class="venue-cell"><img src="food/cocktail.png" alt="Cocktail at PubKey" loading="lazy"><div class="venue-caption">The Bar</div></div>
+    <div class="venue-cell"><img src="food/cocktail.jpg" alt="Cocktail at PubKey" loading="lazy"><div class="venue-caption">The Bar</div></div>
     <div class="venue-cell"><img src="venue/beerflag.JPG" alt="Cheers with beers" loading="lazy"><div class="venue-caption">Cheers</div></div>
   </div>
 
@@ -1590,8 +1844,15 @@ body::after {
 </section>
 </div><!-- /sec-wrap -->
 
-<div class="sec-divider"></div>
+<footer class="foot">
+  <p class="foot-addr">PubKey DC &nbsp;&middot;&nbsp; 410 7th Street NW &nbsp;&middot;&nbsp; Washington, DC 20004</p>
+  <p class="foot-addr"><a href="mailto:events@pubkey.bar">EVENTS@PUBKEY.BAR</a></p>
+  <p class="est">est. 735075.</p>
+</footer>
+</div><!-- /page 4 -->
 
+<!-- ═══ PAGE 5: STATIONS ═══ -->
+<div class="page" data-page="5" data-label="Food">
 <!-- ══════════════════════════════
      FOOD CHAPTER BREAK
      ══════════════════════════════ -->
@@ -1618,11 +1879,11 @@ body::after {
 
   <!-- Food gallery: service + kitchen + spread -->
   <div class="venue-grid venue-grid--full venue-grid--mb-sm r r2">
-    <div class="venue-cell venue-cell--pano"><img src="food/service.png" alt="Table service" loading="lazy" style="object-fit:cover"><div class="venue-caption">Service</div></div>
+    <div class="venue-cell venue-cell--pano"><img src="food/service.jpg" alt="Table service" loading="lazy" style="object-fit:cover"><div class="venue-caption">Service</div></div>
   </div>
   <div class="venue-grid venue-grid--2col venue-grid--mb r r2">
-    <div class="venue-cell"><img src="food/chefdog.png" alt="Chef plating a loaded dog" loading="lazy"><div class="venue-caption">From the Kitchen</div></div>
-    <div class="venue-cell"><img src="food/spread.png" alt="Wings, tenders, nachos, beers" loading="lazy"><div class="venue-caption">The Spread</div></div>
+    <div class="venue-cell"><img src="food/chefdog.jpg" alt="Chef plating a loaded dog" loading="lazy"><div class="venue-caption">From the Kitchen</div></div>
+    <div class="venue-cell"><img src="food/spread.jpg" alt="Wings, tenders, nachos, beers" loading="lazy"><div class="venue-caption">The Spread</div></div>
   </div>
 
   <div class="tier-grid r r3">
@@ -1730,7 +1991,6 @@ body::after {
   <img src="art/pubkey_shirt_01.png" alt="" loading="lazy" class="art-invert" aria-hidden="true">
 </div>
 </div>
-
 <!-- ══════════════════════════════
      06 — APPETIZERS
      ══════════════════════════════ -->
@@ -1786,7 +2046,6 @@ body::after {
   <img src="art/pubkey_shirt_03.png" alt="" loading="lazy" class="art-invert" aria-hidden="true">
 </div>
 </div>
-
 <!-- ══════════════════════════════
      07 — PLATED
      ══════════════════════════════ -->
@@ -1799,7 +2058,7 @@ body::after {
   </div>
 
   <div class="venue-grid venue-grid--full venue-grid--mb r">
-    <div class="venue-cell venue-cell--cinema"><img src="venue/tablesetting.png" alt="Table setting" loading="lazy"><div class="venue-caption">Plated Service</div></div>
+    <div class="venue-cell venue-cell--cinema"><img src="venue/tablesetting.jpg" alt="Table setting" loading="lazy"><div class="venue-caption">Plated Service</div></div>
   </div>
 
   <div class="meal-head r">
@@ -1913,39 +2172,183 @@ body::after {
 </section>
 </div><!-- /sec-wrap -->
 
-</main>
-
-<!-- ART: Line art cat -->
-
-<!-- ═══ FOOTER ═══ -->
 <footer class="foot">
-  <div class="foot-art-duo">
-    <img src="art/ending banner/Untitled-1.png" alt="" aria-hidden="true" loading="lazy">
-  </div>
   <p class="foot-addr">PubKey DC &nbsp;&middot;&nbsp; 410 7th Street NW &nbsp;&middot;&nbsp; Washington, DC 20004</p>
   <p class="foot-addr"><a href="mailto:events@pubkey.bar">EVENTS@PUBKEY.BAR</a></p>
   <p class="est">est. 735075.</p>
 </footer>
 
+</div><!-- /page 5: Food (Stations + Passed Apps + Plated) -->
+
+</main>
+
+<!-- ═══ PAGE NAV ═══ -->
+<nav class="page-nav" aria-label="Page navigation">
+  <span class="page-count" aria-live="polite">1 / 5</span>
+  <button class="page-nav-btn page-nav-btn--prev" aria-label="Previous page" disabled><span>Prev</span></button>
+  <div class="page-dots"></div>
+  <button class="page-nav-btn page-nav-btn--next" aria-label="Next page"><span>Next</span></button>
+  <span class="page-label"></span>
+</nav>
+
 </div><!-- /bs -->
 
 <script>
-// Scroll reveals
-const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');ro.unobserve(e.target)}}),{threshold:.06,rootMargin:'0px 0px -20px 0px'});
-document.querySelectorAll('.r').forEach(el=>ro.observe(el));
+// ── COVER ──
+const heroEl = document.querySelector('.hero--cover');
+const body = document.body;
+body.classList.add('on-cover');
 
-// Sticky nav
-const nav=document.querySelector('.nav'),hero=document.querySelector('.hero');
-new IntersectionObserver(([e])=>nav.classList.toggle('v',!e.isIntersecting),{threshold:0,rootMargin:'-52px 0px 0px 0px'}).observe(hero);
+function dismissCover() {
+  if (!body.classList.contains('on-cover')) return;
+  heroEl.classList.add('hero--dismissed');
+  body.classList.remove('on-cover');
+  heroEl.addEventListener('animationend', () => {
+    heroEl.style.display = 'none';
+  }, { once: true });
+  goTo(1);
+}
 
-// Active link
-const secs=document.querySelectorAll('section[id]'),nls=document.querySelectorAll('.nav-links a');
-const mark=id=>nls.forEach(l=>l.classList.toggle('act',l.getAttribute('href')==='#'+id));
-secs.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)mark(e.target.id)}),{threshold:.1,rootMargin:'-64px 0px -50% 0px'}).observe(s));
+heroEl.addEventListener('click', e => {
+  if (e.target.closest('a')) return; // let email link work
+  dismissCover();
+});
+heroEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dismissCover(); }
+});
 
-// Note-reveal scroll trigger
-const nro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');nro.unobserve(e.target)}}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.note-reveal').forEach(el=>nro.observe(el));
+// ── PAGE SYSTEM ──
+const pages = document.querySelectorAll('.page');
+const totalPages = pages.length;
+let currentPage = 0; // 0 = cover
+
+const prevBtn = document.querySelector('.page-nav-btn--prev');
+const nextBtn = document.querySelector('.page-nav-btn--next');
+const dotsWrap = document.querySelector('.page-dots');
+const countEl = document.querySelector('.page-count');
+const labelEl = document.querySelector('.page-label');
+
+// Build dots
+pages.forEach((p, i) => {
+  const dot = document.createElement('button');
+  dot.className = 'page-dot' + (i === 0 ? ' page-dot--active' : '');
+  dot.setAttribute('aria-label', 'Page ' + (i + 1) + ': ' + p.dataset.label);
+  dot.title = p.dataset.label;
+  dot.addEventListener('click', () => goTo(i + 1));
+  dotsWrap.appendChild(dot);
+});
+
+function goTo(n) {
+  if (n < 1 || n > totalPages) return;
+  // Dismiss cover if still showing
+  if (body.classList.contains('on-cover')) dismissCover();
+  pages.forEach(p => p.classList.remove('page--active'));
+  const target = document.querySelector('.page[data-page="' + n + '"]');
+  target.classList.add('page--active');
+  currentPage = n;
+  nav.classList.add('v');
+
+  // Update dots
+  dotsWrap.querySelectorAll('.page-dot').forEach((d, i) =>
+    d.classList.toggle('page-dot--active', i === n - 1));
+
+  // Update buttons
+  prevBtn.disabled = n === 1;
+  nextBtn.disabled = n === totalPages;
+
+  // Update counter & label
+  countEl.textContent = n + ' / ' + totalPages;
+  labelEl.textContent = target.dataset.label || '';
+
+  // Scroll to top of page content
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Trigger reveals for newly visible elements
+  target.querySelectorAll('.r:not(.v)').forEach(el => el.classList.add('v'));
+  target.querySelectorAll('.note-reveal:not(.visible)').forEach(el => el.classList.add('visible'));
+
+  // Update nav active link
+  const sec = target.querySelector('section[id]');
+  if (sec) markNav(sec.id);
+}
+
+prevBtn.addEventListener('click', () => goTo(currentPage - 1));
+nextBtn.addEventListener('click', () => goTo(currentPage + 1));
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault();
+    if (body.classList.contains('on-cover')) { dismissCover(); return; }
+    goTo(currentPage + 1);
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(currentPage - 1); }
+});
+
+// Nav link clicks go to correct page + scroll to section
+document.querySelectorAll('.nav-links a, .idx-a').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
+    const id = href.slice(1);
+    // Find which page contains this section
+    pages.forEach((p, i) => {
+      if (p.querySelector('#' + id) || p.id === id) {
+        e.preventDefault();
+        goTo(i + 1);
+        // Scroll to the specific section within the page
+        const target = document.getElementById(id);
+        if (target) {
+          requestAnimationFrame(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }
+      }
+    });
+  });
+});
+
+// Sticky nav — show after cover dismissed
+const nav = document.querySelector('.nav');
+// Nav shows when not on cover
+const showNav = () => { if (!body.classList.contains('on-cover')) nav.classList.add('v'); };
+
+// Active nav link
+const nls = document.querySelectorAll('.nav-links a');
+const markNav = id => nls.forEach(l => l.classList.toggle('act', l.getAttribute('href') === '#' + id));
+
+// Page nav hidden on load (cover is showing)
+countEl.textContent = '1 / ' + totalPages;
+
+// Reveal elements on scroll + highlight active food sub-section in nav
+const foodSections = ['stations', 'appetizers', 'plated'];
+const revealOnScroll = () => {
+  const active = document.querySelector('.page--active');
+  if (!active) return;
+  active.querySelectorAll('.r:not(.v)').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) {
+      el.classList.add('v');
+    }
+  });
+  active.querySelectorAll('.note-reveal:not(.visible)').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) {
+      el.classList.add('visible');
+    }
+  });
+  // Highlight food sub-section nav links on scroll
+  let hit = null;
+  for (const id of foodSections) {
+    const sec = document.getElementById(id);
+    if (sec) {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.5) hit = id;
+    }
+  }
+  if (hit) markNav(hit);
+};
+window.addEventListener('scroll', revealOnScroll, { passive: true });
 </script>
 </body>
 </html>
