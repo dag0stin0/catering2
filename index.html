@@ -1244,43 +1244,154 @@ body.on-cover .bs { padding-bottom: 0; }
   .custom-note { font-size: .95rem; padding: 20px 0; }
 }
 @media (max-width: 480px) {
-  .hero-logo { width: 280px; }
-  .hero h1 { font-size: .8rem; letter-spacing: .3em; }
-  .hero-sub { font-size: 1rem; }
-  .hero-fine { font-size: .62rem; }
+  .hero-logo { width: 260px; }
+  .hero h1 { font-size: .75rem; letter-spacing: .25em; }
+  .hero-sub { font-size: .95rem; }
+  .hero-fine { font-size: .6rem; }
   .hero-contact span, .hero-contact a { font-size: .72rem; }
+  .hero { padding: 48px 20px 90px; min-height: 100dvh; }
+  .hero-mascot { display: none; }
+  .hero-contact { right: auto; left: 50%; transform: translateX(-50%); bottom: 16px; }
+  .hero-enter-text { padding: 14px 28px; font-size: .8rem; min-height: 48px; display: flex; align-items: center; }
+
+  /* Nav */
+  .nav-in { height: 48px; padding: 0 12px; }
+  .nav-brand { font-size: .8rem; letter-spacing: .16em; }
+  .nav-links a { padding: 14px 6px; font-size: .52rem; letter-spacing: .08em; }
+  .nav-links a.nav-sub { font-size: .5rem; padding: 14px 5px; }
+
+  /* Page nav bottom bar */
+  .page-nav { height: 52px; padding: 0 8px; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .page-nav-btn { padding: 14px 12px; min-height: 48px; font-size: .72rem; }
+  .page-dot { width: 10px; height: 10px; }
+  .page-count { font-size: .55rem; }
+
+  /* Sections */
+  .sec { padding: 36px 16px; }
+  .sec-title { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+  .sec-head { margin-bottom: 28px; }
+  .sec-head::before { font-size: clamp(4rem, 14vw, 6rem); top: -16px; }
+  .sec-kick { font-size: .65rem; letter-spacing: .14em; }
+
+  /* Index */
   .idx-in { grid-template-columns: repeat(3, 1fr); }
-  .idx-a { padding: 12px 4px; }
+  .idx-a { padding: 12px 4px; min-height: 48px; }
   .idx-n { font-size: 1.1rem; }
   .idx-l { font-size: .48rem; letter-spacing: .1em; }
-  .hero-mascot { display: none; }
-  .hero-contact { right: auto; left: 50%; transform: translateX(-50%); }
-  .art-center img { max-height: 120px; }
-  .pq p { font-size: 1.1rem; }
+
+  /* Content */
+  .body { font-size: .88rem; line-height: 1.7; }
+  .sub { font-size: 1rem; margin-top: 36px; }
+  .pq { padding: 16px 0 16px 20px; margin: 28px 0; }
+  .pq p { font-size: 1rem; }
+
+  /* Venue photos — stack single column on small screens */
+  .venue-grid:not(.vg-full) { grid-template-columns: 1fr !important; }
+  .venue-cell { aspect-ratio: 16/10; }
+  .venue-cell--wide { aspect-ratio: 16/10; }
+  .venue-caption { font-size: .58rem; padding: 20px 12px 10px; }
   .venue-hero img { max-height: 40vh; }
-  .venue-grid:not(.vg-full) { grid-template-columns: 1fr 1fr !important; }
-  .venue-cell { aspect-ratio: 16/9; }
-  .sec { padding: 40px 16px; }
-  .sec-title { font-size: clamp(2rem, 8vw, 2.8rem); }
-  .sec-head { margin-bottom: 32px; }
-  .price-xl { font-size: 2.2rem; }
-  .sub { font-size: 1.05rem; margin-top: 40px; }
-  .body { font-size: .9rem; line-height: 1.75; }
-  .card-title { font-size: 1.25rem; }
-  .card-price { font-size: .95rem; }
+
+  /* Art */
+  .art-center img { max-height: 120px; }
+  .art-center { padding: 32px 16px; }
+
+  /* Cards */
+  .card { padding: 14px 0; }
+  .card-title { font-size: 1.2rem; }
+  .card-price { font-size: .9rem; }
+
+  /* Menu items */
+  .mi { padding: 12px 0; }
   .mi-n { font-size: .85rem; }
   .mi-d { font-size: .74rem; }
-  .mg-scroll .mg { min-width: 500px; }
-  .tbl { font-size: .8rem; min-width: 420px; }
-  .tbl thead th { font-size: .52rem; padding: 10px 6px; }
-  .tbl tbody td { padding: 12px 6px; }
+  .mg-scroll .mg { min-width: 440px; }
+
+  /* Prices */
+  .price-xl { font-size: 2.2rem; margin: 20px 0 4px; }
+  .price-sub { font-size: .62rem; }
+
+  /* Tables — horizontal scroll with hint */
+  .tbl-wrap { margin: 16px -16px 14px; padding: 0 16px; }
+  .tbl { font-size: .78rem; min-width: 400px; }
+  .tbl thead th { font-size: .5rem; padding: 10px 6px; letter-spacing: .14em; }
+  .tbl tbody td { padding: 11px 6px; }
   .tier-n { font-size: 1.2rem; }
-  .pg-item { font-size: .82rem; padding: 13px 0; }
-  .addon-t { font-size: 1.1rem; }
-  .addon-p { font-size: .95rem; }
-  .addon p { font-size: .78rem; }
-  .foot { padding: 44px 20px; }
-  .foot-addr { font-size: .62rem; letter-spacing: .18em; }
+
+  /* Tier cards */
+  .space-grid { gap: 8px; }
+  .tier-card { padding: 16px 14px; }
+  .space-tier-num { font-size: 1.1rem; }
+  .space-grid .tier-name { font-size: 1rem; }
+  .space-grid .tier-price { font-size: .9rem; }
+  .space-grid .tier-inc { font-size: .65rem; }
+  .tier-label { font-size: .44rem; }
+  .featured-label { font-size: .45rem; padding: 3px 8px; }
+
+  /* Production grid */
+  .pg-item { font-size: .8rem; padding: 12px 0; }
+
+  /* Add-ons */
+  .addon { padding: 14px 12px; }
+  .addon-t { font-size: 1rem; }
+  .addon-p { font-size: .9rem; }
+  .addon p { font-size: .75rem; }
+
+  /* Suggested menus */
+  .sg-card { padding: 14px 12px; }
+  .sg-n { font-size: 1rem; }
+  .sg-p { font-size: .9rem; }
+  .sg-card p { font-size: .72rem; }
+
+  /* Food chapter break */
+  .food-chapter-inner { padding: 32px 16px; gap: 12px; }
+  .food-chapter-title { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+  .food-chapter-label { font-size: .62rem; }
+  .food-chapter-sub { font-size: .6rem; margin-left: 0; }
+
+  /* Meal headers */
+  .meal-head { margin-top: 36px; padding: 16px 0; }
+  .meal-head-title { font-size: clamp(1.4rem, 5vw, 1.8rem); }
+
+  /* Plated items */
+  .pl-item { font-size: .85rem; padding: 11px 0; }
+
+  /* CTA */
+  .cta-block { font-size: 1rem; margin-top: 28px; }
+  .custom-note { font-size: .9rem; padding: 18px 0; }
+
+  /* Callout */
+  .callout { padding: 24px 0; margin-top: 36px; }
+  .callout-quote { font-size: clamp(1.1rem, 4vw, 1.5rem); }
+  .callout-attr { font-size: .6rem; }
+
+  /* Triple posters */
+  .triple-poster { min-width: 70vw; max-height: 55vh; }
+
+  /* Footer */
+  .foot { padding: 40px 16px; }
+  .foot-addr { font-size: .58rem; letter-spacing: .16em; }
+  .foot .est { font-size: .52rem; }
+  .foot-art-duo img { height: 100px; }
+
+  /* Ending banner */
+  .ending-banner { padding: 28px 0; }
+  .ending-banner-side { height: 80px; }
+  .ending-banner-center { height: 90px; }
+}
+
+/* ── Extra small (320px) ── */
+@media (max-width: 360px) {
+  .hero-logo { width: 220px; }
+  .hero h1 { font-size: .68rem; letter-spacing: .2em; }
+  .sec { padding: 32px 12px; }
+  .sec-title { font-size: 1.6rem; }
+  .body { font-size: .84rem; }
+  .nav-links a { font-size: .48rem; padding: 14px 4px; }
+  .tbl { min-width: 360px; font-size: .72rem; }
+  .mg-scroll .mg { min-width: 380px; }
+  .food-chapter-title { font-size: 1.6rem; }
+  .page-nav-btn { padding: 12px 8px; font-size: .65rem; }
 }
 /* Touch devices — disable hover transforms that cause jank on iOS */
 @media (hover: none) {
@@ -1295,6 +1406,283 @@ body.on-cover .bs { padding-bottom: 0; }
   .nav-links { scroll-snap-type: x proximity; }
   .idx-a { -webkit-tap-highlight-color: transparent; }
   .nav-links a { -webkit-tap-highlight-color: transparent; }
+}
+
+/* ══════════════════════════════════════════
+   iOS-GRADE MOBILE EXPERIENCE
+   ══════════════════════════════════════════ */
+@media (max-width: 480px) {
+  /* ── SPRING PHYSICS on page transitions ── */
+  .page { animation: mPageIn .5s cubic-bezier(.2,.9,.3,1.05) both; }
+  @keyframes mPageIn {
+    0% { opacity: 0; transform: translate3d(0, 20px, 0) scale(.98); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+  @keyframes mSlideInRight {
+    0% { opacity: 0; transform: translate3d(40px, 0, 0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  @keyframes mSlideInLeft {
+    0% { opacity: 0; transform: translate3d(-40px, 0, 0); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+
+  /* ── MORPHING TOP NAV — thinner, translucent, vibrancy ── */
+  .nav {
+    height: auto;
+    background: rgba(8,8,8,.72);
+    -webkit-backdrop-filter: saturate(200%) blur(24px);
+    backdrop-filter: saturate(200%) blur(24px);
+    border-bottom: 0.5px solid rgba(255,255,255,.08);
+  }
+  .nav-in { height: 44px; padding: 0 16px; }
+  .nav-brand { font-size: .82rem; }
+  .nav-links { gap: 0; mask-image: linear-gradient(90deg, black 85%, transparent); -webkit-mask-image: linear-gradient(90deg, black 85%, transparent); }
+  .nav-links a { padding: 12px 8px; font-size: .56rem; min-height: 44px; display: flex; align-items: center; }
+
+  /* ── BOTTOM PAGE NAV — dock-style with vibrancy ── */
+  .page-nav {
+    background: rgba(8,8,8,.65);
+    -webkit-backdrop-filter: saturate(200%) blur(28px);
+    backdrop-filter: saturate(200%) blur(28px);
+    border-top: 0.5px solid rgba(255,255,255,.06);
+    height: auto;
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
+    gap: 4px;
+  }
+  .page-nav-btn {
+    font-size: .7rem;
+    padding: 10px 14px;
+    border-radius: 10px;
+    transition: background .15s, transform .1s;
+    min-height: 44px;
+  }
+  .page-nav-btn:active {
+    background: rgba(255,255,255,.08);
+    transform: scale(.94);
+  }
+  .page-dot {
+    width: 8px; height: 8px;
+    transition: transform .3s cubic-bezier(.2,.9,.3,1.05), background .2s;
+  }
+  .page-dot--active {
+    transform: scale(1.5);
+    background: var(--orange);
+    box-shadow: 0 0 8px rgba(232,93,38,.4);
+  }
+
+  /* ── HERO — immersive full-screen with depth ── */
+  .hero {
+    padding: 0 24px;
+    padding-top: calc(env(safe-area-inset-top, 20px) + 40px);
+    padding-bottom: 100px;
+  }
+  .hero::before {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(232,93,38,.22) 0%, transparent 65%);
+  }
+  .hero-logo { width: 240px; margin-bottom: 24px; }
+  .hero-rule { width: 40px; margin-bottom: 18px; }
+  .hero-enter-text {
+    padding: 16px 36px;
+    font-size: .82rem;
+    border-radius: 12px;
+    min-height: 52px;
+    display: flex; align-items: center;
+  }
+
+  /* ── SECTIONS — more breathing room ── */
+  .sec { padding: 48px 20px; }
+  .sec-head { margin-bottom: 32px; }
+  .sec-head::before { font-size: clamp(4.5rem, 16vw, 6.5rem); top: -20px; opacity: .08; }
+  .sec-title { line-height: .92; }
+  .sec-kick { font-size: .68rem; margin-bottom: 8px; }
+  .sec-rule { width: 40px; margin-top: 12px; }
+
+  /* ── VENUE PHOTOS — full-bleed with parallax feel ── */
+  .venue-grid:not(.vg-full) {
+    grid-template-columns: 1fr !important;
+    gap: 2px;
+    margin: 20px -20px;
+    width: calc(100% + 40px);
+  }
+  .venue-cell {
+    aspect-ratio: 16/9;
+    border-radius: 0;
+  }
+  .venue-cell img {
+    filter: brightness(.92) contrast(1.06) saturate(.9);
+  }
+  .venue-caption {
+    font-size: .6rem;
+    padding: 28px 20px 14px;
+    background: linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 100%);
+  }
+
+  /* ── TIER CARDS — stacked with active press state ── */
+  .tier-card {
+    padding: 20px 18px;
+    border-radius: 12px;
+    transition: transform .15s cubic-bezier(.2,.9,.3,1.05), box-shadow .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tier-card:active {
+    transform: scale(.97);
+  }
+  .tier-card--featured {
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px var(--orange), 0 4px 24px rgba(232,93,38,.1);
+  }
+  .featured-label {
+    border-radius: 0 12px 0 8px;
+    top: 0; right: 0;
+    font-size: .48rem;
+    padding: 5px 12px;
+  }
+  .space-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+  }
+  .space-grid .tier-card { border-radius: 10px; }
+
+  /* ── CARDS & MENU ITEMS — smooth touch feedback ── */
+  .card {
+    padding: 16px 0;
+    transition: opacity .15s;
+  }
+  .card:active { opacity: .7; }
+  .mi {
+    padding: 14px 0;
+    transition: opacity .1s;
+    min-height: 44px;
+  }
+  .mi:active { opacity: .6; }
+
+  /* ── TABLES — card-style on mobile instead of scroll ── */
+  .tbl-wrap {
+    margin: 20px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-mid);
+    -webkit-overflow-scrolling: touch;
+  }
+  .tbl { border-radius: 12px; }
+
+  /* ── ADD-ONS — rounded, press states ── */
+  .addon-grid { grid-template-columns: 1fr !important; gap: 8px; }
+  .addon {
+    border-radius: 10px;
+    border-style: solid;
+    padding: 18px 16px;
+    transition: transform .12s cubic-bezier(.2,.9,.3,1.05);
+  }
+  .addon:active { transform: scale(.97); }
+
+  /* ── SUGGESTED MENUS — full width cards ── */
+  .sg-grid { grid-template-columns: 1fr !important; gap: 8px; }
+  .sg-card {
+    border-radius: 10px;
+    padding: 18px 16px;
+    transition: transform .12s cubic-bezier(.2,.9,.3,1.05);
+  }
+  .sg-card:active { transform: scale(.97); }
+
+  /* ── CALLOUT — centered with more impact ── */
+  .callout {
+    margin: 36px -20px;
+    padding: 32px 24px;
+    width: calc(100% + 40px);
+    background: rgba(255,255,255,.02);
+    border-left: none; border-right: none;
+  }
+  .callout-quote { font-size: clamp(1.15rem, 5vw, 1.5rem); }
+
+  /* ── PULL QUOTES — tighter ── */
+  .pq { margin: 24px 0; padding: 16px 0 16px 18px; border-left-width: 2px; }
+  .pq p { font-size: 1rem; line-height: 1.5; }
+
+  /* ── BODY TEXT — optimized for mobile reading ── */
+  .body {
+    font-size: .92rem;
+    line-height: 1.72;
+    letter-spacing: .005em;
+  }
+  .sub {
+    font-size: 1.05rem;
+    margin-top: 40px;
+    padding-bottom: 10px;
+    border-bottom-width: 1.5px;
+  }
+
+  /* ── FOOD CHAPTER — full-bleed hero moment ── */
+  .food-chapter-inner {
+    padding: 48px 24px;
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .food-chapter-title { font-size: clamp(2.4rem, 12vw, 3.6rem); }
+  .food-chapter-sub { margin-left: 0; margin-top: 8px; }
+
+  /* ── TRIPLE POSTERS — snap scroll ── */
+  .triple-poster {
+    min-width: 75vw;
+    max-height: 60vh;
+    scroll-snap-align: center;
+  }
+
+  /* ── PRODUCTION GRID — single column ── */
+  .pg { grid-template-columns: 1fr !important; }
+  .pg-item {
+    font-size: .88rem;
+    padding: 14px 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── FOOTER — compact, centered ── */
+  .foot {
+    padding: 48px 20px calc(48px + env(safe-area-inset-bottom, 0px));
+  }
+  .foot-art-duo img { height: 90px; }
+  .foot-addr { font-size: .6rem; letter-spacing: .18em; }
+
+  /* ── PRICE displays — bolder on mobile ── */
+  .price-xl { font-size: 2.4rem; }
+  .tier-price { font-size: 1.1rem; }
+
+  /* ── SCROLL REVEAL — faster on mobile, no lag feel ── */
+  .r { transition-duration: .45s; }
+
+  /* ── CTA glow — more prominent on OLED ── */
+  .cta-glow {
+    animation: mGlowBreathe 2.5s ease-in-out infinite;
+  }
+  @keyframes mGlowBreathe {
+    0%, 100% { text-shadow: 0 0 12px rgba(232,93,38,.4), 0 0 28px rgba(232,93,38,.15); }
+    50% { text-shadow: 0 0 20px rgba(232,93,38,.7), 0 0 48px rgba(232,93,38,.3); }
+  }
+
+  /* ── CUSTOM NOTE — pill style ── */
+  .custom-note {
+    font-size: .95rem;
+    padding: 24px 20px;
+    margin: 36px -20px 0;
+    width: calc(100% + 40px);
+    border-left: none; border-right: none;
+    background: rgba(232,93,38,.03);
+  }
+
+  /* ── MEAL HEADERS ── */
+  .meal-head { margin-top: 40px; padding: 18px 0; }
+  .meal-head-title { font-size: clamp(1.5rem, 6vw, 2rem); }
+
+  /* ── PLATED ── */
+  .pl-item { padding: 14px 0; font-size: .88rem; min-height: 44px; }
 }
 @media print {
   /* ═══════════════════════════════════════
@@ -1671,12 +2059,12 @@ body.on-cover .bs { padding-bottom: 0; }
 
   <!-- Venue gallery -->
   <div class="venue-grid venue-grid--2col r r2" style="margin-bottom:3px">
-    <div class="venue-cell"><img src="venue/fulleventseated.png" alt="Seated event space" loading="lazy"><div class="venue-caption">Seated Event Space</div></div>
-    <div class="venue-cell"><img src="venue/fullevent.JPG" alt="Standing event space" loading="lazy"><div class="venue-caption">Standing Event Space</div></div>
+    <div class="venue-cell"><img src="venue/fulleventseated.jpg" alt="Seated event space" loading="lazy"><div class="venue-caption">Seated Event</div></div>
+    <div class="venue-cell"><img src="venue/pub.jpeg" alt="The Pub" loading="lazy" style="object-position:center center"><div class="venue-caption">The Pub</div></div>
   </div>
   <div class="venue-grid venue-grid--2col r r3" style="margin-top:0">
-    <div class="venue-cell"><img src="venue/pub.jpeg" alt="The Pub" loading="lazy" style="object-position:center center"><div class="venue-caption">The Pub</div></div>
     <div class="venue-cell"><img src="venue/eventbar.jpg" alt="Event Bar" loading="lazy"><div class="venue-caption">Event Bar</div></div>
+    <div class="venue-cell"><img src="venue/living room.jpg" alt="The Living Room" loading="lazy" style="object-position:center 60%"><div class="venue-caption">The Living Room</div></div>
   </div>
   <div class="space-grid r r4">
     <div class="tier-card">
@@ -2240,10 +2628,19 @@ pages.forEach((p, i) => {
 
 function goTo(n) {
   if (n < 1 || n > totalPages) return;
+  const direction = n > currentPage ? 'forward' : 'back';
   // Dismiss cover if still showing
   if (body.classList.contains('on-cover')) dismissCover();
   pages.forEach(p => p.classList.remove('page--active'));
   const target = document.querySelector('.page[data-page="' + n + '"]');
+  // Directional animation on mobile
+  if (window.innerWidth <= 480) {
+    target.style.animation = 'none';
+    target.offsetHeight; // force reflow
+    target.style.animation = direction === 'forward'
+      ? 'mSlideInRight .4s cubic-bezier(.2,.9,.3,1.05) both'
+      : 'mSlideInLeft .4s cubic-bezier(.2,.9,.3,1.05) both';
+  }
   target.classList.add('page--active');
   currentPage = n;
   nav.classList.add('v');
@@ -2274,6 +2671,41 @@ function goTo(n) {
 
 prevBtn.addEventListener('click', () => goTo(currentPage - 1));
 nextBtn.addEventListener('click', () => goTo(currentPage + 1));
+
+// ── SWIPE GESTURE NAVIGATION (mobile) ──
+(function() {
+  let startX = 0, startY = 0, startTime = 0;
+  const threshold = 60;
+  const maxVertical = 100;
+  const maxTime = 400;
+
+  document.addEventListener('touchstart', e => {
+    const t = e.changedTouches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    startTime = Date.now();
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    const dt = Date.now() - startTime;
+
+    // Must be fast, horizontal, and not inside a scrollable container
+    if (dt > maxTime || Math.abs(dy) > maxVertical || Math.abs(dx) < threshold) return;
+    if (e.target.closest('.tbl-wrap, .mg-scroll, .triple-in, .nav-links')) return;
+
+    if (dx < -threshold) {
+      // Swipe left → next page
+      if (body.classList.contains('on-cover')) { dismissCover(); return; }
+      goTo(currentPage + 1);
+    } else if (dx > threshold) {
+      // Swipe right → prev page
+      goTo(currentPage - 1);
+    }
+  }, { passive: true });
+})();
 
 // Keyboard navigation
 document.addEventListener('keydown', e => {
